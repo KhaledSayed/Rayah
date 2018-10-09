@@ -3,7 +3,7 @@ import { ApiModelPropertyOptional } from '@nestjs/swagger';
 
 export class RegisterVM extends LoginVM {
   @ApiModelPropertyOptional()
-  firstname?: string;
+  firstName?: string;
   @ApiModelPropertyOptional()
-  lastname?: string;
+  lastName?: string;
 }

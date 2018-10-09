@@ -24,7 +24,7 @@ export class AuthService {
     return sign(payload, this.jwtKey, this.jwtOptions);
   }
 
-  async validatePayload(payload: JWTPayload): Promise<InstanceType<User>> {
+  async validateUser(payload: JWTPayload): Promise<User> {
     return this._userService.findOne({ email: payload.email.toLowerCase() });
   }
 }

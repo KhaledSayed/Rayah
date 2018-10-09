@@ -3,7 +3,7 @@ import { ApiModelProperty } from '@nestjs/swagger';
 
 export class LoginVM extends BaseModelVm {
   @ApiModelProperty()
-  username: string;
+  email: string;
   @ApiModelProperty()
   password: string;
 }
