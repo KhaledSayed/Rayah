@@ -21,6 +21,14 @@ export class HttpExceptionFilter implements ExceptionFilter {
       }
     }
 
+    if (error.response.message instanceof Array) {
+      console.log(true);
+      error.response.errors = { ...error.response.errors };
+      error.response.errors.validationErrors = [...error.response.message];
+      error.response.message = null;
+      error.response.message = 'Validation Error';
+    }
+
     res.status(error.getStatus()).json({
       statusCode: error.getStatus(),
       error: error.response.name || error.name,
@@ -28,6 +36,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
       errors: error.response.errors || null,
       timestamp: new Date().toISOString(),
       path: req ? req.url : null,
+      params: req && req.params ? req.params : null,
+      query: req && req.query ? req.query : null,
+      body: req && req.body ? req.body : null,
+      files: req && req.files ? req.files : null,
     });
   }
 }

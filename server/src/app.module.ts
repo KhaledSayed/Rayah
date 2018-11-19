@@ -6,14 +6,50 @@ import { ConfigurationService } from 'shared/configuration/configuration.service
 import { Configuration } from 'shared/configuration/configuration.enum';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
+import { TodoModule } from './todo/todo.module';
+import { TodoService } from './todo.service';
+import { CategoryModule } from './category/category.module';
+import { CategoryService } from './category/category.service';
+import { ProductModule } from './product/product.module';
+import { BrandModule } from './brand/brand.module';
+import { SliderModule } from './slider/slider.module';
+import { CouponModule } from './coupon/coupon.module';
+import { OrderModule } from './order/order.module';
+import { ReviewModule } from './review/review.module';
+import { BrandService } from 'brand/brand.service';
+import { CouponService } from 'coupon/coupon.service';
+import { IsUniqueCouponCode } from 'shared/validators/coupons/unique-coupon.validator';
+import { ProductService } from 'product/product.service';
+import { OrderService } from 'order/order.service';
+import { SliderService } from 'slider/slider.service';
+import { CheckItemValidity } from 'shared/validators/slider/is-item.validator';
 @Module({
   imports: [
     SharedModule,
-    MongooseModule.forRoot(ConfigurationService.connectionString),
+    MongooseModule.forRoot(ConfigurationService.connectionString, {
+      useNewUrlParser: true,
+    }),
     UserModule,
+    TodoModule,
+    CategoryModule,
+    ProductModule,
+    BrandModule,
+    SliderModule,
+    CouponModule,
+    OrderModule,
+    ReviewModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    TodoService,
+    BrandService,
+    CategoryService,
+    CouponService,
+    ProductService,
+    OrderService,
+    SliderService,
+  ],
 })
 export class AppModule {
   static host: string;

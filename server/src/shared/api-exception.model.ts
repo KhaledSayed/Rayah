@@ -1,22 +1,24 @@
 import { ApiModelPropertyOptional } from '@nestjs/swagger';
 
 export class ApiException {
-  @ApiModelPropertyOptional()
+  @ApiModelPropertyOptional({ example: 401 })
   statusCode?: number;
-  @ApiModelPropertyOptional()
+  @ApiModelPropertyOptional({
+    example: "You don't have permission to access this resource",
+  })
   message?: string;
   @ApiModelPropertyOptional()
   status?: string;
 
-  @ApiModelPropertyOptional()
+  @ApiModelPropertyOptional({ example: 'Error' })
   error?: string;
 
-  @ApiModelPropertyOptional()
+  @ApiModelPropertyOptional({ example: null })
   errors?: any;
 
-  @ApiModelPropertyOptional()
+  @ApiModelPropertyOptional({ example: '2018-10-31T13:13:22.802Z' })
   timestamp?: string;
 
-  @ApiModelPropertyOptional()
+  @ApiModelPropertyOptional({ example: '/api/brand' })
   path?: string;
 }

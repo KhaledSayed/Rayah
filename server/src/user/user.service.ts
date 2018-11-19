@@ -46,6 +46,7 @@ export class UserService extends BaseService<User> {
     } catch (e) {
       throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+    
   }
 
   async login(loginVm: LoginVM): Promise<LoginResponseVM> {

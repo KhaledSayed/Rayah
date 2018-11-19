@@ -4,6 +4,7 @@ import {
   Post,
   HttpStatus,
   HttpException,
+  Request,
 } from '@nestjs/common';
 import { RegisterVM } from './models/view-models/register-vm.model';
 import { UserVM } from './models/view-models/user-vm.model';
@@ -26,6 +27,8 @@ export class UserController {
   @ApiOperation(GetOperationId(User.modelName, 'Register'))
   async register(@Body() registerVM: RegisterVM): Promise<UserVM> {
     const { email, password } = registerVM;
+
+    console.log(registerVM);
 
     if (!email) {
       throw new HttpException('email is required', HttpStatus.BAD_REQUEST);
@@ -60,10 +63,10 @@ export class UserController {
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ApiException })
   @ApiOperation(GetOperationId(User.modelName, 'Login'))
   async login(@Body() loginVm: LoginVM): Promise<LoginResponseVM> {
+    console.log(loginVm);
     let fields = Object.keys(loginVm);
-
     fields.forEach(field => {
-      if (!fields[field]) {
+      if (!loginVm[field]) {
         throw new HttpException(`${field} is Required`, HttpStatus.BAD_REQUEST);
       }
     });

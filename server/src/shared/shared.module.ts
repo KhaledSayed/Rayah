@@ -4,6 +4,7 @@ import { MapperService } from './mapper/mapper.service';
 import { AuthService } from './auth/auth.service';
 import { JwtStrategyService } from './auth/stratgies/jwt-strategy.service';
 import { UserModule } from 'user/user.module';
+import { PassportModule } from '@nestjs/passport';
 
 @Global()
 @Module({

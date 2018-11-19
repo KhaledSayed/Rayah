@@ -1,5 +1,5 @@
 import { SchemaOptions } from 'mongoose';
-import { ApiModelPropertyOptional } from '@nestjs/swagger';
+import { ApiModelPropertyOptional, ApiModelProperty } from '@nestjs/swagger';
 import { Typegoose, prop, pre } from 'typegoose';
 
 @pre<T>('findOneAndUpdate', function(next) {

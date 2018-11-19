@@ -2,10 +2,18 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { HttpExceptionFilter } from 'shared/filters/http-exception.filter';
+import * as path from 'path';
+import * as express from 'express';
+import { ValidationPipe } from '@nestjs/common';
+import { useContainer, Validator } from 'class-validator';
+import { MapperService } from 'shared/mapper/mapper.service';
+import { CouponModule } from 'coupon/coupon.module';
+import { Container } from 'typedi';
 declare const module: any;
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const server = express();
+  const app = await NestFactory.create(AppModule, server);
 
   const hostDomain = AppModule.isDev
     ? `${AppModule.host}:${AppModule.port}`
@@ -41,9 +49,28 @@ async function bootstrap() {
     module.hot.dispose(() => app.close());
   }
 
+  // app.useStaticAssets(path.join(__dirname, '/../public/uploads'));
+
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
+
   app.setGlobalPrefix('api');
   app.useGlobalFilters(new HttpExceptionFilter());
+  const directory: string = path.join(__dirname, '../uploads');
+  app.use('/uploads', express.static(directory));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      skipMissingProperties: true,
+    }),
+  );
 
   await app.listen(AppModule.port);
 }
 bootstrap();
+
+function getExpressPath() {
+  return path.join(__dirname + '/../uploads');
+}
+
+function getReadablePath() {
+  return '/uploads';
+}
