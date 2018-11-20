@@ -1,0 +1,25 @@
+{
+  "name": "clan.ecommerce",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "install": " npm run install:server",
+    "install:server": "(cd ./server && npm install)",
+    "postinstall": "npm run build",
+    "start": "npm run start:prod",
+    "start:prod": "(cd ./server && ./node_modules/.bin/ts-node ./src/main.ts)",
+    "start:dev": " npm run start:server",
+    "start:server": "(cd ./server && npm run start:watch)"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KhaledSayed/Rayah.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KhaledSayed/Rayah/issues"
+  },
+  "homepage": "https://github.com/KhaledSayed/Rayah#readme"
+}

@@ -18,10 +18,9 @@
     "webpack": "webpack --config webpack.config.js",
     "install": " npm run install:server",
     "install:server": "(cd ./server && npm install)",
-    "start": "npm run start:dev",
-    "start:dev": "npm run start:server",
-    "start:server": "(cd ./server && npm run start:watch)"
-  },
+    "start": "ts-node -r tsconfig-paths/register src/main.ts",
+    "start:dev": "nodemon"
+},
   "dependencies": {
     "@nestjs/common": "^5.1.0",
     "@nestjs/core": "^5.1.0",
