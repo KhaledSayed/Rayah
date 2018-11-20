@@ -16,12 +16,10 @@
     "test:cov": "jest --coverage",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "webpack": "webpack --config webpack.config.js",
-    "install": "npm run install:client && npm run install:server",
-    "install:client": "(cd ./client && npm install)",
+    "install": " npm run install:server",
     "install:server": "(cd ./server && npm install)",
     "start": "npm run start:dev",
-    "start:dev": "npm run start:client & npm run start:server",
-    "start:client": "(cd ./client && npm run start)",
+    "start:dev": "npm run start:server",
     "start:server": "(cd ./server && npm run start:watch)"
   },
   "dependencies": {
