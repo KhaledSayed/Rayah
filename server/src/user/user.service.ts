@@ -10,7 +10,7 @@ import { User } from './models/user.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { ModelType } from 'typegoose';
 import { MapperService } from 'shared/mapper/mapper.service';
-import { RegisterVM } from './models/view-models/register-vm.model';
+import { RegisterParams } from './models/view-models/register-vm.model';
 import { genSalt, hash, compare } from 'bcryptjs';
 import { LoginVM } from './models/view-models/login-vm.model';
 import { AuthService } from 'shared/auth/auth.service';
@@ -30,7 +30,7 @@ export class UserService extends BaseService<User> {
     this._mapper = _mapperService.mapper;
   }
 
-  async register(registerVm: RegisterVM): Promise<User> {
+  async register(registerVm: RegisterParams): Promise<User> {
     const { firstName, lastName, email, password } = registerVm;
     const newUser = new this._model(); // InstanceType<User>
     newUser.firstName = firstName;
@@ -46,7 +46,6 @@ export class UserService extends BaseService<User> {
     } catch (e) {
       throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    
   }
 
   async login(loginVm: LoginVM): Promise<LoginResponseVM> {

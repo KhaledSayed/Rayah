@@ -6,7 +6,7 @@ import {
   HttpException,
   Request,
 } from '@nestjs/common';
-import { RegisterVM } from './models/view-models/register-vm.model';
+import { RegisterParams } from './models/view-models/register-vm.model';
 import { UserVM } from './models/view-models/user-vm.model';
 import { ApiUseTags, ApiResponse, ApiOperation } from '@nestjs/swagger';
 import { User } from './models/user.model';
@@ -25,7 +25,7 @@ export class UserController {
   @ApiResponse({ status: HttpStatus.CREATED, type: UserVM })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ApiException })
   @ApiOperation(GetOperationId(User.modelName, 'Register'))
-  async register(@Body() registerVM: RegisterVM): Promise<UserVM> {
+  async register(@Body() registerVM: RegisterParams): Promise<UserVM> {
     const { email, password } = registerVM;
 
     console.log(registerVM);

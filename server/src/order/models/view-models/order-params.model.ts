@@ -1,4 +1,4 @@
-import { ApiModelProperty } from '@nestjs/swagger';
+import { ApiModelProperty, ApiModelPropertyOptional } from '@nestjs/swagger';
 import { Product } from 'product/models/product.model';
 import { Coupon } from 'coupon/models/coupon.model';
 import {
@@ -10,6 +10,7 @@ import {
   MinLength,
   ArrayMinSize,
   IsOptional,
+  ValidateNested,
 } from 'class-validator';
 import { isObject } from 'typegoose/lib/utils';
 import { IsOrderValid } from 'shared/validators/orders/valid-order.validator';
@@ -23,6 +24,7 @@ import { OrderLevel } from '../order-level.enum';
 class OrderedProduct {
   @IsDefined()
   @IsMongoId()
+  @ApiModelProperty()
   @IsProductValid({ message: 'Product is Invalid' })
   id: string;
 
@@ -30,13 +32,15 @@ class OrderedProduct {
   @IsPositive()
   @IsNumber()
   @IsApplicable('id')
+  @ApiModelProperty()
   quantity: number;
 }
 
 export class OrderParam extends BaseModelVm {
-  @ApiModelProperty()
+  @ApiModelProperty({ type: OrderedProduct, isArray: true })
   @IsDefined()
   @IsArray()
+  @ValidateNested()
   @ArrayMinSize(1, { message: 'Basket is empty' })
   basket?: OrderedProduct[];
 
@@ -48,6 +52,5 @@ export class OrderParam extends BaseModelVm {
   @IsDefined()
   address: string;
 
-  @ApiModelProperty()
   status: OrderLevel;
 }

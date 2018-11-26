@@ -104,6 +104,9 @@ export class ProductController {
       featuredQuery.push({ featured: featured });
     }
 
+    console.log({
+      $and: [{ $or: [...categoriesQuery] }, ...priceQuery, ...featuredQuery],
+    });
     const products = await this._prodcutService.findAll(
       {
         $and: [{ $or: [...categoriesQuery] }, ...priceQuery, ...featuredQuery],
