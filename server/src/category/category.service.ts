@@ -6,6 +6,7 @@ import { ModelType } from 'typegoose';
 import { MapperService } from 'shared/mapper/mapper.service';
 import { CategoryParams } from './models/view-models/category-params.model';
 import { CategoryVm } from './models/view-models/category-vm.model';
+import { Types } from 'mongoose';
 
 @Injectable()
 export class CategoryService extends BaseService<Category> {
@@ -24,6 +25,10 @@ export class CategoryService extends BaseService<Category> {
 
     newCategory.name = categoryParams.name;
     newCategory.thumbnail = categoryParams.thumbnail;
+    newCategory.parent =
+      categoryParams.parent && categoryParams.parent != null
+        ? Types.ObjectId(categoryParams.parent)
+        : null;
 
     try {
       const result = await this.create(newCategory);

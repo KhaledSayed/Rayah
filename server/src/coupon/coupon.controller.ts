@@ -70,6 +70,7 @@ export class CouponController {
   }
 
   @Post()
+  @ApiOperation(GetOperationId(Coupon.modelName, 'Post'))
   async post(@Body() couponParams: CouponParams): Promise<CouponVm> {
     try {
       const coupon = this._couponService.onCreateCoupon(couponParams);
@@ -81,6 +82,7 @@ export class CouponController {
   }
 
   @Put(':id')
+  @ApiOperation(GetOperationId(Coupon.modelName, 'Put'))
   async put(
     @Body() couponParams: CouponPutParams,
     @Param('id') id,
@@ -104,6 +106,7 @@ export class CouponController {
   }
 
   @Delete(':id')
+  @ApiOperation(GetOperationId(Coupon.modelName, 'Delete'))
   async delete(@Param('id') id) {
     const existCoupon = await this._couponService.findById(id);
 

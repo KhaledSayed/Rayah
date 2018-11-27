@@ -34,6 +34,7 @@ import { Roles } from 'shared/decorators/roles.decorator';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from 'shared/guards/roles.guard';
 import { ToInt } from 'shared/pipes/to-int.pipe';
+import { Types } from 'mongoose';
 
 @Controller('categories')
 @ApiUseTags(Category.modelName)
@@ -41,7 +42,6 @@ import { ToInt } from 'shared/pipes/to-int.pipe';
 export class CategoryController {
   constructor(private readonly _categoryService: CategoryService) {}
 
-  @Get()
   @Get()
   @ApiResponse({ status: HttpStatus.OK, type: CategoryVm, isArray: true })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ApiException })
@@ -52,16 +52,39 @@ export class CategoryController {
     type: Number,
   })
   @ApiImplicitQuery({ name: 'perPage', required: true, type: Number })
+  @ApiImplicitQuery({
+    name: 'parent',
+    required: false,
+    type: String,
+    isArray: false,
+  })
   async get(
     @Query('page', new ToInt()) page: number,
     @Query('perPage', new ToInt()) perPage: number,
+    @Query('parent') parent: string,
   ): Promise<CategoryVm[]> {
+    console.log(parent);
+
+    let parentQuery = {};
+
+    if (parent && parent !== null) {
+      console.log('Parent:' + parent);
+
+      let mappedParentObject = [];
+
+      parentQuery = { parent: Types.ObjectId(parent) };
+
+      console.log(parentQuery, page, perPage);
+    }
+
     const categories = await this._categoryService.findAll(
-      {},
+      { parent: Types.ObjectId(parent) },
       ['parent'],
       page,
       perPage,
     );
+
+    console.log(categories);
     return this._categoryService.map<CategoryVm[]>(
       map(categories, category => category.toJSON()),
       true,
@@ -69,6 +92,7 @@ export class CategoryController {
   }
 
   @Post()
+  @ApiOperation(GetOperationId(Category.modelName, 'Create'))
   @UseInterceptors(FileInterceptor('thumbnail'))
   async post(
     @UploadedFile() thumbnail,
@@ -104,6 +128,7 @@ export class CategoryController {
 
   @Put()
   @UseInterceptors(FileInterceptor('thumbnail'))
+  @ApiOperation(GetOperationId(Category.modelName, 'Put'))
   async put(
     @UploadedFile('thumbnail') thumbnail,
     @Body() categoryParams: CategoryParams,
@@ -162,6 +187,7 @@ export class CategoryController {
   }
 
   @Delete(':id')
+  @ApiOperation(GetOperationId(Category.modelName, 'Delete'))
   async delete(@Param('id') id): Promise<CategoryVm> {
     const currentCategory = await this._categoryService.findById(id);
 

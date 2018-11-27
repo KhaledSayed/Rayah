@@ -14,7 +14,7 @@ declare const module: any;
 async function bootstrap() {
   const server = express();
   const app = await NestFactory.create(AppModule, server);
-
+  app.enableCors();
   const hostDomain = AppModule.isDev
     ? `${AppModule.host}:${AppModule.port}`
     : `${AppModule.host}`;

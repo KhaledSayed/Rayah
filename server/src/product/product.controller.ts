@@ -123,6 +123,7 @@ export class ProductController {
   }
 
   @Get(':id')
+  @ApiOperation(GetOperationId(Product.modelName, 'GetOne'))
   async findOne(@Param('id') id): Promise<ProductVm> {
     const product = await this._prodcutService.findById(id);
 
@@ -146,6 +147,7 @@ export class ProductController {
   }
 
   @Put(':id')
+  @ApiOperation(GetOperationId(Product.modelName, 'Put'))
   async put(
     @Param('id') id,
     @Body() productParams: ProductParamsPut,
@@ -169,6 +171,7 @@ export class ProductController {
   }
 
   @Put(':id/thumbnail')
+  @ApiOperation(GetOperationId(Product.modelName, 'CreateThumbnail'))
   @UseInterceptors(FileInterceptor('banner'))
   async postThumbnail(@Param('id') id, @UploadedFile() banner) {
     console.log(id);
@@ -193,6 +196,7 @@ export class ProductController {
   }
 
   @Put(':id/gallery')
+  @ApiOperation(GetOperationId(Product.modelName, 'Create Gallery'))
   @UseInterceptors(FilesInterceptor('gallery'))
   async postGallery(@Param('id') id, @UploadedFiles() gallery) {
     console.log(id);
@@ -221,6 +225,7 @@ export class ProductController {
   }
 
   @Delete(':id')
+  @ApiOperation(GetOperationId(Product.modelName, 'Delete'))
   async delete(@Param('id') id): Promise<ProductVm> {
     const product = await this._prodcutService.findById(id);
 
@@ -238,6 +243,7 @@ export class ProductController {
   }
 
   @Delete(':id/gallery/:index')
+  @ApiOperation(GetOperationId(Product.modelName, 'DeleteGallery'))
   async deleteFromGallery(
     @Param('id') id,
     @Param('index') index,

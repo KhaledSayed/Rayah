@@ -115,10 +115,11 @@ export class OrderController {
     }
   }
 
-  @Get(':id')
-  async getOne() {}
+  // @Get(':id')
+  // async getOne() {}
 
   @Post()
+  @ApiOperation(GetOperationId(Order.modelName, 'Create'))
   @Roles(UserRole.Admin, UserRole.User)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   async post(
@@ -166,6 +167,7 @@ export class OrderController {
   }
 
   @Put(':id')
+  @ApiOperation(GetOperationId(Order.modelName, 'Update'))
   async put(orderParams: OrderPutParams, @Param('id') id): Promise<OrderVm> {
     const order = await this._orderService.findById(id, ['coupon']);
 
@@ -209,6 +211,7 @@ export class OrderController {
   }
 
   @Delete(':id')
+  @ApiOperation(GetOperationId(Order.modelName, 'Delete'))
   async delete(@Param('id') id): Promise<OrderVm> {
     const order = await this._orderService.findById(id);
 
@@ -225,13 +228,13 @@ export class OrderController {
     }
   }
 
-  @Put(':id/products')
-  async putProducts(): Promise<OrderVm> {
-    return null;
-  }
+  // @Put(':id/products')
+  // async putProducts(): Promise<OrderVm> {
+  //   return null;
+  // }
 
-  @Delete(':id/products/:index')
-  async deleteProduct(): Promise<OrderVm> {
-    return null;
-  }
+  // @Delete(':id/products/:index')
+  // async deleteProduct(): Promise<OrderVm> {
+  //   return null;
+  // }
 }

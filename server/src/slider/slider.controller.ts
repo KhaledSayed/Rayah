@@ -70,6 +70,7 @@ export class SliderController {
   }
 
   @Get(':id')
+  @ApiOperation(GetOperationId(Slider.modelName, 'GetOne'))
   async getOne(@Param('id') id): Promise<SliderVm> {
     const slider = await this._sliderService.findById(id, ['item']);
 
@@ -81,6 +82,7 @@ export class SliderController {
   }
 
   @Post()
+  @ApiOperation(GetOperationId(Slider.modelName, 'Create'))
   @UseInterceptors(FileInterceptor('banner'))
   async post(
     @UploadedFile() banner,
@@ -102,6 +104,7 @@ export class SliderController {
   }
 
   @Put(':id')
+  @ApiOperation(GetOperationId(Slider.modelName, 'Put'))
   @UseInterceptors(FileInterceptor('banner'))
   async put(
     @UploadedFile() banner,
@@ -131,6 +134,7 @@ export class SliderController {
   }
 
   @Delete(':id')
+  @ApiOperation(GetOperationId(Slider.modelName, 'Delete'))
   async delete(@Param('id') id): Promise<SliderVm> {
     const slider = await this._sliderService.findById(id);
 

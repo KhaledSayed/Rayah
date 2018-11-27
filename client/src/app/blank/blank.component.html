@@ -1,0 +1,7 @@
+<ul>
+  <li *ngFor="let category of categories; let i = index">
+    {{ i + 1 }} - {{ category.name }}
+
+    <img src="http:localhost:8080/public/{{category.thumbnail}}" />
+  </li>
+</ul>

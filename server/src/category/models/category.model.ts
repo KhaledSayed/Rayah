@@ -1,5 +1,5 @@
 import { BaseModel, schemaOptions } from 'shared/base.model';
-import { prop, ModelType } from 'typegoose';
+import { prop, ModelType, Ref } from 'typegoose';
 import { BaseItemModel } from 'shared/base-item.model';
 
 export class Category extends BaseItemModel<Category> {
@@ -12,8 +12,8 @@ export class Category extends BaseItemModel<Category> {
   @prop({ required: true })
   thumbnail: string;
 
-  @prop({ required: false, default: null })
-  parent: string;
+  @prop({ ref: Category, required: false, default: null })
+  parent: Ref<Category>;
 
   static get model(): ModelType<Category> {
     return new Category().getModelForClass(Category, { schemaOptions });

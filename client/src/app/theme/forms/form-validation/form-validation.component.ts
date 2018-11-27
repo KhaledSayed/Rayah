@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {CustomValidators} from 'ng2-validation';
+import { Component, OnInit } from "@angular/core";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { CustomValidators } from "ng2-validation";
 
 @Component({
-  selector: 'app-form-validation',
-  templateUrl: './form-validation.component.html',
+  selector: "app-form-validation",
+  templateUrl: "./form-validation.component.html",
   styleUrls: [
-    './form-validation.component.scss',
-    '../../../../assets/icon/icofont/css/icofont.scss'
+    "./form-validation.component.scss",
+    "../../../../assets/icon/icofont/css/icofont.scss"
   ]
 })
 export class FormValidationComponent implements OnInit {
@@ -18,13 +18,15 @@ export class FormValidationComponent implements OnInit {
   submitted: boolean;
 
   constructor() {
+    const name = new FormControl("", Validators.required);
+    const password = new FormControl("", Validators.required);
+    const gender = new FormControl("", Validators.required);
+    const email = new FormControl("", [Validators.required, Validators.email]);
 
-    const name = new FormControl('', Validators.required);
-    const password = new FormControl('', Validators.required);
-    const gender = new FormControl('', Validators.required);
-    const email = new FormControl('', [Validators.required, Validators.email]);
-
-    const rpassword = new FormControl('', [Validators.required, CustomValidators.equalTo(password)]);
+    const rpassword = new FormControl("", [
+      Validators.required,
+      CustomValidators.equalTo(password)
+    ]);
     this.myForm = new FormGroup({
       name: name,
       email: email,
@@ -35,10 +37,22 @@ export class FormValidationComponent implements OnInit {
     /*Basic validation end*/
 
     /*number Validation start*/
-    const integer = new FormControl('', [Validators.required, CustomValidators.digits]);
-    const numeric = new FormControl('', [Validators.required, CustomValidators.number]);
-    const greater = new FormControl('', [Validators.required, CustomValidators.gt(50)]);
-    const less = new FormControl('', [Validators.required, CustomValidators.lt(50)]);
+    const integer = new FormControl("", [
+      Validators.required,
+      CustomValidators.digits
+    ]);
+    const numeric = new FormControl("", [
+      Validators.required,
+      CustomValidators.number
+    ]);
+    const greater = new FormControl("", [
+      Validators.required,
+      CustomValidators.gt(50)
+    ]);
+    const less = new FormControl("", [
+      Validators.required,
+      CustomValidators.lt(50)
+    ]);
 
     this.mynumberForm = new FormGroup({
       integer: integer,
@@ -49,30 +63,28 @@ export class FormValidationComponent implements OnInit {
     /*number validation end*/
 
     /*Tooltip Validation Start*/
-    const usernameP = new FormControl('', [Validators.required]);
-    const EmailP = new FormControl('', [Validators.required, Validators.email]);
+    const usernameP = new FormControl("", [Validators.required]);
+    const EmailP = new FormControl("", [Validators.required, Validators.email]);
     this.mytooltipForm = new FormGroup({
       usernameP: usernameP,
-      EmailP: EmailP,
+      EmailP: EmailP
     });
     /*Tooltip Validation End*/
 
     /* component form */
-    const area = new FormControl('', [Validators.required]);
-    const job = new FormControl('', [Validators.required]);
+    const area = new FormControl("", [Validators.required]);
+    const job = new FormControl("", [Validators.required]);
     this.checkdropForm = new FormGroup({
       area: area,
-      job: job,
+      job: job
     });
     /* end component form */
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   onSubmit() {
     this.submitted = true;
     console.log(this.myForm);
   }
-
 }
