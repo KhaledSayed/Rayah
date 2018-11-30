@@ -1,0 +1,153 @@
+<div class="page-body">
+  <div class="row">
+    <div class="col-sm-12">
+      <!-- Basic Inputs Validation start -->
+      <app-card
+        [title]="'Basic Inputs Validation'"
+        [headerContent]="
+          'Lorem ipsum dolor sit amet, consectetur adipisicing elit'
+        "
+        [cardOptionBlock]="true"
+      >
+        <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Parent</label>
+            <div class="col-sm-10">
+              <div class="form-group">
+                <select formControlName="type" class="form-control" id="sel1">
+                  <option value="Fixed">Fixed</option>
+                  <option value="Percentage">Percentage</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Value</label>
+            <div class="col-sm-10">
+              <div class="form-group">
+                <input
+                  class="form-control"
+                  name="value"
+                  formControlName="value"
+                  number
+                  placeholder="value"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Code</label>
+            <div class="col-sm-10">
+              <div class="form-group">
+                <input
+                  class="form-control"
+                  name="code"
+                  formControlName="code"
+                  number
+                  placeholder="Code"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Number Of People</label>
+            <div class="col-sm-10">
+              <div class="form-group">
+                <input
+                  class="form-control"
+                  name="numberOfPeople"
+                  formControlName="numberOfPeople"
+                  number
+                  placeholder="Number Of People"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-12 col-lg-6">
+            <div class="form-group row">
+              <h4 class="sub-title">Range Picker</h4>
+              <div class="scrollmenu">
+                <ngb-datepicker
+                  #dp
+                  [ngModelOptions]="{ standalone: true }"
+                  ngModel
+                  (ngModelChange)="onDateChange($event)"
+                  [displayMonths]="2"
+                  [dayTemplate]="t"
+                >
+                </ngb-datepicker>
+
+                <ng-template #t let-date="date" let-focused="focused">
+                  <span
+                    class="custom-range"
+                    [class.focused]="focused"
+                    [class.range]="
+                      isFrom(date) ||
+                      isTo(date) ||
+                      isInside(date) ||
+                      isHovered(date)
+                    "
+                    [class.faded]="isHovered(date) || isInside(date)"
+                    (mouseenter)="hoveredDate = date"
+                    (mouseleave)="hoveredDate = null"
+                  >
+                    {{ date.day }}
+                  </span>
+                </ng-template>
+              </div>
+              <pre class="m-t-20">
+    Selected Date Range: {{ parserFormatter.format(fromDate) }} to {{
+                  parserFormatter.format(toDate)
+                }}</pre
+              >
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Min</label>
+            <div class="col-sm-10">
+              <input
+                type="text"
+                class="form-control"
+                id="min"
+                placeholder="Text Input Validation"
+                formControlName="minTotal"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Max Total</label>
+            <div class="col-sm-10">
+              <input
+                type="text"
+                class="form-control"
+                id="max"
+                placeholder="Text Input Validation"
+                formControlName="maxTotal"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-2"></label>
+            <div class="col-sm-10">
+              <button
+                type="submit"
+                class="btn btn-primary m-b-0 ripple light"
+                [disabled]="!myForm.valid"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </form>
+      </app-card>
+      <!-- Basic Inputs Validation end -->
+    </div>
+  </div>
+</div>

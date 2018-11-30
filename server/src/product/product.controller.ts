@@ -243,7 +243,7 @@ export class ProductController {
   }
 
   @Delete(':id/gallery/:index')
-  @ApiOperation(GetOperationId(Product.modelName, 'DeleteGallery'))
+  @ApiOperation(GetOperationId(Product.modelName, 'DeleteGalleryp'))
   async deleteFromGallery(
     @Param('id') id,
     @Param('index') index,

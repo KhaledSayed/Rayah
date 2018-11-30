@@ -9,6 +9,11 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 import { ButtonModule } from "../ui-elements/basic/button/button.module";
 import { CreateComponent } from "./create/create.component";
+import { FileUploadModule } from "ng2-file-upload";
+import { ApiModule } from "src/app/api/api.module";
+import { ToastyModule } from "ng2-toasty";
+import { UpdateComponent } from './update/update.component';
+import { BrowseComponent } from './browse/browse.component';
 
 @NgModule({
   imports: [
@@ -19,9 +24,11 @@ import { CreateComponent } from "./create/create.component";
     HttpModule,
     DataTableModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FileUploadModule,
+    ToastyModule.forRoot()
   ],
-  declarations: [SimplePageComponent, CreateComponent],
+  declarations: [SimplePageComponent, CreateComponent, UpdateComponent, BrowseComponent],
   providers: [CategoryService]
 })
 export class SimplePageModule {}

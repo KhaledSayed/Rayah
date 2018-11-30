@@ -65,16 +65,16 @@ export class TodoController {
   }
 
   @Get()
-  // @ApiResponse({ status: HttpStatus.OK, type: TodoVm, isArray: true })
-  // @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ApiException })
-  // @ApiOperation(GetOperationId(Todo.modelName, 'Get'))
-  // @ApiImplicitQuery({
-  //   name: 'level',
-  //   isArray: true,
-  //   collectionFormat: 'multi',
-  //   required: false,
-  // })
-  // @ApiImplicitQuery({ name: 'isCompleted', required: false })
+  @ApiResponse({ status: HttpStatus.OK, type: TodoVm, isArray: true })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ApiException })
+  @ApiOperation(GetOperationId(Todo.modelName, 'Get'))
+  @ApiImplicitQuery({
+    name: 'level',
+    isArray: true,
+    collectionFormat: 'multi',
+    required: false,
+  })
+  @ApiImplicitQuery({ name: 'isCompleted', required: false })
   @Roles(UserRole.Admin, UserRole.User)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   async get(

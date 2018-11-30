@@ -51,8 +51,8 @@ export class CouponController {
     type: Number,
   })
   @ApiImplicitQuery({ name: 'perPage', required: true, type: Number })
-  @Roles(UserRole.Admin)
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  // @Roles(UserRole.Admin)
+  // @UseGuards(AuthGuard('jwt'), RolesGuard)
   async get(
     @Query('page', new ToInt()) page: number,
     @Query('perPage', new ToInt()) perPage: number,

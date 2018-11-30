@@ -12,14 +12,14 @@ export class BlankComponent implements OnInit {
   constructor(private readonly cateogryService: CategoryService) {}
 
   async ngOnInit() {
-    this.cateogryService
-      .CategoryGet({
-        perPage: 5,
-        page: 0
-      })
-      .subscribe(results => {
-        console.log(results);
-        this.categories = [...results];
-      });
+    // this.cateogryService
+    //   .CategoryGet({
+    //     perPage: 5,
+    //     page: 0
+    //   })
+    //   .subscribe(results => {
+    //     console.log(results);
+    //     this.categories = [...results];
+    //   });
   }
 }

@@ -12,7 +12,7 @@ import { MenuItems } from "./shared/menu-items/menu-items";
 import { BreadcrumbsComponent } from "./layout/admin/breadcrumbs/breadcrumbs.component";
 import { BlankComponent } from "./blank/blank.component";
 import { BlankModule } from "./blank/blank.module";
-import { CreateComponent } from "./src/app/theme/simple-page/create/create.component";
+import { ApiModule } from "./api/api.module";
 
 @NgModule({
   declarations: [
@@ -25,7 +25,8 @@ import { CreateComponent } from "./src/app/theme/simple-page/create/create.compo
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    SharedModule
+    SharedModule,
+    ApiModule
   ],
   schemas: [],
   providers: [MenuItems],

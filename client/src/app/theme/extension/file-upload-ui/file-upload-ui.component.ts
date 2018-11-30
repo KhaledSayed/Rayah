@@ -1,14 +1,16 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {FileUploader} from 'ng2-file-upload';
-const URL = 'https://evening-anchorage-3159.herokuapp.com/api/';
+import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
+import { FileUploader } from "ng2-file-upload";
+const URL = "https://evening-anchorage-3159.herokuapp.com/api/";
 
 @Component({
-  selector: 'app-file-upload-ui',
-  templateUrl: './file-upload-ui.component.html',
+  selector: "app-file-upload-ui",
+  templateUrl: "./file-upload-ui.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrls: ['./file-upload-ui.component.scss']
+  styleUrls: ["./file-upload-ui.component.scss"]
 })
 export class FileUploadUiComponent implements OnInit {
+  //  changeDetection: ChangeDetectionStrategy.OnPush,
+
   uploader: FileUploader = new FileUploader({
     url: URL,
     isHTML5: true
@@ -16,10 +18,9 @@ export class FileUploadUiComponent implements OnInit {
   hasBaseDropZoneOver = false;
   hasAnotherDropZoneOver = false;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   fileOverBase(e: any): void {
     this.hasBaseDropZoneOver = e;
@@ -28,5 +29,4 @@ export class FileUploadUiComponent implements OnInit {
   fileOverAnother(e: any): void {
     this.hasAnotherDropZoneOver = e;
   }
-
 }

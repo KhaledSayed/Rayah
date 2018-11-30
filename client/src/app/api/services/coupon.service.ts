@@ -184,7 +184,7 @@ class CouponService extends BaseService {
       })
     );
   }
-  getCouponsId(id): Observable<null> {
+  getCouponsId(id): Observable<CouponVm> {
     return this.getCouponsIdResponse(id).pipe(__map(_r => _r.body as null));
   }
 }

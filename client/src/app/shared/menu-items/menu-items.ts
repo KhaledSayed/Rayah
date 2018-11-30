@@ -818,6 +818,78 @@ const MENUITEMS = [
         target: true
       }
     ]
+  },
+  {
+    label: "Extension",
+    main: [
+      {
+        state: "simple-page",
+        short_label: "I",
+        name: "Category",
+        type: "sub",
+        icon: "feather icon-file-minus",
+        children: [
+          {
+            state: "browse",
+            name: "Browse",
+            type: "link"
+          },
+          {
+            state: "create",
+            name: "Create",
+            type: "link"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    label: "Extension",
+    main: [
+      {
+        state: "coupons",
+        short_label: "I",
+        name: "Coupon",
+        type: "sub",
+        icon: "feather icon-file-minus",
+        children: [
+          {
+            state: "browse",
+            name: "Browse",
+            type: "link"
+          },
+          {
+            state: "create",
+            name: "Create",
+            type: "link"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    label: "Extension",
+    main: [
+      {
+        state: "brands",
+        short_label: "I",
+        name: "Brands",
+        type: "sub",
+        icon: "feather icon-file-minus",
+        children: [
+          {
+            state: "browse",
+            name: "Browse",
+            type: "link"
+          },
+          {
+            state: "create",
+            name: "Create",
+            type: "link"
+          }
+        ]
+      }
+    ]
   }
 ];
 

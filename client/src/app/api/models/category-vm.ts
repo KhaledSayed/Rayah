@@ -5,6 +5,6 @@ export interface CategoryVm {
   id?: string;
   name: string;
   description?: string;
-  parent: string;
+  parent: CategoryVm;
   thumbnail: string;
 }

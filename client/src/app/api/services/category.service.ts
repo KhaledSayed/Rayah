@@ -22,6 +22,22 @@ class CategoryService extends BaseService {
     super(config, http);
   }
 
+  findOne(id): Observable<CategoryVm> | Observable<CategoryVm> {
+    return this.http.get<CategoryVm>(`${this.rootUrl}/categories/${id}`);
+  }
+
+  onTestMultipart(formData: FormData): Observable<Object> {
+    return this.http.post(this.rootUrl + "/categories", formData, {
+      observe: "response"
+    });
+  }
+
+  onPutTestMultipart(formData: FormData): Observable<Object> {
+    return this.http.put(this.rootUrl + "/categories", formData, {
+      observe: "response"
+    });
+  }
+
   /**
    * @param params The `CategoryService.CategoryGetParams` containing the following parameters:
    *
@@ -39,6 +55,10 @@ class CategoryService extends BaseService {
       __params = __params.set("perPage", params.perPage.toString());
     if (params.page != null)
       __params = __params.set("page", params.page.toString());
+
+    if (params.parent != null)
+      __params = __params.set("parent", params.parent.toString());
+
     let req = new HttpRequest<any>(
       "GET",
       this.rootUrl + `/categories`,
@@ -180,6 +200,7 @@ namespace CategoryService {
   export interface CategoryGetParams {
     perPage: number;
     page: number;
+    parent: string;
   }
 }
 

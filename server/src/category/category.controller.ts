@@ -22,6 +22,7 @@ import {
   ApiResponse,
   ApiOperation,
   ApiImplicitQuery,
+  ApiImplicitParam,
 } from '@nestjs/swagger';
 import { Category } from './models/category.model';
 import { CategoryVm } from './models/view-models/category-vm.model';
@@ -41,6 +42,29 @@ import { Types } from 'mongoose';
 @ApiBearerAuth()
 export class CategoryController {
   constructor(private readonly _categoryService: CategoryService) {}
+
+  @Get(':id')
+  @ApiResponse({ status: HttpStatus.OK, type: CategoryVm, isArray: false })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ApiException })
+  @ApiOperation(GetOperationId(Category.modelName, 'Get'))
+  @ApiImplicitParam({
+    name: 'id',
+    required: true,
+    type: String,
+  })
+  async getOne(@Param('id') id): Promise<CategoryVm> {
+    // console.log(parent);
+
+    let parentQuery = {};
+
+    const category = await this._categoryService.findById(id, ['parent']);
+
+    if (!category) {
+      throw new HttpException('Resource not found', HttpStatus.NOT_FOUND);
+    }
+
+    return this._categoryService.map<CategoryVm>(category.toJSON());
+  }
 
   @Get()
   @ApiResponse({ status: HttpStatus.OK, type: CategoryVm, isArray: true })
@@ -63,8 +87,6 @@ export class CategoryController {
     @Query('perPage', new ToInt()) perPage: number,
     @Query('parent') parent: string,
   ): Promise<CategoryVm[]> {
-    console.log(parent);
-
     let parentQuery = {};
 
     if (parent && parent !== null) {
@@ -78,13 +100,13 @@ export class CategoryController {
     }
 
     const categories = await this._categoryService.findAll(
-      { parent: Types.ObjectId(parent) },
+      parentQuery,
       ['parent'],
       page,
       perPage,
     );
 
-    console.log(categories);
+    // console.log(categories);
     return this._categoryService.map<CategoryVm[]>(
       map(categories, category => category.toJSON()),
       true,
@@ -98,7 +120,8 @@ export class CategoryController {
     @UploadedFile() thumbnail,
     @Body() categoryParams: CategoryParams,
   ): Promise<CategoryVm> {
-    const { name } = categoryParams;
+    console.log(categoryParams);
+    const { name, description } = categoryParams;
 
     if (!thumbnail) {
       throw new HttpException(
@@ -130,9 +153,11 @@ export class CategoryController {
   @UseInterceptors(FileInterceptor('thumbnail'))
   @ApiOperation(GetOperationId(Category.modelName, 'Put'))
   async put(
-    @UploadedFile('thumbnail') thumbnail,
+    @UploadedFile() thumbnail,
     @Body() categoryParams: CategoryParams,
   ): Promise<CategoryVm> {
+    console.log(thumbnail);
+
     const { id, parent } = categoryParams;
 
     if (!id) {
@@ -160,10 +185,11 @@ export class CategoryController {
           HttpStatus.NOT_ACCEPTABLE,
         );
       }
-      currentCategory.parent = parent;
+      currentCategory.parent = Types.ObjectId(parent);
     }
 
     if (thumbnail && thumbnail.path) {
+      console.log('Update Patttttth');
       currentCategory.thumbnail = thumbnail.path;
     }
 

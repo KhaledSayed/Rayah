@@ -29,6 +29,9 @@ export class CategoryService extends BaseService<Category> {
       categoryParams.parent && categoryParams.parent != null
         ? Types.ObjectId(categoryParams.parent)
         : null;
+    newCategory.description = categoryParams.description;
+
+    console.log('onCreateCategory() Fired');
 
     try {
       const result = await this.create(newCategory);

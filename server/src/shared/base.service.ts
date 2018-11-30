@@ -30,8 +30,6 @@ export abstract class BaseService<T extends Typegoose> {
     page: number = 0,
     perPage: number = 10,
   ): Promise<InstanceType<T>[]> {
-    console.log(filter);
-
     let query = this._model.find(filter).sort('-createdAt');
 
     populate.forEach(item => {
@@ -58,7 +56,7 @@ export abstract class BaseService<T extends Typegoose> {
       query = query.populate(element);
     });
 
-    return query.exec();
+    return await query.exec();
   }
 
   async create(item: InstanceType<T>): Promise<InstanceType<T>> {

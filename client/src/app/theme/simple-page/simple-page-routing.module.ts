@@ -2,6 +2,8 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { SimplePageComponent } from "./simple-page.component";
 import { CreateComponent } from "./create/create.component";
+import { UpdateComponent } from "./update/update.component";
+import { BrowseComponent } from "./browse/browse.component";
 
 const routes: Routes = [
   {
@@ -13,18 +15,47 @@ const routes: Routes = [
       caption:
         "lorem ipsum dolor sit amet, consectetur adipisicing elit - sample page",
       status: true
-    }
-  },
-  {
-    path: "create",
-    component: CreateComponent,
-    data: {
-      title: "Create",
-      icon: "icon-layout-sidebar-left",
-      caption:
-        "lorem ipsum dolor sit amet, consectetur adipisicing elit - sample page",
-      status: true
-    }
+    },
+    children: [
+      {
+        path: "",
+        redirectTo: "/simple-page/browse",
+        pathMatch: "full"
+      },
+      {
+        path: "browse",
+        component: BrowseComponent,
+        data: {
+          title: "Browse",
+          icon: "icon-layout-sidebar-left",
+          caption:
+            "lorem ipsum dolor sit amet, consectetur adipisicing elit - sample page",
+          status: true
+        }
+      },
+      {
+        path: "create",
+        component: CreateComponent,
+        data: {
+          title: "Create",
+          icon: "icon-layout-sidebar-left",
+          caption:
+            "lorem ipsum dolor sit amet, consectetur adipisicing elit - sample page",
+          status: true
+        }
+      },
+      {
+        path: "update/:id",
+        component: UpdateComponent,
+        data: {
+          title: "Update Category",
+          icon: "icon-layout-sidebar-left",
+          caption:
+            "lorem ipsum dolor sit amet, consectetur adipisicing elit - sample page",
+          status: true
+        }
+      }
+    ]
   }
 ];
 

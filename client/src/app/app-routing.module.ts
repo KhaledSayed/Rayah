@@ -96,7 +96,27 @@ const routes: Routes = [
       },
       {
         path: "simple-page",
-        loadChildren: "./theme/simple-page/simple-page.module#SimplePageModule"
+        loadChildren: "./pages/category/category.module#CategoryModule"
+      },
+      {
+        path: "coupons",
+        loadChildren: "./pages/coupon/coupon.module#CouponModule"
+      },
+      {
+        path: "products",
+        loadChildren: "./pages/product/product.module#ProductModule"
+      },
+      {
+        path: "sliders",
+        loadChildren: "./pages/slider/slider.module#SliderModule"
+      },
+      {
+        path: "users",
+        loadChildren: "./pages/user/user.module#UserModule"
+      },
+      {
+        path: "brands",
+        loadChildren: "./pages/brand/brand.module#BrandModule"
       }
     ]
   },
