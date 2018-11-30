@@ -47,8 +47,8 @@ export class BrandController {
   constructor(private readonly _brandService: BrandService) {}
 
   @Post()
-  @Roles(UserRole.Admin)
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  // @Roles(UserRole.Admin)
+  // @UseGuards(AuthGuard('jwt'), RolesGuard)
   @ApiResponse({ status: HttpStatus.CREATED, type: BrandVm })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ApiException })
   @ApiOperation(GetOperationId(Brand.modelName, 'Create'))
@@ -83,12 +83,31 @@ export class BrandController {
     return brand;
   }
 
+  @Get(':id')
+  @ApiResponse({ status: HttpStatus.OK, type: BrandVm, isArray: true })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ApiException })
+  @ApiOperation(GetOperationId(Brand.modelName, 'Get'))
+  // @Roles(UserRole.Admin, UserRole.User)
+  // @UseGuards(AuthGuard('jwt'), RolesGuard)
+  async getOne(@Param('id') id): Promise<BrandVm> {
+    try {
+      const brand = await this._brandService.findById(id);
+
+      if (!brand) {
+        throw new HttpException('Resource Not Found', HttpStatus.NOT_FOUND);
+      }
+      return this._brandService.map<BrandVm>(brand.toJSON());
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
   @Get()
   @ApiResponse({ status: HttpStatus.OK, type: BrandVm, isArray: true })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ApiException })
   @ApiOperation(GetOperationId(Brand.modelName, 'Get'))
-  @Roles(UserRole.Admin, UserRole.User)
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  // @Roles(UserRole.Admin, UserRole.User)
+  // @UseGuards(AuthGuard('jwt'), RolesGuard)
   async get(): Promise<BrandVm[]> {
     try {
       const brands = await this._brandService.findAll();
@@ -103,8 +122,8 @@ export class BrandController {
   }
 
   @Put()
-  @Roles(UserRole.Admin)
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  // @Roles(UserRole.Admin)
+  // @UseGuards(AuthGuard('jwt'), RolesGuard)
   @ApiResponse({ status: HttpStatus.OK, type: BrandVm, isArray: false })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ApiException })
   @ApiResponse({ status: HttpStatus.NOT_FOUND, type: ApiException })
@@ -156,9 +175,9 @@ export class BrandController {
   @ApiResponse({ status: HttpStatus.OK, type: BrandVm, isArray: false })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ApiException })
   @ApiOperation(GetOperationId(Brand.modelName, 'Delete'))
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  // @UseGuards(AuthGuard('jwt'), RolesGuard)
   @ApiImplicitParam({ name: 'id' })
-  @Roles(UserRole.Admin)
+  // @Roles(UserRole.Admin)
   async delete(@Param('id') id): Promise<BrandVm> {
     const existBrand = await this._brandService.findById(id);
 

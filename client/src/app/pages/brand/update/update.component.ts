@@ -2,10 +2,10 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { HttpResponse } from "@angular/common/http";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { CategoryVm } from "src/app/api/models";
+import { CategoryVm, CouponVm, BrandVm } from "src/app/api/models";
 import { Observable } from "rxjs";
 import { FileUploader } from "ng2-file-upload";
-import { CategoryService } from "src/app/api/services";
+import { CategoryService, BrandService } from "src/app/api/services";
 
 const URL = "";
 @Component({
@@ -29,29 +29,28 @@ export class UpdateComponent implements OnInit {
   });
   selectedImage: any = "";
   idParam: any;
-  currentCategory: CategoryVm;
+  currentBrand: BrandVm;
 
   constructor(
     private readonly categoryService: CategoryService,
     private readonly router: Router,
-    private readonly activatedRouter: ActivatedRoute
+    private readonly activatedRouter: ActivatedRoute,
+    private readonly brandService: BrandService
   ) {
     const name = new FormControl("", Validators.required);
     const description = new FormControl("");
     const parent = new FormControl("");
-    const thumbnail = new FormControl("");
+    const banner = new FormControl("");
     // const rpassword = new FormControl("", [
     //   Validators.required,
     //   CustomValidators.equalTo(password)
     // ]);
     this.myForm = new FormGroup({
       name: name,
-      parent: parent,
-      description: description,
-      thumbnail: thumbnail
+      banner: banner
     });
 
-    this.loadCategories();
+    // this.loadCategories();
 
     /*Basic validation end*/
   }
@@ -70,16 +69,12 @@ export class UpdateComponent implements OnInit {
     });
   }
 
-  loadCategory(id) {
-    this.categoryService.findOne(id).subscribe(
+  loadBrand(id) {
+    this.brandService.findOne(id).subscribe(
       results => {
-        console.log(results.parent);
-        this.currentCategory = results;
+        this.currentBrand = results;
         this.myForm.controls["name"].setValue(results.name);
-        this.myForm.controls["parent"].setValue(results.parent.id);
-        this.myForm.controls["description"].setValue(results.description);
-        this.selectedItem = results.parent;
-        this.selectedImage = `http://localhost:8080/${results.thumbnail}`;
+        this.selectedImage = `http://localhost:8080/${results.logo}`;
         console.log(this.selectedItem);
       },
       err => {
@@ -96,24 +91,21 @@ export class UpdateComponent implements OnInit {
     const uploadData = new FormData();
 
     console.log("Selected Image", this.selectedImage);
-    console.log("http://localhost:8080/" + this.currentCategory.thumbnail);
+    console.log("http://localhost:8080/" + this.currentBrand.logo);
     if (
-      this.selectedImage !==
-      `http://localhost:8080/${this.currentCategory.thumbnail}`
+      this.selectedImage !== `http://localhost:8080/${this.currentBrand.logo}`
     ) {
       console.log("Selected Image True");
 
-      uploadData.append("thumbnail", this.selectedFile, this.selectedFile.name);
+      uploadData.append("banner", this.selectedFile, this.selectedFile.name);
     } else {
       console.log("Selected Image False");
     }
 
-    uploadData.append("parent", this.myForm.controls.parent.value);
+    uploadData.append("id", this.currentBrand.id);
     uploadData.append("name", this.myForm.controls.name.value);
-    uploadData.append("description", this.myForm.controls.description.value);
-    uploadData.append("id", this.currentCategory.id);
 
-    this.categoryService
+    this.brandService
       .onPutTestMultipart(uploadData)
       .subscribe((res: HttpResponse<any>) => {
         console.log("===========");
@@ -123,7 +115,7 @@ export class UpdateComponent implements OnInit {
         if (res.status && res.status === 200) {
           console.log("Redirect to Next Page");
           const post = true;
-          this.router.navigate(["simple-page", "browse"], {
+          this.router.navigate(["brands", "browse"], {
             queryParams: { update: "true" }
           });
         }
@@ -151,7 +143,7 @@ export class UpdateComponent implements OnInit {
 
       this.idParam = id;
 
-      this.loadCategory(this.idParam);
+      this.loadBrand(this.idParam);
     });
   }
 }

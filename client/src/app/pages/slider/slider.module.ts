@@ -37,4 +37,4 @@ import { SliderComponent } from "./slider.component";
   ],
   providers: [CategoryService]
 })
-export class SimplePageModule {}
+export class SliderModule {}
