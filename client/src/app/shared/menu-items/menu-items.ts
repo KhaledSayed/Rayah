@@ -929,12 +929,12 @@ const MENUITEMS = [
             state: "browse",
             name: "Browse",
             type: "link"
+          },
+          {
+            state: "create",
+            name: "Create",
+            type: "link"
           }
-          // {
-          //   state: "create",
-          //   name: "Create",
-          //   type: "link"
-          // }
         ]
       }
     ]
