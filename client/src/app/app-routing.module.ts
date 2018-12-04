@@ -117,6 +117,14 @@ const routes: Routes = [
       {
         path: "brands",
         loadChildren: "./pages/brand/brand.module#BrandModule"
+      },
+      {
+        path: "products",
+        loadChildren: "./pages/product/product.module#ProductModule"
+      },
+      {
+        path: "orders",
+        loadChildren: "./pages/order/order.module#OrderModule"
       }
     ]
   },

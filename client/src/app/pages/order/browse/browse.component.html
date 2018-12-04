@@ -23,7 +23,7 @@
                 </label>
 
                 <a
-                  routerLink="/simple-page/create"
+                  routerLink="/orders/create"
                   id="create-btn"
                   class="btn btn-primary ripple light btn-round"
                 >
@@ -57,7 +57,10 @@
             >
               <thead>
                 <tr>
-                  <th><mfDefaultSorter by="name">Name</mfDefaultSorter></th>
+                  <th>
+                    <mfDefaultSorter by="id">Reference Number</mfDefaultSorter>
+                  </th>
+                  <th><mfDefaultSorter by="status">Status</mfDefaultSorter></th>
                   <th>
                     <mfDefaultSorter by="position">Actions</mfDefaultSorter>
                   </th>
@@ -66,30 +69,48 @@
               </thead>
               <tbody>
                 <tr *ngFor="let item of mf.data">
-                  <td>{{ item.name }}</td>
+                  <td>{{ item.id }}</td>
                   <td>
-                    <button
-                      type="button"
-                      class="btn btn-success ripple light"
-                      (click)="goToUpdate(item)"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-danger ripple light"
-                      (click)="delete(item)"
-                    >
-                      Delete
-                    </button>
+                    <div *ngIf="item.status === 'Created'" class="label-main">
+                      <label class="label label-info">{{ item.status }}</label>
+                    </div>
 
-                    <button type="button" class="btn btn-info ripple light">
-                      View Subcategories
-                    </button>
+                    <div
+                      *ngIf="item.status === 'Processing'"
+                      class="label-main"
+                    >
+                      <label class="label label-warning">{{
+                        item.status
+                      }}</label>
+                    </div>
 
-                    <button type="button" class="btn btn-inverse ripple light">
-                      View Products
-                    </button>
+                    <div *ngIf="item.status === 'Shipped'" class="label-main">
+                      <label class="label label-info">{{ item.status }}</label>
+                    </div>
+
+                    <div *ngIf="item.status === 'Canceled'" class="label-main">
+                      <label class="label label-default">{{
+                        item.status
+                      }}</label>
+                    </div>
+
+                    <div *ngIf="item.status === 'Refunded'" class="label-main">
+                      <label class="label label-danger">{{
+                        item.status
+                      }}</label>
+                    </div>
+                  </td>
+                  <td>
+                    <a (click)="goToUpdate(item)">
+                      <i
+                        class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green"
+                      ></i
+                    ></a>
+                    <a (click)="delete(item)">
+                      <i
+                        class="feather icon-trash-2 f-w-600 f-16 text-c-red"
+                      ></i
+                    ></a>
                   </td>
                 </tr>
               </tbody>

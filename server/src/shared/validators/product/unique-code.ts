@@ -29,6 +29,7 @@ export class IsProductUnique implements ValidatorConstraintInterface {
     try {
       const product = await this._productService.findOne({ code: value });
       // prints { _id: 59218f686409d670a97e53e0, name: 'JohnDoe', __v: 0 }
+      console.log('Code Product', product);
       return !product;
     } catch (e) {
       throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);

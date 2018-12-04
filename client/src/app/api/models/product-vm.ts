@@ -1,3 +1,5 @@
+import { CategoryVm } from "./category-vm";
+
 /* tslint:disable */
 export interface ProductVm {
   createdAt?: string;
@@ -8,4 +10,7 @@ export interface ProductVm {
   quantity: number;
   price: number;
   featured: boolean;
+  category: CategoryVm;
+  thumbnail: string;
+  gallery: string[];
 }

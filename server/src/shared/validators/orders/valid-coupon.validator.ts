@@ -33,7 +33,7 @@ export class CheckCouponValidity implements ValidatorConstraintInterface {
       return true;
     }
 
-    const coupon = await this._couponService.findById(value);
+    const coupon = await this._couponService.findOne({ code: value });
     console.log(coupon);
     return coupon.status;
   }

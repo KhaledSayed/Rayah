@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
-import { CategoryVm } from "src/app/api/models";
-import { CategoryService } from "src/app/api/services";
+import { CategoryVm, ProductVm } from "src/app/api/models";
+import { CategoryService, ProductService } from "src/app/api/services";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { ToastyService, ToastOptions, ToastData } from "ng2-toasty";
 import swal from "sweetalert2";
@@ -27,7 +27,7 @@ export class BrowseComponent implements OnInit {
   public currentPage = 0;
   public numberOfPages = 10;
   public myParam: any = "";
-  private categories: CategoryVm[];
+  private products: ProductVm[];
 
   //Notifications Optiona
   position = "top-right";
@@ -41,7 +41,8 @@ export class BrowseComponent implements OnInit {
     private readonly _categoryService: CategoryService,
     private readonly route: ActivatedRoute,
     private readonly toastyService: ToastyService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly productService: ProductService
   ) {}
 
   fireNotification(options) {
@@ -108,19 +109,19 @@ export class BrowseComponent implements OnInit {
         });
       }
     });
-    this.getCategories();
+    this.getProducts();
   }
 
-  getCategories() {
-    this._categoryService
-      .CategoryGet({
-        parent: null,
+  getProducts() {
+    this.productService
+      .ProductGet({
         perPage: 100,
-        page: this.currentPage
+        page: this.currentPage,
+        category: null
       })
       .subscribe(results => {
         console.log(results);
-        this.categories = [...results];
+        this.products = [...results];
         this.data = [...results];
       });
   }
@@ -141,11 +142,9 @@ export class BrowseComponent implements OnInit {
       if (result.value) {
         swal("Deleted!", "Your file has been deleted.", "success").then(
           result => {
-            this._categoryService
-              .CategoryDelete(category.id)
-              .subscribe(result => {
-                this.getCategories();
-              });
+            this.productService.ProductDelete(category.id).subscribe(result => {
+              this.getProducts();
+            });
 
             this.fireNotification({
               title: "Category Alert",
@@ -166,6 +165,6 @@ export class BrowseComponent implements OnInit {
 
   goToUpdate(category) {
     console.log(category);
-    this.router.navigate(["simple-page", "update", category.id]);
+    this.router.navigate(["products", "update", category.id]);
   }
 }

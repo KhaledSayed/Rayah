@@ -5,21 +5,51 @@ import {
   HttpStatus,
   HttpException,
   Request,
+  Get,
+  Query,
 } from '@nestjs/common';
 import { RegisterParams } from './models/view-models/register-vm.model';
 import { UserVM } from './models/view-models/user-vm.model';
-import { ApiUseTags, ApiResponse, ApiOperation } from '@nestjs/swagger';
+import {
+  ApiUseTags,
+  ApiResponse,
+  ApiOperation,
+  ApiImplicitQuery,
+} from '@nestjs/swagger';
 import { User } from './models/user.model';
 import { ApiException } from 'shared/api-exception.model';
 import { GetOperationId } from 'shared/utilities/get-operation-id';
 import { UserService } from './user.service';
 import { LoginVM } from './models/view-models/login-vm.model';
 import { LoginResponseVM } from './models/view-models/login-response-vm.model';
-
+import { ToInt } from 'shared/pipes/to-int.pipe';
+import { map } from 'lodash';
 @Controller('users')
 @ApiUseTags(User.modelName)
 export class UserController {
   constructor(private readonly _userService: UserService) {}
+
+  @Get()
+  @ApiResponse({ status: HttpStatus.CREATED, type: UserVM, isArray: true })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ApiException })
+  @ApiOperation(GetOperationId(User.modelName, 'List'))
+  @ApiImplicitQuery({
+    name: 'page',
+    required: true,
+    type: Number,
+  })
+  @ApiImplicitQuery({ name: 'perPage', required: true, type: Number })
+  async getUsers(
+    @Query('page', new ToInt()) page: number,
+    @Query('perPage', new ToInt()) perPage: number,
+  ): Promise<UserVM[]> {
+    const users = await this._userService.findAll({}, [], page, perPage);
+
+    return this._userService.map<UserVM[]>(
+      map(users, user => user.toJSON()),
+      true,
+    );
+  }
 
   @Post('register')
   @ApiResponse({ status: HttpStatus.CREATED, type: UserVM })

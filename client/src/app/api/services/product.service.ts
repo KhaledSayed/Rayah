@@ -23,6 +23,38 @@ class ProductService extends BaseService {
     super(config, http);
   }
 
+  findOne(id): Observable<ProductVm> | Observable<ProductVm> {
+    return this.http.get<ProductVm>(`${this.rootUrl}/products/${id}`);
+  }
+
+  onTestMultipart(formData: FormData): Observable<Object> {
+    return this.http.post(this.rootUrl + "/categories", formData, {
+      observe: "response"
+    });
+  }
+
+  onPutTestMultipart(formData: FormData, id): Observable<Object> {
+    console.log(this.rootUrl + "/products/" + id + "/thumbnail");
+    return this.http.put(
+      this.rootUrl + "/products/" + id + "/thumbnail",
+      formData,
+      {
+        observe: "response"
+      }
+    );
+  }
+
+  onPutTestMultipartGallery(formData: FormData, id): Observable<Object> {
+    console.log(this.rootUrl + "/products/" + id + "/gallery");
+    return this.http.put(
+      this.rootUrl + "/products/" + id + "/gallery",
+      formData,
+      {
+        observe: "response"
+      }
+    );
+  }
+
   /**
    * @param params The `ProductService.ProductGetParams` containing the following parameters:
    *
@@ -119,7 +151,7 @@ class ProductService extends BaseService {
   /**
    * @param ProductParams undefined
    */
-  postProducts(ProductParams: ProductParams): Observable<null> {
+  postProducts(ProductParams: ProductParams): Observable<ProductVm> {
     return this.postProductsResponse(ProductParams).pipe(
       __map(_r => _r.body as null)
     );

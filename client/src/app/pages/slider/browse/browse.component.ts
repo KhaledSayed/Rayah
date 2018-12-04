@@ -1,6 +1,10 @@
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
-import { CategoryVm } from "src/app/api/models";
-import { CategoryService } from "src/app/api/services";
+import { CategoryVm, CouponVm, BrandVm } from "src/app/api/models";
+import {
+  CategoryService,
+  CouponService,
+  BrandService
+} from "src/app/api/services";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { ToastyService, ToastOptions, ToastData } from "ng2-toasty";
 import swal from "sweetalert2";
@@ -27,7 +31,7 @@ export class BrowseComponent implements OnInit {
   public currentPage = 0;
   public numberOfPages = 10;
   public myParam: any = "";
-  private categories: CategoryVm[];
+  private brandsVm: BrandVm[];
 
   //Notifications Optiona
   position = "top-right";
@@ -39,6 +43,7 @@ export class BrowseComponent implements OnInit {
   //end Notification Options
   constructor(
     private readonly _categoryService: CategoryService,
+    private readonly _brandService: BrandService,
     private readonly route: ActivatedRoute,
     private readonly toastyService: ToastyService,
     private readonly router: Router
@@ -108,21 +113,16 @@ export class BrowseComponent implements OnInit {
         });
       }
     });
-    this.getCategories();
+    this.getCoupons();
   }
 
-  getCategories() {
-    this._categoryService
-      .CategoryGet({
-        parent: null,
-        perPage: 100,
-        page: this.currentPage
-      })
-      .subscribe(results => {
-        console.log(results);
-        this.categories = [...results];
-        this.data = [...results];
-      });
+  getCoupons() {
+    this.data = [];
+    this._brandService.BrandGet().subscribe(results => {
+      console.log(results);
+      this.brandsVm = [...results];
+      this.data = [...results];
+    });
   }
 
   delete(category) {
@@ -141,11 +141,10 @@ export class BrowseComponent implements OnInit {
       if (result.value) {
         swal("Deleted!", "Your file has been deleted.", "success").then(
           result => {
-            this._categoryService
-              .CategoryDelete(category.id)
-              .subscribe(result => {
-                this.getCategories();
-              });
+            this._brandService.BrandDelete(category.id).subscribe(result => {
+              console.log(result);
+              this.getCoupons();
+            });
 
             this.fireNotification({
               title: "Category Alert",
@@ -166,6 +165,6 @@ export class BrowseComponent implements OnInit {
 
   goToUpdate(category) {
     console.log(category);
-    this.router.navigate(["simple-page", "update", category.id]);
+    this.router.navigate(["brands", "update", category.id]);
   }
 }

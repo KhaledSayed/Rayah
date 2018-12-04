@@ -35,6 +35,7 @@ import {
   ApiResponse,
   ApiOperation,
   ApiImplicitQuery,
+  ApiImplicitParam,
 } from '@nestjs/swagger';
 import { Order } from './models/order.model';
 import { ApiException } from 'shared/api-exception.model';
@@ -43,6 +44,7 @@ import { ToInt } from 'shared/pipes/to-int.pipe';
 import { OrderLevel } from './models/order-level.enum';
 import { EnumToArray } from 'shared/utilities/enum-to-array';
 import { stat } from 'fs';
+import { UserService } from 'user/user.service';
 
 @Controller('orders')
 @ApiUseTags(Order.modelName)
@@ -54,7 +56,23 @@ export class OrderController {
     private readonly _productService: ProductService,
     @Inject(forwardRef(() => CouponService))
     private readonly _couponService: CouponService,
+    private readonly _userService: UserService,
   ) {}
+
+  @Get(':id')
+  @ApiImplicitParam({ name: 'id', type: String })
+  async getOne(@Param('id') id): Promise<OrderVm> {
+    const order = await this._orderService.findById(id, [
+      'basket.product',
+      'user',
+    ]);
+
+    if (!order) {
+      throw new HttpException('Resource Not Found', HttpStatus.NOT_FOUND);
+    }
+
+    return await this._orderService.map<OrderVm>(order.toJSON());
+  }
 
   @Get()
   @ApiResponse({ status: HttpStatus.OK, type: OrderVm, isArray: true })
@@ -71,27 +89,28 @@ export class OrderController {
     enum: EnumToArray(OrderLevel),
     isArray: true,
   })
-  @Roles(UserRole.Admin, UserRole.User)
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  // @Roles(UserRole.Admin, UserRole.User)
+  // @UseGuards(AuthGuard('jwt'), RolesGuard)
   async get(
     @Query('page', new ToInt()) page: number,
     @Query('perPage', new ToInt()) perPage: number,
     @Query('status') status: OrderLevel[],
     @Request() req,
   ) {
+    let currentTest = 'Admin';
     let statusQuery = [];
 
     status.forEach(item => {
       statusQuery.push({ status: item });
     });
 
-    if (req.user.role === UserRole.User) {
+    if (currentTest !== 'Admin') {
       const orders = await this._orderService.findAll(
         {
           $and: [{ user: Types.ObjectId(req.user._id) }],
           $or: [...statusQuery],
         },
-        ['basket.product'],
+        ['basket.product', 'user'],
         page,
         perPage,
       );
@@ -120,8 +139,8 @@ export class OrderController {
 
   @Post()
   @ApiOperation(GetOperationId(Order.modelName, 'Create'))
-  @Roles(UserRole.Admin, UserRole.User)
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  // @Roles(UserRole.Admin, UserRole.User)
+  // @UseGuards(AuthGuard('jwt'), RolesGuard)
   async post(
     @Body() orderParams: OrderParam,
     @Request() req,
@@ -153,12 +172,23 @@ export class OrderController {
     }
 
     try {
-      const order = await this._orderService.onCreateOrder(
-        updatedProducts,
-        coupon,
-        req.user,
-        orderParams,
-      );
+      let order = null;
+      if (req.user && req.user.type === UserRole.Admin) {
+        order = await this._orderService.onCreateOrder(
+          updatedProducts,
+          coupon,
+          req.user,
+          orderParams,
+        );
+      } else {
+        const user = await this._userService.findById(orderParams.user);
+        order = await this._orderService.onCreateOrder(
+          updatedProducts,
+          coupon,
+          user,
+          orderParams,
+        );
+      }
 
       return order;
     } catch (e) {
@@ -168,7 +198,10 @@ export class OrderController {
 
   @Put(':id')
   @ApiOperation(GetOperationId(Order.modelName, 'Update'))
-  async put(orderParams: OrderPutParams, @Param('id') id): Promise<OrderVm> {
+  async put(
+    @Body() orderParams: OrderPutParams,
+    @Param('id') id,
+  ): Promise<OrderVm> {
     const order = await this._orderService.findById(id, ['coupon']);
 
     if (!order) {
@@ -181,14 +214,20 @@ export class OrderController {
 
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
+      console.log('Step #1');
+
       const product = await this._productService.findById(item.id);
 
       product.quantity = product.quantity - item.quantity;
+      let updatedProduct;
 
-      const updatedProduct = await this._productService.update(
-        item.id,
-        product,
-      );
+      try {
+        updatedProduct = await this._productService.update(item.id, product);
+      } catch (e) {
+        console.log(e);
+        throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+      }
+
       updatedProducts.push({
         quantity: item.quantity,
         price: updatedProduct.price,
@@ -207,7 +246,6 @@ export class OrderController {
     } catch (e) {
       throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    return null;
   }
 
   @Delete(':id')

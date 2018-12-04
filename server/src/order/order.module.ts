@@ -9,6 +9,7 @@ import { Coupon } from 'coupon/models/coupon.model';
 import { CouponService } from 'coupon/coupon.service';
 import { ProductModule } from 'product/product.module';
 import { CouponModule } from 'coupon/coupon.module';
+import { User } from 'user/models/user.model';
 
 @Module({
   controllers: [OrderController],
@@ -26,6 +27,10 @@ import { CouponModule } from 'coupon/coupon.module';
       {
         name: Product.modelName,
         schema: Product.model.schema,
+      },
+      {
+        name: User.modelName,
+        schema: User.model.schema,
       },
     ]),
   ],

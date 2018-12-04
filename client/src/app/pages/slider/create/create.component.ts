@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { CustomValidators } from "ng2-validation";
 import { FileUploader } from "ng2-file-upload";
-import { CategoryService } from "src/app/api/services";
+import { CategoryService, BrandService } from "src/app/api/services";
 import { CategoryVm } from "src/app/api/models";
 import { Observable } from "rxjs";
 import { Router } from "@angular/router";
@@ -20,7 +20,6 @@ export class CreateComponent implements OnInit {
   submitted: boolean;
   selectedFile: File;
   selectedValue: string = "test";
-  categoryAr: CategoryVm[];
   loaded: boolean = false;
   courseObservable: Observable<CategoryVm[]>;
   selectedItem: CategoryVm = null;
@@ -31,59 +30,32 @@ export class CreateComponent implements OnInit {
   selectedImage: any = "";
 
   constructor(
-    private readonly categoryService: CategoryService,
+    private readonly _brandService: BrandService,
     private readonly router: Router
   ) {
     const name = new FormControl("", Validators.required);
-    const description = new FormControl("");
-    const parent = new FormControl("");
-    const thumbnail = new FormControl("", Validators.required);
+    const banner = new FormControl("", Validators.required);
     // const rpassword = new FormControl("", [
     //   Validators.required,
     //   CustomValidators.equalTo(password)
     // ]);
     this.myForm = new FormGroup({
       name: name,
-      parent: parent,
-      description: description,
-      thumbnail: thumbnail
+      banner: banner
     });
 
-    this.loadCategories();
     /*Basic validation end*/
-  }
-
-  loadCategories() {
-    this.categoryAr = [];
-
-    this.courseObservable = this.categoryService.CategoryGet({
-      perPage: 100,
-      page: 0,
-      parent: null
-    });
-
-    this.courseObservable.subscribe(results => {
-      this.selectedItem = results[0];
-      console.log(this.selectedItem);
-      this.categoryAr = [...results];
-    });
   }
 
   onSubmit() {
     this.submitted = true;
     // this.categoryService.CategoryCreate();
-    console.log(this.myForm);
-
-    console.log(this.myForm.controls.description.value);
-    console.log(this.myForm.controls.name.value);
 
     const uploadData = new FormData();
-    uploadData.append("thumbnail", this.selectedFile, this.selectedFile.name);
-    uploadData.append("parent", this.myForm.controls.parent.value);
+    uploadData.append("banner", this.selectedFile, this.selectedFile.name);
     uploadData.append("name", this.myForm.controls.name.value);
-    uploadData.append("description", this.myForm.controls.description.value);
 
-    this.categoryService
+    this._brandService
       .onTestMultipart(uploadData)
       .subscribe((res: HttpResponse<any>) => {
         console.log("===========");
@@ -93,11 +65,11 @@ export class CreateComponent implements OnInit {
         if (res.status && res.status === 201) {
           console.log("Redirect to Next Page");
           const post = true;
-          this.router.navigate(["simple-page", "browse"], {
+          this.router.navigate(["brands", "browse"], {
             queryParams: { post: "true" }
           });
 
-          this.loadCategories();
+          // this.loadCategories();
         }
       });
   }

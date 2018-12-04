@@ -61,6 +61,7 @@ export class ProductController {
   @ApiImplicitQuery({
     name: 'category',
     isArray: true,
+    required: false,
   })
   @ApiImplicitQuery({ name: 'minPrice', isArray: false, required: false })
   @ApiImplicitQuery({ name: 'maxPrice', isArray: false, required: false })
@@ -78,15 +79,18 @@ export class ProductController {
     let priceQuery = [];
     let featuredQuery = [];
     let categoriesQuery = [];
-    let categoriesArray = categories.split(',');
+    let categoriesArray = null;
 
-    console.log(categoriesArray);
+    if (categories !== undefined) {
+      categoriesArray = categories.split(',');
+      console.log(categoriesArray);
 
-    categoriesArray.forEach(item => {
-      categoriesQuery.push({
-        category: Types.ObjectId(item),
+      categoriesArray.forEach(item => {
+        categoriesQuery.push({
+          category: Types.ObjectId(item),
+        });
       });
-    });
+    }
 
     if (minPrice) {
       priceQuery.push({
@@ -104,13 +108,20 @@ export class ProductController {
       featuredQuery.push({ featured: featured });
     }
 
-    console.log({
-      $and: [{ $or: [...categoriesQuery] }, ...priceQuery, ...featuredQuery],
-    });
-    const products = await this._prodcutService.findAll(
-      {
+    let productQuery = {};
+
+    if (categoriesQuery.length != 0) {
+      productQuery = {
         $and: [{ $or: [...categoriesQuery] }, ...priceQuery, ...featuredQuery],
-      },
+      };
+    }
+
+    if (productQuery['$and'] && productQuery['$and'].length == 0) {
+      productQuery = {};
+    }
+
+    const products = await this._prodcutService.findAll(
+      productQuery,
       ['coupon', 'category'],
       page,
       perPage,
@@ -125,7 +136,7 @@ export class ProductController {
   @Get(':id')
   @ApiOperation(GetOperationId(Product.modelName, 'GetOne'))
   async findOne(@Param('id') id): Promise<ProductVm> {
-    const product = await this._prodcutService.findById(id);
+    const product = await this._prodcutService.findById(id, ['category']);
 
     if (!product) {
       throw new HttpException('Resource Not Found', HttpStatus.NOT_FOUND);
@@ -197,10 +208,10 @@ export class ProductController {
 
   @Put(':id/gallery')
   @ApiOperation(GetOperationId(Product.modelName, 'Create Gallery'))
-  @UseInterceptors(FilesInterceptor('gallery'))
+  @UseInterceptors(FilesInterceptor('gallery[]'))
   async postGallery(@Param('id') id, @UploadedFiles() gallery) {
     console.log(id);
-    // console.log(gallery);
+    console.log('Gallery:', gallery);
     if (!gallery) {
       throw new HttpException('Gallery is Required', HttpStatus.BAD_REQUEST);
     }

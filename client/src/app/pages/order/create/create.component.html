@@ -10,225 +10,116 @@
         [cardOptionBlock]="true"
       >
         <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+          <div
+            formArrayName="items"
+            *ngFor="let item of myForm.get('items').controls; let i = index"
+          >
+            <div class="form-group row" [formGroupName]="i">
+              <label class="col-sm-2 col-form-label">Product {{ i }}</label>
+
+              <ng-select
+                formControlName="product"
+                [items]="products"
+                bindLabel="name"
+                bindValue="id"
+                class="col-sm-4"
+                (change)="changeProduct(i)"
+                [clearable]="false"
+              ></ng-select>
+
+              <label class="col-sm-2 col-form-label">Quantity</label>
+              <div class="col-sm-2">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="quantity"
+                  placeholder="Quantity"
+                  formControlName="quantity"
+                  number
+                  min="1"
+                  (change)="onQuantityChange(i)"
+                />
+              </div>
+
+              <a class="btn btn-success  light" (click)="addItem()">+</a>
+
+              <a
+                *ngIf="myForm.controls.items.controls.length > 1"
+                class="btn btn-danger light"
+                (click)="removeItem(i)"
+                >-</a
+              >
+            </div>
+          </div>
+
           <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Simple Input</label>
+            <label class="col-sm-2 col-form-label">Total Price</label>
             <div class="col-sm-10">
               <input
                 type="text"
                 class="form-control"
-                id="name"
-                placeholder="Text Input Validation"
-                formControlName="name"
+                id="total"
+                placeholder="Total Price"
+                formControlName="total"
               />
-              <div
-                class="messages text-danger"
-                *ngIf="myForm.controls.name.errors?.required"
-              >
-                Name can't be blank
-              </div>
             </div>
           </div>
 
           <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Simple Input</label>
+            <label class="col-sm-2 col-form-label">User</label>
+
+            <ng-select
+              [items]="userObservable | async"
+              formControlName="user"
+              class="col-sm-4"
+              bindLabel="email"
+              bindValue="id"
+              [clearable]="false"
+            >
+            </ng-select>
+          </div>
+
+          <!--
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label">Promo Code</label>
+              <div class="col-sm-10">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="code"
+                  placeholder="Promo Code"
+                  formControlName="code"
+                />
+              </div>
+            </div>
+          -->
+
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Shipping Address</label>
             <div class="col-sm-10">
               <textarea
                 rows="5"
                 class="form-control"
-                id="description"
-                placeholder="Text Input Validation"
-                formControlName="description"
+                id="address"
+                placeholder="if the user have any note ?"
+                formControlName="address"
               ></textarea>
-              <div
-                class="messages text-danger"
-                *ngIf="myForm.controls.description.errors?.required"
-              >
-                Name can't be blank
-              </div>
             </div>
           </div>
 
           <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Parent</label>
+            <label class="col-sm-2 col-form-label">Note</label>
             <div class="col-sm-10">
-              <!--
-                <div *ngIf="!(loaded$ | async)"><h2>loading ...</h2></div>
-              -->
-
-              <!--
-                <div *ngIf="(courseObservable | async); else: loading">
-                  <p>Condition is true ...</p>
-                </div>
-                <ng-template #loading>
-                  <p>Condition is false ...</p>
-                </ng-template>
-              -->
-
-              <div *ngIf="(courseObservable | async); else: loading">
-                <div class="form-group">
-                  <select
-                    formControlName="parent"
-                    class="form-control"
-                    id="sel1"
-                  >
-                    <option
-                      *ngFor="let category of categoryAr"
-                      [ngValue]="category.id"
-                      [attr.selected]="selectedItem"
-                      [selected]="category"
-                      >{{ category.name }}</option
-                    >
-                  </select>
-                </div>
-              </div>
+              <textarea
+                rows="5"
+                class="form-control"
+                id="note"
+                placeholder="if the user have any note ?"
+                formControlName="note"
+              ></textarea>
             </div>
           </div>
 
-          <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Parent</label>
-            <div class="col-sm-10">
-              <label class="custom-file">
-                <input
-                  type="file"
-                  (change)="onFileChanged($event)"
-                  class="custom-file-input"
-                  formControlName="thumbnail"
-                  value="Choose MoMo"
-                  accept="image/png,image/jpg,image/gif"
-                />
-                <span class="custom-file-control"></span>
-              </label>
-            </div>
-
-            <div class="col-sm-2">
-              <img
-                style="margin:8px"
-                [src]="selectedImage"
-                *ngIf="selectedImage"
-                height="200"
-              />
-            </div>
-
-            <!-- Start Uploading Area -->
-            <!--
-              <div class="col-md-9">
-                <div class="sub-title">Upload Queue</div>
-                <p>Queue length: {{ uploader?.queue?.length }}</p>
-                <div class="table-responsive">
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th width="50%">Name</th>
-                        <th>Size</th>
-                        <th>Progress</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let item of uploader.queue">
-                        <td>
-                          <strong>{{ item?.file?.name }}</strong>
-                        </td>
-                        <td *ngIf="uploader.isHTML5" nowrap>
-                          {{ item?.file?.size / 1024 / 1024 | number: ".2" }} MB
-                        </td>
-                        <td *ngIf="uploader.isHTML5">
-                          <div class="progress" style="margin-bottom: 0;">
-                            <div
-                              class="progress-bar"
-                              role="progressbar"
-                              [ngStyle]="{ width: item.progress + '%' }"
-                            ></div>
-                          </div>
-                        </td>
-                        <td class="text-center">
-                          <span *ngIf="item.isSuccess"
-                            ><i class="fa fa-check"></i
-                          ></span>
-                          <span *ngIf="item.isCancel"
-                            ><i class="fa fa-ban"></i
-                          ></span>
-                          <span *ngIf="item.isError"
-                            ><i class="fa fa-times"></i
-                          ></span>
-                        </td>
-                        <td nowrap>
-                          <button
-                            type="button"
-                            class="btn btn-success btn-sm ripple light"
-                            (click)="item.upload()"
-                            [disabled]="
-                              item.isReady || item.isUploading || item.isSuccess
-                            "
-                          >
-                            <span class="fa fa-upload"></span> Upload
-                          </button>
-                          <button
-                            type="button"
-                            class="btn btn-warning btn-sm ripple light"
-                            (click)="item.cancel()"
-                            [disabled]="!item.isUploading"
-                          >
-                            <span class="fa fa-ban"></span> Cancel
-                          </button>
-                          <button
-                            type="button"
-                            class="btn btn-danger btn-sm ripple light"
-                            (click)="item.remove()"
-                          >
-                            <span class="fa fa-trash"></span> Remove
-                          </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td colspan="5" class="text-center">
-                          <span>Your Uploaded Files</span>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                <div>
-                  <div class="sub-title">Queue progress</div>
-                  <p>
-                    <ngb-progressbar
-                      type="primary"
-                      [value]="uploader.progress"
-                    ></ngb-progressbar>
-                  </p>
-
-                  <div class="sub-title">Common Action</div>
-                  <button
-                    type="button"
-                    class="btn btn-success ripple light m-b-5"
-                    (click)="uploader.uploadAll()"
-                    [disabled]="!uploader.getNotUploadedItems().length"
-                  >
-                    <span class="fa fa-upload"></span> Upload all
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-warning ripple light m-b-5"
-                    (click)="uploader.cancelAll()"
-                    [disabled]="!uploader.isUploading"
-                  >
-                    <span class="fa fa-ban"></span> Cancel all
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-danger ripple light m-b-5"
-                    (click)="uploader.clearQueue()"
-                    [disabled]="!uploader.queue.length"
-                  >
-                    <span class="fa fa-trash"></span> Remove all
-                  </button>
-                </div>
-              </div>
-            -->
-            <!-- End Uploading Area -->
-          </div>
           <div class="form-group row">
             <label class="col-sm-2"></label>
             <div class="col-sm-10">

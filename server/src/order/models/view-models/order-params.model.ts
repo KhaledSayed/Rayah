@@ -31,7 +31,7 @@ class OrderedProduct {
   @IsDefined()
   @IsPositive()
   @IsNumber()
-  @IsApplicable('id')
+  // @IsApplicable('id')
   @ApiModelProperty()
   quantity: number;
 }
@@ -53,4 +53,8 @@ export class OrderParam extends BaseModelVm {
   address: string;
 
   status: OrderLevel;
+
+  user: string;
+
+  note: string;
 }

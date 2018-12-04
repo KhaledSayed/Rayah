@@ -17,12 +17,13 @@ File: style.css
 ============= */
 // General theme contents
 
-@import '~bootstrap/scss/bootstrap';
+@import "~bootstrap/scss/bootstrap";
 
 @import "partials/variables";
 @import "partials/mixins";
 @import "partials/general";
 @import "partials/generic";
+@import "~@ng-select/ng-select/themes/material.theme.css";
 
 // Menu
 @import "partials/menu/menu";

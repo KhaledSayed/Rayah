@@ -3,4 +3,5 @@ export enum OrderLevel {
   Processing = 'Processing',
   Shipped = 'Shipped',
   Canceled = 'Canceled',
+  Refunded = 'Refunded',
 }

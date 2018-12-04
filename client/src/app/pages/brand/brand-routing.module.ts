@@ -3,12 +3,12 @@ import { RouterModule, Routes } from "@angular/router";
 import { CreateComponent } from "./create/create.component";
 import { UpdateComponent } from "./update/update.component";
 import { BrowseComponent } from "./browse/browse.component";
-import { SliderComponent } from "./brand.component";
+import { BrandComponent } from "./brand.component";
 
 const routes: Routes = [
   {
     path: "",
-    component: SliderComponent,
+    component: BrandComponent,
     data: {
       title: "Category",
       icon: "icon-layout-sidebar-left",

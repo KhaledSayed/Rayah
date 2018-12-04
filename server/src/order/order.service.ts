@@ -37,6 +37,7 @@ export class OrderService extends BaseService<Order> {
     total = NoviceHelper.applyCoupon(total, coupon);
 
     order.total = total;
+    order.note = orderParams.note;
 
     products.forEach(item => {
       order.basket.push({
@@ -60,6 +61,7 @@ export class OrderService extends BaseService<Order> {
 
       return await this.map<OrderVm>(newOrder.toJSON());
     } catch (e) {
+      console.log('Order Error:' + e);
       throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
@@ -73,7 +75,7 @@ export class OrderService extends BaseService<Order> {
     total = NoviceHelper.applyCoupon(total, order.coupon);
 
     order.total = total;
-
+    order.note = orderParams.note;
     products.forEach(item => {
       order.basket.push({
         quantity: item.quantity,

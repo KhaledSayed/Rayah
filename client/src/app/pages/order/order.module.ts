@@ -1,7 +1,13 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { SharedModule } from "../../shared/shared.module";
-import { CategoryService } from "../../api/services";
+import {
+  CategoryService,
+  OrderService,
+  ProductService,
+  UserService,
+  CouponService
+} from "../../api/services";
 import { DataTableModule } from "angular2-datatable";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
@@ -14,6 +20,7 @@ import { BrowseComponent } from "./browse/browse.component";
 import { ButtonModule } from "src/app/theme/ui-elements/basic/button/button.module";
 import { OrderRoutingModule } from "./order-routing.module";
 import { OrderComponent } from "./order.component";
+import { NgSelectModule } from "@ng-select/ng-select";
 
 @NgModule({
   imports: [
@@ -27,7 +34,8 @@ import { OrderComponent } from "./order.component";
     ReactiveFormsModule,
     FileUploadModule,
     ToastyModule.forRoot(),
-    ButtonModule
+    ButtonModule,
+    NgSelectModule
   ],
   declarations: [
     OrderComponent,
@@ -35,6 +43,12 @@ import { OrderComponent } from "./order.component";
     UpdateComponent,
     BrowseComponent
   ],
-  providers: [CategoryService]
+  providers: [
+    CategoryService,
+    OrderService,
+    ProductService,
+    UserService,
+    CouponService
+  ]
 })
-export class SimplePageModule {}
+export class OrderModule {}

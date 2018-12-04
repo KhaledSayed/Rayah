@@ -23,7 +23,7 @@
                 </label>
 
                 <a
-                  routerLink="/simple-page/create"
+                  routerLink="/products/create"
                   id="create-btn"
                   class="btn btn-primary ripple light btn-round"
                 >
@@ -58,6 +58,7 @@
               <thead>
                 <tr>
                   <th><mfDefaultSorter by="name">Name</mfDefaultSorter></th>
+                  <th>Thumbnail</th>
                   <th>
                     <mfDefaultSorter by="position">Actions</mfDefaultSorter>
                   </th>
@@ -67,6 +68,14 @@
               <tbody>
                 <tr *ngFor="let item of mf.data">
                   <td>{{ item.name }}</td>
+                  <td>
+                    <img
+                      height="75"
+                      src="http://localhost:8080/{{
+                      item.thumbnail
+                    }}"
+                    />
+                  </td>
                   <td>
                     <button
                       type="button"
@@ -81,14 +90,6 @@
                       (click)="delete(item)"
                     >
                       Delete
-                    </button>
-
-                    <button type="button" class="btn btn-info ripple light">
-                      View Subcategories
-                    </button>
-
-                    <button type="button" class="btn btn-inverse ripple light">
-                      View Products
                     </button>
                   </td>
                 </tr>

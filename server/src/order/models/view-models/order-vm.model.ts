@@ -5,13 +5,14 @@ import { OrderLevel } from '../order-level.enum';
 import { Product } from 'product/models/product.model';
 import { Coupon } from 'coupon/models/coupon.model';
 import { ObjectId } from 'bson';
+import { ProductVm } from 'product/models/view-models/product-vm.model';
 
-class ProductItem {
-  product: ObjectId;
-  quantity: number;
-  price: number;
-  totalItemPrice: number;
-}
+// class ProductItem {
+//   product: ProductVm;
+//   quantity: number;
+//   price: number;
+//   totalItemPrice: number;
+// }
 
 export class OrderVm extends BaseModelVm {
   @ApiModelProperty()
@@ -21,7 +22,7 @@ export class OrderVm extends BaseModelVm {
   status: OrderLevel;
 
   @ApiModelProperty()
-  basket: ProductItem[];
+  basket: any;
 
   @ApiModelProperty()
   coupon: ObjectId;

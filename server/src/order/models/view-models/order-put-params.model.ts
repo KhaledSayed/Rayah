@@ -1,4 +1,4 @@
-import { ApiModelProperty } from '@nestjs/swagger';
+import { ApiModelProperty, ApiModelPropertyOptional } from '@nestjs/swagger';
 import { Product } from 'product/models/product.model';
 import { Coupon } from 'coupon/models/coupon.model';
 import {
@@ -29,7 +29,6 @@ class OrderedProduct {
   @IsDefined()
   @IsPositive()
   @IsNumber()
-  @IsApplicable('id')
   quantity: number;
 }
 
@@ -38,7 +37,7 @@ export class OrderPutParams extends BaseModelVm {
   @IsDefined()
   @IsArray()
   @ArrayMinSize(1, { message: 'Basket is empty' })
-  basket?: OrderedProduct[];
+  basket: OrderedProduct[];
 
   @ApiModelProperty()
   @IsDefined()
@@ -46,4 +45,7 @@ export class OrderPutParams extends BaseModelVm {
 
   @ApiModelProperty()
   status: OrderLevel;
+
+  @ApiModelPropertyOptional()
+  note: string;
 }

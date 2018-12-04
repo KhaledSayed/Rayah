@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
-import { CategoryVm } from "src/app/api/models";
-import { CategoryService } from "src/app/api/services";
+import { CategoryVm, OrderVm } from "src/app/api/models";
+import { CategoryService, OrderService } from "src/app/api/services";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { ToastyService, ToastOptions, ToastData } from "ng2-toasty";
 import swal from "sweetalert2";
@@ -27,7 +27,7 @@ export class BrowseComponent implements OnInit {
   public currentPage = 0;
   public numberOfPages = 10;
   public myParam: any = "";
-  private categories: CategoryVm[];
+  private orders: OrderVm[];
 
   //Notifications Optiona
   position = "top-right";
@@ -41,7 +41,8 @@ export class BrowseComponent implements OnInit {
     private readonly _categoryService: CategoryService,
     private readonly route: ActivatedRoute,
     private readonly toastyService: ToastyService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly _orderService: OrderService
   ) {}
 
   fireNotification(options) {
@@ -108,19 +109,19 @@ export class BrowseComponent implements OnInit {
         });
       }
     });
-    this.getCategories();
+    this.getOrders();
   }
 
-  getCategories() {
-    this._categoryService
-      .CategoryGet({
-        parent: null,
+  getOrders() {
+    this._orderService
+      .OrderGet({
         perPage: 100,
-        page: this.currentPage
+        page: this.currentPage,
+        status: ["Created", "Processing", "Shipped", "Canceled"]
       })
       .subscribe(results => {
         console.log(results);
-        this.categories = [...results];
+        this.orders = [...results];
         this.data = [...results];
       });
   }
@@ -144,7 +145,7 @@ export class BrowseComponent implements OnInit {
             this._categoryService
               .CategoryDelete(category.id)
               .subscribe(result => {
-                this.getCategories();
+                this.getOrders();
               });
 
             this.fireNotification({
@@ -166,6 +167,6 @@ export class BrowseComponent implements OnInit {
 
   goToUpdate(category) {
     console.log(category);
-    this.router.navigate(["simple-page", "update", category.id]);
+    this.router.navigate(["orders", "update", category.id]);
   }
 }

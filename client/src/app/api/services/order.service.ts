@@ -103,10 +103,10 @@ class OrderService extends BaseService {
       __map(_r => _r.body as null)
     );
   }
-  OrderUpdateResponse(id): Observable<StrictHttpResponse<null>> {
+  OrderUpdateResponse(id, body): Observable<StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
-    let __body: any = null;
+    let __body: any = body;
     let req = new HttpRequest<any>(
       "PUT",
       this.rootUrl + `/orders/${id}`,
@@ -125,8 +125,11 @@ class OrderService extends BaseService {
       })
     );
   }
-  OrderUpdate(id): Observable<null> {
-    return this.OrderUpdateResponse(id).pipe(__map(_r => _r.body as null));
+
+  OrderUpdate(id, order): Observable<null> {
+    return this.OrderUpdateResponse(id, order).pipe(
+      __map(_r => _r.body as null)
+    );
   }
   OrderDeleteResponse(id): Observable<StrictHttpResponse<null>> {
     let __params = this.newParams();
@@ -152,6 +155,10 @@ class OrderService extends BaseService {
   }
   OrderDelete(id): Observable<null> {
     return this.OrderDeleteResponse(id).pipe(__map(_r => _r.body as null));
+  }
+
+  findOne(id): Observable<OrderVm> | Observable<OrderVm> {
+    return this.http.get<OrderVm>(`${this.rootUrl}/orders/${id}`);
   }
 }
 

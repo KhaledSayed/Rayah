@@ -1,10 +1,19 @@
 import { BaseModel, schemaOptions } from 'shared/base.model';
 import { User } from 'user/models/user.model';
-import { Ref, prop, arrayProp, ModelType, Typegoose } from 'typegoose';
+import {
+  Ref,
+  prop,
+  arrayProp,
+  ModelType,
+  Typegoose,
+  post,
+  pre,
+} from 'typegoose';
 import { Product } from 'product/models/product.model';
 import { OrderLevel } from './order-level.enum';
 import { Coupon } from 'coupon/models/coupon.model';
 import { ObjectId } from 'bson';
+import invNum from 'invoice-number';
 
 class ProductItem {
   @prop({ required: true, ref: Product })
@@ -23,6 +32,9 @@ class ProductItem {
 }
 
 export class Order extends BaseModel<Order> {
+  // @prop({ required: false })
+  // referenceNumber: string;
+
   @prop({ ref: User, required: true })
   user: Ref<User>;
 
@@ -40,6 +52,9 @@ export class Order extends BaseModel<Order> {
 
   @prop({ required: true })
   total: number;
+
+  @prop({ required: false })
+  note: string;
 
   static get model(): ModelType<Order> {
     return new Order().getModelForClass(Order, { schemaOptions });
