@@ -15,12 +15,16 @@ import { map as __map, filter as __filter } from "rxjs/operators";
 import { BrandVm } from "../models/brand-vm";
 import { BrandParam } from "../models/brand-param";
 import { CouponVm } from "../models/coupon-vm";
-@Injectable({
-  providedIn: "root"
-})
+@Injectable()
 class BrandService extends BaseService {
+  __headers = new HttpHeaders();
+
   constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
+    this.__headers = this.__headers.append(
+      "Authorization",
+      `Bearer ${localStorage.getItem("token")}`
+    );
   }
 
   onPutTestMultipart(formData: FormData): Observable<Object> {
@@ -52,7 +56,11 @@ class BrandService extends BaseService {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __headers.append("Content-Type", "multipart/form-data");
+    __headers = __headers.append("Content-Type", "multipart/form-data");
+    __headers = __headers.append(
+      "Authorization",
+      `Bearer ${localStorage.getItem("token")}`
+    );
     let __formData = new FormData();
     __body = __formData;
     __body = params.BrandParam;
@@ -87,9 +95,14 @@ class BrandService extends BaseService {
   BrandGetResponse(): Observable<StrictHttpResponse<Array<BrandVm>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
+    __headers = __headers.append(
+      "Authorization",
+      `Bearer ${localStorage.getItem("token")}`
+    );
+
     let __body: any = null;
     let req = new HttpRequest<any>("GET", this.rootUrl + `/brand`, __body, {
-      headers: __headers,
+      headers: this.__headers,
       params: __params,
       responseType: "json"
     });
@@ -116,7 +129,7 @@ class BrandService extends BaseService {
     let __body: any = null;
     __body = BrandParam;
     let req = new HttpRequest<any>("PUT", this.rootUrl + `/brand`, __body, {
-      headers: __headers,
+      headers: this.__headers,
       params: __params,
       responseType: "json"
     });
@@ -150,7 +163,7 @@ class BrandService extends BaseService {
       this.rootUrl + `/brand/${id}`,
       __body,
       {
-        headers: __headers,
+        headers: this.__headers,
         params: __params,
         responseType: "json"
       }

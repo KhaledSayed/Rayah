@@ -1,7 +1,10 @@
+<simple-notifications></simple-notifications>
+
 <div class="page-body">
   <div class="row">
     <div class="col-sm-12">
-      <app-card [title]="'Angular Datatable'">
+      <!-- <notifier-container></notifier-container> -->
+      <app-card [title]="'الطلبات'">
         <div class="dt-responsive">
           <div class="row">
             <div class="col-xs-12 col-sm-12 col-sm-12 col-md-6">
@@ -27,19 +30,28 @@
                   id="create-btn"
                   class="btn btn-primary ripple light btn-round"
                 >
-                  Create
+                  إنشاء
                 </a>
+
+                <!--
+                  <button
+                    class="btn btn-primary ripple light"
+                    (click)="showNotification()"
+                  >
+                    Test Notification
+                  </button>
+                -->
               </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-6">
               <div style="text-align: right;">
                 <label
-                  >Search:
+                  >بحث:
                   <input
                     type="search"
                     [(ngModel)]="filterQuery"
                     class="form-control input-sm full-data-search"
-                    placeholder="Search name"
+                    placeholder="البحث عن طريق رقم الفاتورة"
                   />
                 </label>
               </div>
@@ -58,11 +70,11 @@
               <thead>
                 <tr>
                   <th>
-                    <mfDefaultSorter by="id">Reference Number</mfDefaultSorter>
+                    <mfDefaultSorter by="id">رقم الفاتورة </mfDefaultSorter>
                   </th>
-                  <th><mfDefaultSorter by="status">Status</mfDefaultSorter></th>
+                  <th><mfDefaultSorter by="status">الحالة</mfDefaultSorter></th>
                   <th>
-                    <mfDefaultSorter by="position">Actions</mfDefaultSorter>
+                    <mfDefaultSorter by="position">إدارة</mfDefaultSorter>
                   </th>
                 </tr>
                 <tr></tr>
@@ -70,6 +82,7 @@
               <tbody>
                 <tr *ngFor="let item of mf.data">
                   <td>{{ item.id }}</td>
+
                   <td>
                     <div *ngIf="item.status === 'Created'" class="label-main">
                       <label class="label label-info">{{ item.status }}</label>
@@ -80,12 +93,15 @@
                       class="label-main"
                     >
                       <label class="label label-warning">{{
-                        item.status
+                        "item.status"
                       }}</label>
                     </div>
 
                     <div *ngIf="item.status === 'Shipped'" class="label-main">
-                      <label class="label label-info">{{ item.status }}</label>
+                      <label class="label label-success">{{
+                        "تم التسليم
+                          "
+                      }}</label>
                     </div>
 
                     <div *ngIf="item.status === 'Canceled'" class="label-main">
@@ -130,4 +146,3 @@
     </div>
   </div>
 </div>
-<ng2-toasty [position]="position"></ng2-toasty>

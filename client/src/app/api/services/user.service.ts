@@ -16,12 +16,16 @@ import { UserVM } from "../models/user-vm";
 import { RegisterParams } from "../models/register-params";
 import { LoginResponseVM } from "../models/login-response-vm";
 import { LoginVM } from "../models/login-vm";
-@Injectable({
-  providedIn: "root"
-})
+@Injectable()
 class UserService extends BaseService {
+  __headers = new HttpHeaders();
+
   constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
+    this.__headers = this.__headers.append(
+      "Authorization",
+      `Bearer ${localStorage.getItem("token")}`
+    );
   }
 
   /**

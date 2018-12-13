@@ -3,15 +3,15 @@
     <div class="col-sm-12">
       <!-- Basic Inputs Validation start -->
       <app-card
-        [title]="'Basic Inputs Validation'"
-        [headerContent]="
-          'Lorem ipsum dolor sit amet, consectetur adipisicing elit'
-        "
+        [title]="'اسم القسم'"
+        [headerContent]="'إنشاء قسم جديد'"
         [cardOptionBlock]="true"
       >
         <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
           <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Simple Input</label>
+            <label class="col-sm-2 col-form-label"
+              >اسم القسم <span style="color:red">*</span></label
+            >
             <div class="col-sm-10">
               <input
                 type="text"
@@ -24,13 +24,13 @@
                 class="messages text-danger"
                 *ngIf="myForm.controls.name.errors?.required"
               >
-                Name can't be blank
+                لا يمكن ترك حقل اسم القسم فارغًا
               </div>
             </div>
           </div>
 
           <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Simple Input</label>
+            <label class="col-sm-2 col-form-label">وصف القسم</label>
             <div class="col-sm-10">
               <textarea
                 rows="5"
@@ -43,13 +43,13 @@
                 class="messages text-danger"
                 *ngIf="myForm.controls.description.errors?.required"
               >
-                Name can't be blank
+                لا يمكن ترك حقل وصف القسم فارغًا
               </div>
             </div>
           </div>
 
           <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Parent</label>
+            <label class="col-sm-2 col-form-label">القسم الفرعي من </label>
             <div class="col-sm-10">
               <!--
                 <div *ngIf="!(loaded$ | async)"><h2>loading ...</h2></div>
@@ -85,11 +85,14 @@
           </div>
 
           <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Parent</label>
+            <label class="col-sm-2 col-form-label"
+              >الشعار <span style="color:red">*</span></label
+            >
             <div class="col-sm-10">
               <label class="custom-file">
                 <input
                   type="file"
+                  id="upload"
                   (change)="onFileChanged($event)"
                   class="custom-file-input"
                   formControlName="thumbnail"
@@ -98,6 +101,12 @@
                 />
                 <span class="custom-file-control"></span>
               </label>
+              <div
+                class="messages text-danger"
+                *ngIf="myForm.controls.thumbnail.errors?.required"
+              >
+                لا يمكن ترك القسم بدون صورة مصغرة
+              </div>
             </div>
 
             <div class="col-sm-2">
@@ -105,7 +114,7 @@
                 style="margin:8px"
                 [src]="selectedImage"
                 *ngIf="selectedImage"
-                height="200"
+                height="70"
               />
             </div>
 
@@ -237,7 +246,7 @@
                 class="btn btn-primary m-b-0 ripple light"
                 [disabled]="!myForm.valid"
               >
-                Submit
+                إنشاء القسم
               </button>
             </div>
           </div>

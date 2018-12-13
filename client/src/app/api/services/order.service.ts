@@ -14,12 +14,22 @@ import { map as __map, filter as __filter } from "rxjs/operators";
 
 import { OrderVm } from "../models/order-vm";
 import { OrderParam } from "../models/order-param";
-@Injectable({
-  providedIn: "root"
-})
+@Injectable()
 class OrderService extends BaseService {
+  __headers = new HttpHeaders();
+
+  // this.__headers = this.__headers.append(
+  //   "Authorization",
+  //   `Bearer ${localStorage.getItem("token")}`
+
   constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
+    this.__headers = this.__headers.append(
+      "Authorization",
+      `Bearer ${localStorage.getItem("token")}`
+    );
+
+    // console.log(http);
   }
 
   /**
@@ -35,7 +45,7 @@ class OrderService extends BaseService {
     params: OrderService.OrderGetParams
   ): Observable<StrictHttpResponse<Array<OrderVm>>> {
     let __params = this.newParams();
-    let __headers = new HttpHeaders();
+
     let __body: any = null;
     (params.status || []).forEach(val => {
       if (val != null) __params = __params.append("status", val.toString());
@@ -44,11 +54,14 @@ class OrderService extends BaseService {
       __params = __params.set("perPage", params.perPage.toString());
     if (params.page != null)
       __params = __params.set("page", params.page.toString());
+
     let req = new HttpRequest<any>("GET", this.rootUrl + `/orders`, __body, {
-      headers: __headers,
+      headers: this.__headers,
       params: __params,
       responseType: "json"
     });
+
+    console.log(req);
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
@@ -79,11 +92,10 @@ class OrderService extends BaseService {
     OrderParam: OrderParam
   ): Observable<StrictHttpResponse<null>> {
     let __params = this.newParams();
-    let __headers = new HttpHeaders();
     let __body: any = null;
     __body = OrderParam;
     let req = new HttpRequest<any>("POST", this.rootUrl + `/orders`, __body, {
-      headers: __headers,
+      headers: this.__headers,
       params: __params,
       responseType: "json"
     });
@@ -105,14 +117,14 @@ class OrderService extends BaseService {
   }
   OrderUpdateResponse(id, body): Observable<StrictHttpResponse<null>> {
     let __params = this.newParams();
-    let __headers = new HttpHeaders();
+
     let __body: any = body;
     let req = new HttpRequest<any>(
       "PUT",
       this.rootUrl + `/orders/${id}`,
       __body,
       {
-        headers: __headers,
+        headers: this.__headers,
         params: __params,
         responseType: "json"
       }

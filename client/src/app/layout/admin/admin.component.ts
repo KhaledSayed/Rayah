@@ -8,6 +8,8 @@ import {
   trigger
 } from "@angular/animations";
 import { MenuItems } from "../../shared/menu-items/menu-items";
+import { AuthService } from "src/app/auth.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-admin",
@@ -177,7 +179,11 @@ export class AdminComponent implements OnInit, OnDestroy {
     }
   };
 
-  constructor(public menuItems: MenuItems) {
+  constructor(
+    public menuItems: MenuItems,
+    private readonly authService: AuthService,
+    private readonly router: Router
+  ) {
     this.animateSidebar = "";
     this.navType = "st2";
     this.themeLayout = "vertical";
@@ -631,5 +637,14 @@ export class AdminComponent implements OnInit, OnDestroy {
         }
       }
     }
+  }
+
+  logout() {
+    console.log("Logout");
+    console.log(localStorage.getItem("token"));
+    this.authService.logout();
+    console.log("token:", localStorage.getItem("token"));
+
+    this.router.navigate(["auth"]);
   }
 }

@@ -14,27 +14,36 @@ import { map as __map, filter as __filter } from "rxjs/operators";
 
 import { CategoryVm } from "../models/category-vm";
 import { CategoryParams } from "../models/category-params";
-@Injectable({
-  providedIn: "root"
-})
+@Injectable()
 class CategoryService extends BaseService {
+  __headers = new HttpHeaders();
+
   constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
+
+    this.__headers = this.__headers.append(
+      "Authorization",
+      `Bearer ${localStorage.getItem("token")}`
+    );
   }
 
   findOne(id): Observable<CategoryVm> | Observable<CategoryVm> {
-    return this.http.get<CategoryVm>(`${this.rootUrl}/categories/${id}`);
+    return this.http.get<CategoryVm>(`${this.rootUrl}/categories/${id}`, {
+      headers: this.__headers
+    });
   }
 
   onTestMultipart(formData: FormData): Observable<Object> {
     return this.http.post(this.rootUrl + "/categories", formData, {
-      observe: "response"
+      observe: "response",
+      headers: this.__headers
     });
   }
 
   onPutTestMultipart(formData: FormData): Observable<Object> {
     return this.http.put(this.rootUrl + "/categories", formData, {
-      observe: "response"
+      observe: "response",
+      headers: this.__headers
     });
   }
 
@@ -64,7 +73,7 @@ class CategoryService extends BaseService {
       this.rootUrl + `/categories`,
       __body,
       {
-        headers: __headers,
+        headers: this.__headers,
         params: __params,
         responseType: "json"
       }
@@ -107,7 +116,7 @@ class CategoryService extends BaseService {
       this.rootUrl + `/categories`,
       __body,
       {
-        headers: __headers,
+        headers: this.__headers,
         params: __params,
         responseType: "json"
       }
@@ -144,7 +153,7 @@ class CategoryService extends BaseService {
       this.rootUrl + `/categories`,
       __body,
       {
-        headers: __headers,
+        headers: this.__headers,
         params: __params,
         responseType: "json"
       }
@@ -175,7 +184,7 @@ class CategoryService extends BaseService {
       this.rootUrl + `/categories/${id}`,
       __body,
       {
-        headers: __headers,
+        headers: this.__headers,
         params: __params,
         responseType: "json"
       }

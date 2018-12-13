@@ -13,6 +13,10 @@ import { BreadcrumbsComponent } from "./layout/admin/breadcrumbs/breadcrumbs.com
 import { BlankComponent } from "./blank/blank.component";
 import { BlankModule } from "./blank/blank.module";
 import { ApiModule } from "./api/api.module";
+import { JwtModule } from "@auth0/angular-jwt";
+import { AdminInterceptor } from "./admin.interceptor";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { BaseService } from "./api/base-service";
 
 @NgModule({
   declarations: [
@@ -24,12 +28,22 @@ import { ApiModule } from "./api/api.module";
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     AppRoutingModule,
     SharedModule,
-    ApiModule
+    ApiModule,
+    JwtModule.forRoot({})
   ],
   schemas: [],
-  providers: [MenuItems],
+  providers: [
+    MenuItems,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AdminInterceptor,
+      multi: true
+    }
+  ],
+  exports: [HttpClientModule],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

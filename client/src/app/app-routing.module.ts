@@ -2,11 +2,30 @@ import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { AdminComponent } from "./layout/admin/admin.component";
 import { AuthComponent } from "./layout/auth/auth.component";
+import { AuthGuardService as AuthGuard } from "./auth-guard.service";
+import { LoginGuardService } from "./login-guard.service";
 
 const routes: Routes = [
   {
     path: "",
+    component: AuthComponent,
+    canActivate: [LoginGuardService],
+    children: [
+      {
+        path: "",
+        redirectTo: "auth",
+        pathMatch: "full"
+      },
+      {
+        path: "auth",
+        loadChildren: "./theme/auth/auth.module#AuthModule"
+      }
+    ]
+  },
+  {
+    path: "",
     component: AdminComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: "",
@@ -125,39 +144,6 @@ const routes: Routes = [
       {
         path: "orders",
         loadChildren: "./pages/order/order.module#OrderModule"
-      }
-    ]
-  },
-  {
-    path: "",
-    component: AuthComponent,
-    children: [
-      {
-        path: "auth",
-        loadChildren: "./theme/auth/auth.module#AuthModule"
-      },
-      {
-        path: "maintenance/error",
-        loadChildren: "./theme/maintenance/error/error.module#ErrorModule"
-      },
-      {
-        path: "maintenance/coming-soon",
-        loadChildren:
-          "./theme/maintenance/coming-soon/coming-soon.module#ComingSoonModule"
-      },
-      {
-        path: "maintenance/offline-ui",
-        loadChildren:
-          "./theme/maintenance/offline-ui/offline-ui.module#OfflineUiModule"
-      },
-      {
-        path: "email/email-template",
-        loadChildren:
-          "./theme/email/email-template/email-template.module#EmailTemplateModule"
-      },
-      {
-        path: "landing",
-        loadChildren: "./theme/landing/landing.module#LandingModule"
       }
     ]
   }

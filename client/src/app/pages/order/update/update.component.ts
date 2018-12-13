@@ -81,7 +81,7 @@ export class UpdateComponent implements OnInit {
     const parent = new FormControl("");
     const code = new FormControl("");
     const note = new FormControl("");
-    const address = new FormControl("");
+    const address = new FormControl("", Validators.required);
     const total = new FormControl("");
     const user = new FormControl("");
     const status = new FormControl("");

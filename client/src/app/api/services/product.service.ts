@@ -15,21 +15,28 @@ import { map as __map, filter as __filter } from "rxjs/operators";
 import { ProductVm } from "../models/product-vm";
 import { ProductParams } from "../models/product-params";
 import { ProductParamsPut } from "../models/product-params-put";
-@Injectable({
-  providedIn: "root"
-})
+@Injectable()
 class ProductService extends BaseService {
+  __headers = new HttpHeaders();
+
   constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
+    this.__headers = this.__headers.append(
+      "Authorization",
+      `Bearer ${localStorage.getItem("token")}`
+    );
   }
 
   findOne(id): Observable<ProductVm> | Observable<ProductVm> {
-    return this.http.get<ProductVm>(`${this.rootUrl}/products/${id}`);
+    return this.http.get<ProductVm>(`${this.rootUrl}/products/${id}`, {
+      headers: this.__headers
+    });
   }
 
   onTestMultipart(formData: FormData): Observable<Object> {
     return this.http.post(this.rootUrl + "/categories", formData, {
-      observe: "response"
+      observe: "response",
+      headers: this.__headers
     });
   }
 
@@ -39,7 +46,8 @@ class ProductService extends BaseService {
       this.rootUrl + "/products/" + id + "/thumbnail",
       formData,
       {
-        observe: "response"
+        observe: "response",
+        headers: this.__headers
       }
     );
   }
@@ -50,7 +58,8 @@ class ProductService extends BaseService {
       this.rootUrl + "/products/" + id + "/gallery",
       formData,
       {
-        observe: "response"
+        observe: "response",
+        headers: this.__headers
       }
     );
   }
@@ -90,7 +99,7 @@ class ProductService extends BaseService {
     if (params.featured != null)
       __params = __params.set("featured", params.featured.toString());
     let req = new HttpRequest<any>("GET", this.rootUrl + `/products`, __body, {
-      headers: __headers,
+      headers: this.__headers,
       params: __params,
       responseType: "json"
     });
@@ -136,7 +145,7 @@ class ProductService extends BaseService {
     let __body: any = null;
     __body = ProductParams;
     let req = new HttpRequest<any>("POST", this.rootUrl + `/products`, __body, {
-      headers: __headers,
+      headers: this.__headers,
       params: __params,
       responseType: "json"
     });
@@ -166,7 +175,7 @@ class ProductService extends BaseService {
       this.rootUrl + `/products/${id}`,
       __body,
       {
-        headers: __headers,
+        headers: this.__headers,
         params: __params,
         responseType: "json"
       }
@@ -200,7 +209,7 @@ class ProductService extends BaseService {
       this.rootUrl + `/products/${id}`,
       __body,
       {
-        headers: __headers,
+        headers: this.__headers,
         params: __params,
         responseType: "json"
       }
@@ -230,7 +239,7 @@ class ProductService extends BaseService {
       this.rootUrl + `/products/${id}`,
       __body,
       {
-        headers: __headers,
+        headers: this.__headers,
         params: __params,
         responseType: "json"
       }
@@ -255,7 +264,7 @@ class ProductService extends BaseService {
       this.rootUrl + `/products/${id}/thumbnail`,
       __body,
       {
-        headers: __headers,
+        headers: this.__headers,
         params: __params,
         responseType: "json"
       }
@@ -282,7 +291,7 @@ class ProductService extends BaseService {
       this.rootUrl + `/products/${id}/gallery`,
       __body,
       {
-        headers: __headers,
+        headers: this.__headers,
         params: __params,
         responseType: "json"
       }
@@ -312,7 +321,7 @@ class ProductService extends BaseService {
       this.rootUrl + `/products/${id}/gallery/${index}`,
       __body,
       {
-        headers: __headers,
+        headers: this.__headers,
         params: __params,
         responseType: "json"
       }

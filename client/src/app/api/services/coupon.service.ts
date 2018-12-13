@@ -15,12 +15,16 @@ import { map as __map, filter as __filter } from "rxjs/operators";
 import { CouponVm } from "../models/coupon-vm";
 import { CouponParams } from "../models/coupon-params";
 import { CouponPutParams } from "../models/coupon-put-params";
-@Injectable({
-  providedIn: "root"
-})
+@Injectable()
 class CouponService extends BaseService {
+  __headers = new HttpHeaders();
+
   constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
+    this.__headers = this.__headers.append(
+      "Authorization",
+      `Bearer ${localStorage.getItem("token")}`
+    );
   }
 
   /**
@@ -41,7 +45,7 @@ class CouponService extends BaseService {
     if (params.page != null)
       __params = __params.set("page", params.page.toString());
     let req = new HttpRequest<any>("GET", this.rootUrl + `/coupons`, __body, {
-      headers: __headers,
+      headers: this.__headers,
       params: __params,
       responseType: "json"
     });
@@ -79,7 +83,7 @@ class CouponService extends BaseService {
     let __body: any = null;
     __body = CouponParams;
     let req = new HttpRequest<any>("POST", this.rootUrl + `/coupons`, __body, {
-      headers: __headers,
+      headers: this.__headers,
       params: __params,
       responseType: "json"
     });
@@ -116,7 +120,7 @@ class CouponService extends BaseService {
       this.rootUrl + `/coupons/${id}`,
       __body,
       {
-        headers: __headers,
+        headers: this.__headers,
         params: __params,
         responseType: "json"
       }
@@ -146,7 +150,7 @@ class CouponService extends BaseService {
       this.rootUrl + `/coupons/${id}`,
       __body,
       {
-        headers: __headers,
+        headers: this.__headers,
         params: __params,
         responseType: "json"
       }
@@ -171,7 +175,7 @@ class CouponService extends BaseService {
       this.rootUrl + `/coupons/${id}`,
       __body,
       {
-        headers: __headers,
+        headers: this.__headers,
         params: __params,
         responseType: "json"
       }

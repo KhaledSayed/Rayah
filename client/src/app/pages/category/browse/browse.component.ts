@@ -1,4 +1,9 @@
-import { Component, OnInit, ViewEncapsulation } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ViewEncapsulation,
+  AfterViewInit
+} from "@angular/core";
 import { CategoryVm } from "src/app/api/models";
 import { CategoryService } from "src/app/api/services";
 import { ActivatedRoute, Params, Router } from "@angular/router";
@@ -18,7 +23,27 @@ import swal from "sweetalert2";
   ],
   encapsulation: ViewEncapsulation.None
 })
-export class BrowseComponent implements OnInit {
+export class BrowseComponent implements OnInit, AfterViewInit {
+  ngAfterViewInit(): void {
+    this.route.queryParams.subscribe((params: Params) => {
+      this.myParam = params.post;
+      console.log(typeof params.post);
+      console.log(this.myParam);
+
+      if (params.post === "true") {
+        console.log("Fire Notification Post");
+        this.fireNotification({
+          title: "Category Alert",
+          msg: "Category Created Successfully",
+          type: "success",
+          showClose: this.showClose,
+          theme: this.theme,
+          position: this.position,
+          timeout: 5000
+        });
+      }
+    });
+  }
   public data: any;
   public rowsOnPage = 10;
   public filterQuery = "";
@@ -90,24 +115,6 @@ export class BrowseComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.queryParams.subscribe((params: Params) => {
-      this.myParam = params.post;
-      console.log(typeof params.post);
-      console.log(this.myParam);
-
-      if (params.post === "true") {
-        console.log("Fire Notification Post");
-        this.fireNotification({
-          title: "Category Alert",
-          msg: "Category Created Successfully",
-          type: "success",
-          showClose: this.showClose,
-          theme: this.theme,
-          position: this.position,
-          timeout: 5000
-        });
-      }
-    });
     this.getCategories();
   }
 

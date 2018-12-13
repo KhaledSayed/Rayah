@@ -820,23 +820,23 @@ const MENUITEMS = [
   //   ]
   // },
   {
-    label: "Categories",
+    label: "الاقسام",
     main: [
       {
         state: "simple-page",
         short_label: "I",
-        name: "Category",
+        name: "الاقسام",
         type: "sub",
         icon: "feather icon-file-minus",
         children: [
           {
             state: "browse",
-            name: "Browse",
+            name: "تصفح الأقسام",
             type: "link"
           },
           {
             state: "create",
-            name: "Create",
+            name: "إنشاء قسم جديد",
             type: "link"
           }
         ]
@@ -844,18 +844,18 @@ const MENUITEMS = [
     ]
   },
   {
-    label: "Coupons",
+    label: "الكوبونات",
     main: [
       {
         state: "coupons",
         short_label: "I",
-        name: "Coupon",
+        name: "الكوبونات",
         type: "sub",
         icon: "feather icon-file-minus",
         children: [
           {
             state: "browse",
-            name: "Browse",
+            name: "تصفح",
             type: "link"
           },
           {

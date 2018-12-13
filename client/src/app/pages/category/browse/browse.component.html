@@ -1,13 +1,15 @@
 <div class="page-body">
   <div class="row">
     <div class="col-sm-12">
-      <app-card [title]="'Angular Datatable'">
+      <ng2-toasty [position]="position"></ng2-toasty>
+
+      <app-card [title]="'الاقسام'">
         <div class="dt-responsive">
           <div class="row">
             <div class="col-xs-12 col-sm-12 col-sm-12 col-md-6">
               <div>
                 <label class="label-control"
-                  >Show
+                  >عرض
                   <select
                     class="form-control input-sm full-data-show-entry"
                     [(ngModel)]="rowsOnPage"
@@ -27,19 +29,19 @@
                   id="create-btn"
                   class="btn btn-primary ripple light btn-round"
                 >
-                  Create
+                  إنشاء قسم
                 </a>
               </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-6">
               <div style="text-align: right;">
                 <label
-                  >Search:
+                  >بحث:
                   <input
                     type="search"
                     [(ngModel)]="filterQuery"
                     class="form-control input-sm full-data-search"
-                    placeholder="Search name"
+                    placeholder="اسم البحث"
                   />
                 </label>
               </div>
@@ -57,9 +59,9 @@
             >
               <thead>
                 <tr>
-                  <th><mfDefaultSorter by="name">Name</mfDefaultSorter></th>
+                  <th><mfDefaultSorter by="name">الاسم</mfDefaultSorter></th>
                   <th>
-                    <mfDefaultSorter by="position">Actions</mfDefaultSorter>
+                    <mfDefaultSorter by="position">إدارة</mfDefaultSorter>
                   </th>
                 </tr>
                 <tr></tr>
@@ -73,22 +75,22 @@
                       class="btn btn-success ripple light"
                       (click)="goToUpdate(item)"
                     >
-                      Edit
+                      تعديل
                     </button>
                     <button
                       type="button"
                       class="btn btn-danger ripple light"
                       (click)="delete(item)"
                     >
-                      Delete
+                      حذف
                     </button>
 
                     <button type="button" class="btn btn-info ripple light">
-                      View Subcategories
+                      تصفح الأقسام الفرعية
                     </button>
 
                     <button type="button" class="btn btn-inverse ripple light">
-                      View Products
+                      تصفح المنتجات
                     </button>
                   </td>
                 </tr>
@@ -109,4 +111,3 @@
     </div>
   </div>
 </div>
-<ng2-toasty [position]="position"></ng2-toasty>

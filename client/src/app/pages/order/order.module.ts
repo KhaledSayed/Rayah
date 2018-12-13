@@ -21,6 +21,8 @@ import { ButtonModule } from "src/app/theme/ui-elements/basic/button/button.modu
 import { OrderRoutingModule } from "./order-routing.module";
 import { OrderComponent } from "./order.component";
 import { NgSelectModule } from "@ng-select/ng-select";
+import { NotifierModule } from "angular-notifier";
+import { SimpleNotificationsModule } from "angular2-notifications";
 
 @NgModule({
   imports: [
@@ -35,7 +37,8 @@ import { NgSelectModule } from "@ng-select/ng-select";
     FileUploadModule,
     ToastyModule.forRoot(),
     ButtonModule,
-    NgSelectModule
+    NgSelectModule,
+    SimpleNotificationsModule.forRoot()
   ],
   declarations: [
     OrderComponent,

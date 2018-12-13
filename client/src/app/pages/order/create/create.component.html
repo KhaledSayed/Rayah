@@ -3,10 +3,8 @@
     <div class="col-sm-12">
       <!-- Basic Inputs Validation start -->
       <app-card
-        [title]="'Basic Inputs Validation'"
-        [headerContent]="
-          'Lorem ipsum dolor sit amet, consectetur adipisicing elit'
-        "
+        [title]="'إنشاء طلب'"
+        [headerContent]="'إنشاء طلب لمستخدم مخصص'"
         [cardOptionBlock]="true"
       >
         <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
@@ -15,7 +13,9 @@
             *ngFor="let item of myForm.get('items').controls; let i = index"
           >
             <div class="form-group row" [formGroupName]="i">
-              <label class="col-sm-2 col-form-label">Product {{ i }}</label>
+              <label class="col-sm-2 col-form-label">
+                المنتج رقم # {{ i + 1 }} <span style="color:red">*</span></label
+              >
 
               <ng-select
                 formControlName="product"
@@ -27,7 +27,9 @@
                 [clearable]="false"
               ></ng-select>
 
-              <label class="col-sm-2 col-form-label">Quantity</label>
+              <label class="col-sm-2 col-form-label"
+                >الكمية <span style="color:red">*</span></label
+              >
               <div class="col-sm-2">
                 <input
                   type="number"
@@ -53,7 +55,7 @@
           </div>
 
           <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Total Price</label>
+            <label class="col-sm-2 col-form-label">السعر الكلي</label>
             <div class="col-sm-10">
               <input
                 type="text"
@@ -66,7 +68,9 @@
           </div>
 
           <div class="form-group row">
-            <label class="col-sm-2 col-form-label">User</label>
+            <label class="col-sm-2 col-form-label"
+              >المستخدم <span style="color:red">*</span></label
+            >
 
             <ng-select
               [items]="userObservable | async"
@@ -95,26 +99,34 @@
           -->
 
           <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Shipping Address</label>
+            <label class="col-sm-2 col-form-label"
+              >عنوان التسليم <span style="color:red">*</span>
+            </label>
             <div class="col-sm-10">
               <textarea
                 rows="5"
                 class="form-control"
                 id="address"
-                placeholder="if the user have any note ?"
+                placeholder="عنوان التسليم ?"
                 formControlName="address"
               ></textarea>
+              <div
+                class="messages text-danger"
+                *ngIf="myForm.controls.address.errors?.required"
+              >
+                لا يمكن ترك حقل العنوان فارغًا
+              </div>
             </div>
           </div>
 
           <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Note</label>
+            <label class="col-sm-2 col-form-label">ملاحظات</label>
             <div class="col-sm-10">
               <textarea
                 rows="5"
                 class="form-control"
                 id="note"
-                placeholder="if the user have any note ?"
+                placeholder="إذا كان المستخدم لديه أي ملاحظة؟"
                 formControlName="note"
               ></textarea>
             </div>

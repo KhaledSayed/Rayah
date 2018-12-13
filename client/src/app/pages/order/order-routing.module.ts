@@ -10,7 +10,7 @@ const routes: Routes = [
     path: "",
     component: OrderComponent,
     data: {
-      title: "Category",
+      title: "Order",
       icon: "icon-layout-sidebar-left",
       caption:
         "lorem ipsum dolor sit amet, consectetur adipisicing elit - sample page",
@@ -19,7 +19,7 @@ const routes: Routes = [
     children: [
       {
         path: "",
-        redirectTo: "/simple-page/browse",
+        redirectTo: "/orders/browse",
         pathMatch: "full"
       },
       {
@@ -37,7 +37,7 @@ const routes: Routes = [
         path: "create",
         component: CreateComponent,
         data: {
-          title: "Create",
+          title: "Create ",
           icon: "icon-layout-sidebar-left",
           caption:
             "lorem ipsum dolor sit amet, consectetur adipisicing elit - sample page",
@@ -48,7 +48,7 @@ const routes: Routes = [
         path: "update/:id",
         component: UpdateComponent,
         data: {
-          title: "Update Category",
+          title: "Update ",
           icon: "icon-layout-sidebar-left",
           caption:
             "lorem ipsum dolor sit amet, consectetur adipisicing elit - sample page",

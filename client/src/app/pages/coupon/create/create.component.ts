@@ -201,23 +201,6 @@ export class CreateComponent implements OnInit {
     this.submitted = true;
     // parserFormatter.format(toDate)
 
-    const couponData = new FormData();
-    couponData.append("code", this.myForm.controls.code.value);
-    couponData.append("value", this.myForm.controls.value.value);
-    couponData.append(
-      "numberOfPeople",
-      this.myForm.controls.numberOfPeople.value
-    );
-    couponData.append("minTotal", this.myForm.controls.minTotal.value);
-    couponData.append(
-      "startDate",
-      new Date(this.parserFormatter.format(this.fromDate)).toISOString()
-    );
-    couponData.append(
-      "endDate",
-      new Date(this.parserFormatter.format(this.toDate)).toISOString()
-    );
-
     let couponParams: CouponParams = {
       type: this.myForm.controls.type.value,
       code: this.myForm.controls.code.value,
@@ -241,36 +224,6 @@ export class CreateComponent implements OnInit {
         console.log(error);
       }
     );
-
-    // this.categoryService.CategoryCreate();
-    // console.log(this.myForm);
-
-    // console.log(this.myForm.controls.description.value);
-    // console.log(this.myForm.controls.name.value);
-
-    // const uploadData = new FormData();
-    // uploadData.append("thumbnail", this.selectedFile, this.selectedFile.name);
-    // uploadData.append("parent", this.myForm.controls.parent.value);
-    // uploadData.append("name", this.myForm.controls.name.value);
-    // uploadData.append("description", this.myForm.controls.description.value);
-
-    // this.categoryService
-    //   .onTestMultipart(uploadData)
-    //   .subscribe((res: HttpResponse<any>) => {
-    //     console.log("===========");
-    //     console.log(res);
-    //     console.log("===========");
-
-    //     if (res.status && res.status === 201) {
-    //       console.log("Redirect to Next Page");
-    //       const post = true;
-    //       this.router.navigate(["simple-page", "browse"], {
-    //         queryParams: { post: "true" }
-    //       });
-
-    //       this.loadCategories();
-    //     }
-    //   });
   }
 
   onFileChanged(event) {

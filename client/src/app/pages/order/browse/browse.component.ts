@@ -1,9 +1,17 @@
-import { Component, OnInit, ViewEncapsulation } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ViewEncapsulation,
+  AfterContentInit,
+  AfterViewInit
+} from "@angular/core";
 import { CategoryVm, OrderVm } from "src/app/api/models";
 import { CategoryService, OrderService } from "src/app/api/services";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { ToastyService, ToastOptions, ToastData } from "ng2-toasty";
 import swal from "sweetalert2";
+import { NotifierService } from "angular-notifier";
+import { NotificationsService } from "angular2-notifications";
 
 @Component({
   selector: "app-browse",
@@ -14,11 +22,14 @@ import swal from "sweetalert2";
     "./../../../../../node_modules/ng2-toasty/style.css",
     "./../../../../../node_modules/ng2-toasty/style-bootstrap.css",
     "./../../../../../node_modules/ng2-toasty/style-default.css",
-    "./../../../../../node_modules/ng2-toasty/style-material.css"
+    "./../../../../../node_modules/ng2-toasty/style-material.css",
+    "./../../../../../node_modules/angular-notifier/styles/core.scss",
+    "./../../../../../node_modules/angular-notifier/styles/types/type-success.scss",
+    "./../../../../../node_modules/angular-notifier/styles/themes/theme-material.scss"
   ],
   encapsulation: ViewEncapsulation.None
 })
-export class BrowseComponent implements OnInit {
+export class BrowseComponent implements OnInit, AfterViewInit {
   public data: any;
   public rowsOnPage = 10;
   public filterQuery = "";
@@ -42,8 +53,34 @@ export class BrowseComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly toastyService: ToastyService,
     private readonly router: Router,
-    private readonly _orderService: OrderService
+    private readonly _orderService: OrderService,
+    private _service: NotificationsService
   ) {}
+
+  ngAfterViewInit() {
+    this.route.queryParams.subscribe((params: Params) => {
+      this.myParam = params.post;
+      console.log(typeof params.post);
+      console.log(this.myParam);
+
+      if (params.post === "true") {
+        console.log("Fire Notification Post");
+        this.showNotification(
+          "Order Status",
+          "Order Created Successfully",
+          "success"
+        );
+      } else if (params.update === "true") {
+        console.log("Fire Notification Update");
+        this.showNotification(
+          "Order Update",
+          "Order Updated Successfully",
+          "success"
+        );
+      }
+    });
+    this.getOrders();
+  }
 
   fireNotification(options) {
     if (options.closeOther) {
@@ -90,34 +127,14 @@ export class BrowseComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
-    this.route.queryParams.subscribe((params: Params) => {
-      this.myParam = params.post;
-      console.log(typeof params.post);
-      console.log(this.myParam);
-
-      if (params.post === "true") {
-        console.log("Fire Notification Post");
-        this.fireNotification({
-          title: "Category Alert",
-          msg: "Category Created Successfully",
-          type: "success",
-          showClose: this.showClose,
-          theme: this.theme,
-          position: this.position,
-          timeout: 5000
-        });
-      }
-    });
-    this.getOrders();
-  }
+  ngOnInit() {}
 
   getOrders() {
     this._orderService
       .OrderGet({
         perPage: 100,
         page: this.currentPage,
-        status: ["Created", "Processing", "Shipped", "Canceled"]
+        status: ["Created", "Processing", "Shipped", "Canceled", "Refunded"]
       })
       .subscribe(results => {
         console.log(results);
@@ -142,11 +159,9 @@ export class BrowseComponent implements OnInit {
       if (result.value) {
         swal("Deleted!", "Your file has been deleted.", "success").then(
           result => {
-            this._categoryService
-              .CategoryDelete(category.id)
-              .subscribe(result => {
-                this.getOrders();
-              });
+            this._orderService.OrderDelete(category.id).subscribe(result => {
+              this.getOrders();
+            });
 
             this.fireNotification({
               title: "Category Alert",
@@ -168,5 +183,32 @@ export class BrowseComponent implements OnInit {
   goToUpdate(category) {
     console.log(category);
     this.router.navigate(["orders", "update", category.id]);
+  }
+
+  showNotification(title, description, type = "success") {
+    console.log("Show Notifications");
+    if (type === "success") {
+      this._service.success(title, description, {
+        timeOut: 3000,
+        showProgressBar: true,
+        pauseOnHover: true,
+        clickToClose: false,
+        clickIconToClose: true,
+        rtl: false,
+        preventDuplicates: true,
+        position: ["top", "right"]
+      });
+    } else {
+      this._service.error(title, description, {
+        timeOut: 3000,
+        showProgressBar: true,
+        pauseOnHover: true,
+        clickToClose: false,
+        clickIconToClose: true,
+        rtl: false,
+        preventDuplicates: true,
+        position: ["top", "right"]
+      });
+    }
   }
 }

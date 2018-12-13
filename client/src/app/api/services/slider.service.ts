@@ -14,12 +14,16 @@ import { map as __map, filter as __filter } from "rxjs/operators";
 
 import { SliderVm } from "../models/slider-vm";
 import { SliderParams } from "../models/slider-params";
-@Injectable({
-  providedIn: "root"
-})
+@Injectable()
 class SliderService extends BaseService {
+  __headers = new HttpHeaders();
+
   constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
+    this.__headers = this.__headers.append(
+      "Authorization",
+      `Bearer ${localStorage.getItem("token")}`
+    );
   }
 
   /**
@@ -40,7 +44,7 @@ class SliderService extends BaseService {
     if (params.page != null)
       __params = __params.set("page", params.page.toString());
     let req = new HttpRequest<any>("GET", this.rootUrl + `/sliders`, __body, {
-      headers: __headers,
+      headers: this.__headers,
       params: __params,
       responseType: "json"
     });
@@ -78,7 +82,7 @@ class SliderService extends BaseService {
     let __body: any = null;
     __body = SliderParams;
     let req = new HttpRequest<any>("POST", this.rootUrl + `/sliders`, __body, {
-      headers: __headers,
+      headers: this.__headers,
       params: __params,
       responseType: "json"
     });
@@ -107,7 +111,7 @@ class SliderService extends BaseService {
       this.rootUrl + `/sliders/${id}`,
       __body,
       {
-        headers: __headers,
+        headers: this.__headers,
         params: __params,
         responseType: "json"
       }
@@ -140,7 +144,7 @@ class SliderService extends BaseService {
       this.rootUrl + `/sliders/${id}`,
       __body,
       {
-        headers: __headers,
+        headers: this.__headers,
         params: __params,
         responseType: "json"
       }
@@ -170,7 +174,7 @@ class SliderService extends BaseService {
       this.rootUrl + `/sliders/${id}`,
       __body,
       {
-        headers: __headers,
+        headers: this.__headers,
         params: __params,
         responseType: "json"
       }
