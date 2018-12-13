@@ -860,7 +860,7 @@ const MENUITEMS = [
           },
           {
             state: "create",
-            name: "Create",
+            name: "إنشاء",
             type: "link"
           }
         ]
@@ -868,23 +868,23 @@ const MENUITEMS = [
     ]
   },
   {
-    label: "Brands",
+    label: "العلامات التجارية",
     main: [
       {
         state: "brands",
         short_label: "I",
-        name: "Brands",
+        name: "العلامات التجارية",
         type: "sub",
         icon: "feather icon-file-minus",
         children: [
           {
             state: "browse",
-            name: "Browse",
+            name: "تصفح",
             type: "link"
           },
           {
             state: "create",
-            name: "Create",
+            name: "إنشاء",
             type: "link"
           }
         ]
@@ -892,23 +892,23 @@ const MENUITEMS = [
     ]
   },
   {
-    label: "Products",
+    label: "المنتجات",
     main: [
       {
         state: "products",
         short_label: "I",
-        name: "Products",
+        name: "المنتجات",
         type: "sub",
         icon: "feather icon-file-minus",
         children: [
           {
             state: "browse",
-            name: "Browse",
+            name: "تصفح",
             type: "link"
           },
           {
             state: "create",
-            name: "Create",
+            name: "إضافة",
             type: "link"
           }
         ]
@@ -916,23 +916,23 @@ const MENUITEMS = [
     ]
   },
   {
-    label: "Orders",
+    label: "طلبات العملاء",
     main: [
       {
         state: "orders",
         short_label: "I",
-        name: "Orders",
+        name: "طلبات العملاء",
         type: "sub",
         icon: "feather icon-file-minus",
         children: [
           {
             state: "browse",
-            name: "Browse",
+            name: "تصفح",
             type: "link"
           },
           {
             state: "create",
-            name: "Create",
+            name: "إضافة",
             type: "link"
           }
         ]

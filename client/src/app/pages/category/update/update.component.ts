@@ -51,14 +51,11 @@ export class UpdateComponent implements OnInit {
       thumbnail: thumbnail
     });
 
-    this.loadCategories();
-
     /*Basic validation end*/
+    this.loadCategories();
   }
 
   loadCategories() {
-    this.categoryAr = [];
-
     this.courseObservable = this.categoryService.CategoryGet({
       perPage: 100,
       page: 0,
@@ -66,11 +63,11 @@ export class UpdateComponent implements OnInit {
     });
 
     this.courseObservable.subscribe(results => {
-      this.categoryAr = [...results];
+      this.loadCategory(this.idParam, results);
     });
   }
 
-  loadCategory(id) {
+  loadCategory(id, categories = []) {
     this.categoryService.findOne(id).subscribe(
       results => {
         console.log(results.parent);
@@ -81,6 +78,23 @@ export class UpdateComponent implements OnInit {
         this.selectedItem = results.parent;
         this.selectedImage = `http://localhost:8080/${results.thumbnail}`;
         console.log(this.selectedItem);
+        this.categoryAr = [];
+        this.categoryAr.push({
+          id: null,
+          name: "بدون فرع",
+          parent: null,
+          thumbnail: ""
+        });
+
+        console.log("Subcategories Length", this.categoryAr.length);
+
+        categories.forEach(item => {
+          if (results.id !== item.id) {
+            this.categoryAr.push(item);
+          }
+        });
+
+        console.log("Subcategories Length", this.categoryAr.length);
       },
       err => {
         console.log(err);
@@ -150,8 +164,6 @@ export class UpdateComponent implements OnInit {
       const id = params.id;
 
       this.idParam = id;
-
-      this.loadCategory(this.idParam);
     });
   }
 }

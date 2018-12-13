@@ -1,9 +1,9 @@
 <div class="page-body">
   <div class="row">
     <div class="col-sm-12">
-      <ng2-toasty [position]="position"></ng2-toasty>
-
       <app-card [title]="'الاقسام'">
+        <ng2-toasty [position]="position"></ng2-toasty>
+
         <div class="dt-responsive">
           <div class="row">
             <div class="col-xs-12 col-sm-12 col-sm-12 col-md-6">
@@ -85,7 +85,11 @@
                       حذف
                     </button>
 
-                    <button type="button" class="btn btn-info ripple light">
+                    <button
+                      (click)="browseSubcategories(item)"
+                      type="button"
+                      class="btn btn-info ripple light"
+                    >
                       تصفح الأقسام الفرعية
                     </button>
 

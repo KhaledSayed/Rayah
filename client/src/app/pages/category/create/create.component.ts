@@ -66,6 +66,12 @@ export class CreateComponent implements OnInit {
       this.selectedItem = results[0];
       console.log(this.selectedItem);
       this.categoryAr = [...results];
+      this.categoryAr.push({
+        id: null,
+        name: "بدون فرع",
+        parent: null,
+        thumbnail: ""
+      });
     });
   }
 

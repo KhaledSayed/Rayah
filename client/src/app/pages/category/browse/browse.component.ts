@@ -42,6 +42,29 @@ export class BrowseComponent implements OnInit, AfterViewInit {
           timeout: 5000
         });
       }
+
+      if (params.parent) {
+        this._categoryService
+          .CategoryGet({ page: 0, perPage: 1000, parent: params.parent })
+          .subscribe(results => {
+            console.log("Subcategories", results);
+            if (results.length === 0) {
+              this.fireNotification({
+                title: "تنبيه",
+                msg: "لا يوجد أقسام فرعية لهذا القسم",
+                type: "error",
+                showClose: this.showClose,
+                theme: this.theme,
+                position: this.position,
+                timeout: 5000
+              });
+            } else {
+              console.log(results);
+              this.categories = [...results];
+              this.data = [...results];
+            }
+          });
+      }
     });
   }
   public data: any;
@@ -57,7 +80,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   //Notifications Optiona
   position = "top-right";
   showClose = true;
-  theme = "default";
+  theme = "material";
   type = "success";
   closeOther = true;
 
@@ -118,7 +141,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.getCategories();
   }
 
-  getCategories() {
+  getCategories(parent = null) {
     this._categoryService
       .CategoryGet({
         parent: null,
@@ -134,39 +157,37 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   delete(category) {
     swal({
-      title: "Are you sure?",
-      text: "You not be able to revert this!",
+      title: "هل أنت واثق؟",
+      text: "لن تكون قادرًا على التراجع عن هذا!",
       type: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-      cancelButtonText: "No, cancel!",
+      confirmButtonText: "نعم ، احذفها!",
+      cancelButtonText: "لا ، ألغ!",
       confirmButtonClass: "btn btn-success",
       cancelButtonClass: "btn btn-danger mr-sm"
     }).then(result => {
       if (result.value) {
-        swal("Deleted!", "Your file has been deleted.", "success").then(
-          result => {
-            this._categoryService
-              .CategoryDelete(category.id)
-              .subscribe(result => {
-                this.getCategories();
-              });
-
-            this.fireNotification({
-              title: "Category Alert",
-              msg: "Category Deleted Successfully",
-              type: "danger",
-              showClose: this.showClose,
-              theme: this.theme,
-              position: this.position,
-              timeout: 5000
+        swal("تم الحذف!", "تم حذف القسم.", "success").then(result => {
+          this._categoryService
+            .CategoryDelete(category.id)
+            .subscribe(result => {
+              this.getCategories();
             });
-          }
-        );
+
+          this.fireNotification({
+            title: "تنبيه",
+            msg: `تم حذف القسم ${category.name} بنجاح`,
+            type: "success",
+            showClose: this.showClose,
+            theme: this.theme,
+            position: this.position,
+            timeout: 3000
+          });
+        });
       } else if (result.dismiss) {
-        swal("Cancelled", "Your imaginary file is safe :)", "error");
+        swal("ألغيت", "لن يتم إجراء عملية الحذف :)", "error");
       }
     });
   }
@@ -174,5 +195,12 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   goToUpdate(category) {
     console.log(category);
     this.router.navigate(["simple-page", "update", category.id]);
+  }
+
+  browseSubcategories(category) {
+    console.log(category.id);
+    this.router.navigate(["simple-page", "browse"], {
+      queryParams: { parent: category.id }
+    });
   }
 }

@@ -193,12 +193,12 @@ export class AdminComponent implements OnInit, OnDestroy {
     this.verticalNavType = "expanded";
     this.verticalEffect = "shrink";
     this.vnavigationView = "view1";
-    this.freamType = "theme1";
+    this.freamType = "theme4";
     this.sidebarImg = "false";
     this.sidebarImgType = "img1";
     this.layoutType = "light"; // light(default) dark(dark)
 
-    this.headerTheme = "theme1"; // theme1(default)
+    this.headerTheme = "theme4"; // theme1(default)
     this.pcodedHeaderPosition = "fixed";
 
     this.headerFixedTop = "auto";
@@ -215,10 +215,10 @@ export class AdminComponent implements OnInit, OnDestroy {
 
     this.toggleOn = true;
     this.toggleIcon = "icon-toggle-right";
-    this.navBarTheme = "themelight1"; // themelight1(default) theme1(dark)
-    this.activeItemTheme = "theme1";
+    this.navBarTheme = "themelight4"; // themelight1(default) theme1(dark)
+    this.activeItemTheme = "theme4";
     this.pcodedSidebarPosition = "fixed";
-    this.menuTitleTheme = "theme1"; // theme1(default) theme10(dark)
+    this.menuTitleTheme = "theme4"; // theme1(default) theme10(dark)
     this.dropDownIcon = "style1";
     this.subItemIcon = "style1";
 
@@ -259,7 +259,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.setBackgroundPattern("theme1");
+    this.setBackgroundPattern("theme3");
   }
 
   onResize(event) {
@@ -512,7 +512,7 @@ export class AdminComponent implements OnInit, OnDestroy {
       this.layoutType = type;
       this.sidebarImg = "false";
     } else if (type === "light") {
-      this.headerTheme = "theme1";
+      this.headerTheme = "theme4";
       this.navBarTheme = "themelight1";
       this.menuTitleTheme = "theme1";
       this.activeItemTheme = "theme1";

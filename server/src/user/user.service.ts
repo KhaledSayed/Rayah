@@ -44,6 +44,7 @@ export class UserService extends BaseService<User> {
       const result = await this.create(newUser);
       return result.toJSON() as User;
     } catch (e) {
+      console.log(e);
       throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }

@@ -80,10 +80,13 @@ export class UserController {
     try {
       exist = await this._userService.findOne({ email: email });
     } catch (e) {
+      console.log(e);
       throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     if (exist) {
+      console.log('Email is Already exist');
+
       throw new HttpException(
         `${email} is already registered`,
         HttpStatus.BAD_REQUEST,
@@ -100,7 +103,8 @@ export class UserController {
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ApiException })
   @ApiOperation(GetOperationId(User.modelName, 'Login'))
   async login(@Body() loginVm: LoginVM): Promise<LoginResponseVM> {
-    console.log(loginVm);
+    console.log('LoginVm:' + loginVm);
+
     let fields = Object.keys(loginVm);
     fields.forEach(field => {
       if (!loginVm[field]) {
