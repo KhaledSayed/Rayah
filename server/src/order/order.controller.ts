@@ -122,7 +122,7 @@ export class OrderController {
     } else {
       const orders = await this._orderService.findAll(
         { $or: [...statusQuery] },
-        ['basket.product'],
+        ['basket.product', 'user'],
         page,
         perPage,
       );
@@ -139,37 +139,41 @@ export class OrderController {
 
   @Post()
   @ApiOperation(GetOperationId(Order.modelName, 'Create'))
-  // @Roles(UserRole.Admin, UserRole.User)
-  // @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.Admin, UserRole.User)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   async post(
     @Body() orderParams: OrderParam,
     @Request() req,
   ): Promise<OrderVm> {
+    console.log('Authenticated User Pre Test:', req.user);
     const ids = [];
     const items = orderParams.basket;
     let coupon = null;
     const updatedProducts: ProductItem[] = [];
 
+    //
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
       const product = await this._productService.findById(item.id);
 
-      product.quantity = product.quantity - item.quantity;
+      //Don't Update the Quantity
+      // product.quantity = product.quantity - item.quantity;
 
-      const updatedProduct = await this._productService.update(
-        item.id,
-        product,
-      );
+      // const updatedProduct = await this._productService.update(
+      //   item.id,
+      //   product,
+      // );
+
       updatedProducts.push({
         quantity: item.quantity,
-        price: updatedProduct.price,
+        price: product.price,
         id: Types.ObjectId(item.id),
       });
     }
 
-    if (orderParams.coupon !== null) {
-      coupon = await this._couponService.findById(orderParams.coupon);
-    }
+    // if (orderParams.coupon !== null) {
+    //   coupon = await this._couponService.findById(orderParams.coupon);
+    // }
 
     try {
       let order = null;
@@ -218,19 +222,22 @@ export class OrderController {
 
       const product = await this._productService.findById(item.id);
 
-      product.quantity = product.quantity - item.quantity;
-      let updatedProduct;
+      if (orderParams.status === OrderLevel.Shipped) {
+        product.quantity = product.quantity - item.quantity;
+        let updatedProduct;
 
-      try {
-        updatedProduct = await this._productService.update(item.id, product);
-      } catch (e) {
-        console.log(e);
-        throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+        try {
+          updatedProduct = await this._productService.update(item.id, product);
+          console.log('Step #2');
+        } catch (e) {
+          console.log(e);
+          throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+        }
       }
 
       updatedProducts.push({
         quantity: item.quantity,
-        price: updatedProduct.price,
+        price: product.price,
         id: Types.ObjectId(item.id),
       });
     }
@@ -244,6 +251,7 @@ export class OrderController {
 
       return updatedOrder;
     } catch (e) {
+      console.log('Step #4', e);
       throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }

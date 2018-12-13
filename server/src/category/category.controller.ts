@@ -116,6 +116,8 @@ export class CategoryController {
   @Post()
   @ApiOperation(GetOperationId(Category.modelName, 'Create'))
   @UseInterceptors(FileInterceptor('thumbnail'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.Admin)
   async post(
     @UploadedFile() thumbnail,
     @Body() categoryParams: CategoryParams,
@@ -152,6 +154,8 @@ export class CategoryController {
   @Put()
   @UseInterceptors(FileInterceptor('thumbnail'))
   @ApiOperation(GetOperationId(Category.modelName, 'Put'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.Admin)
   async put(
     @UploadedFile() thumbnail,
     @Body() categoryParams: CategoryParams,
@@ -213,6 +217,8 @@ export class CategoryController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.Admin)
   @ApiOperation(GetOperationId(Category.modelName, 'Delete'))
   async delete(@Param('id') id): Promise<CategoryVm> {
     const currentCategory = await this._categoryService.findById(id);

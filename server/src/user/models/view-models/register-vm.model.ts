@@ -1,11 +1,13 @@
 import { LoginVM } from './login-vm.model';
 import { ApiModelPropertyOptional, ApiModelProperty } from '@nestjs/swagger';
+import { Length } from 'class-validator';
 
 export class RegisterParams extends LoginVM {
   @ApiModelPropertyOptional()
-  firstName?: string;
+  name?: string;
   @ApiModelPropertyOptional()
-  lastName?: string;
+  // @Length({ min: 11, max: 11 })
+  phone?: string;
   @ApiModelProperty({ example: 'admin@google.com' })
   email: string;
   @ApiModelProperty({ example: '123456' })

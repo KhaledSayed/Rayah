@@ -12,6 +12,7 @@ import {
   HttpException,
   HttpStatus,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { SliderService } from './slider.service';
 import { SliderVm } from './models/view-models/slider-vm.model';
@@ -28,6 +29,10 @@ import { ApiException } from 'shared/api-exception.model';
 import { Slider } from './models/slider.model';
 import { GetOperationId } from 'shared/utilities/get-operation-id';
 import { ToInt } from 'shared/pipes/to-int.pipe';
+import { Roles } from 'shared/decorators/roles.decorator';
+import { UserRole } from 'user/models/user-role.enum';
+import { AuthGuard } from '@nestjs/passport';
+import { RolesGuard } from 'shared/guards/roles.guard';
 
 @Controller('sliders')
 @ApiUseTags(Slider.modelName)
@@ -84,6 +89,8 @@ export class SliderController {
   @Post()
   @ApiOperation(GetOperationId(Slider.modelName, 'Create'))
   @UseInterceptors(FileInterceptor('banner'))
+  @Roles(UserRole.Admin)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   async post(
     @UploadedFile() banner,
     @Body() sliderParams: SliderParams,
@@ -106,6 +113,8 @@ export class SliderController {
   @Put(':id')
   @ApiOperation(GetOperationId(Slider.modelName, 'Put'))
   @UseInterceptors(FileInterceptor('banner'))
+  @Roles(UserRole.Admin)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   async put(
     @UploadedFile() banner,
     @Param('id') id,
@@ -135,6 +144,8 @@ export class SliderController {
 
   @Delete(':id')
   @ApiOperation(GetOperationId(Slider.modelName, 'Delete'))
+  @Roles(UserRole.Admin)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   async delete(@Param('id') id): Promise<SliderVm> {
     const slider = await this._sliderService.findById(id);
 

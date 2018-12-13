@@ -71,11 +71,14 @@ export class OrderService extends BaseService<Order> {
     orderParams: OrderPutParams,
     products: ProductItem[],
   ): Promise<OrderVm> {
+    console.log('@onUpdateOrder #1');
     let total = NoviceHelper.calculateTotal(products);
     total = NoviceHelper.applyCoupon(total, order.coupon);
 
     order.total = total;
     order.note = orderParams.note;
+    order.basket = [];
+
     products.forEach(item => {
       order.basket.push({
         quantity: item.quantity,
@@ -85,19 +88,23 @@ export class OrderService extends BaseService<Order> {
       });
     });
 
-    if (order.coupon !== null) {
-      order.coupon = Types.ObjectId(order.coupon.id);
-    }
+    console.log('@onUpdateOrder #2', order);
+    // if (order.coupon !== null && order.coupon.id) {
+    //   order.coupon = Types.ObjectId(order.coupon.id);
+    // }
 
     order.address = orderParams.address;
 
     order.status = orderParams.status;
+    console.log('@onUpdateOrder #3', order);
 
     try {
       const updatedOrder = await this.update(order.id, order);
+      console.log('@onUpdateOrder #4', updatedOrder);
 
       return await this.map<OrderVm>(updatedOrder.toJSON());
     } catch (e) {
+      console.log(e);
       throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }

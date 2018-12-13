@@ -7,6 +7,7 @@ import {
   Request,
   Get,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { RegisterParams } from './models/view-models/register-vm.model';
 import { UserVM } from './models/view-models/user-vm.model';
@@ -24,6 +25,10 @@ import { LoginVM } from './models/view-models/login-vm.model';
 import { LoginResponseVM } from './models/view-models/login-response-vm.model';
 import { ToInt } from 'shared/pipes/to-int.pipe';
 import { map } from 'lodash';
+import { Roles } from 'shared/decorators/roles.decorator';
+import { UserRole } from './models/user-role.enum';
+import { AuthGuard } from '@nestjs/passport';
+import { RolesGuard } from 'shared/guards/roles.guard';
 @Controller('users')
 @ApiUseTags(User.modelName)
 export class UserController {
@@ -39,6 +44,8 @@ export class UserController {
     type: Number,
   })
   @ApiImplicitQuery({ name: 'perPage', required: true, type: Number })
+  @Roles(UserRole.Admin)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   async getUsers(
     @Query('page', new ToInt()) page: number,
     @Query('perPage', new ToInt()) perPage: number,

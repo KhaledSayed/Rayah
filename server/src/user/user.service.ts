@@ -31,10 +31,10 @@ export class UserService extends BaseService<User> {
   }
 
   async register(registerVm: RegisterParams): Promise<User> {
-    const { firstName, lastName, email, password } = registerVm;
+    const { phone, name, email, password } = registerVm;
     const newUser = new this._model(); // InstanceType<User>
-    newUser.firstName = firstName;
-    newUser.lastName = lastName;
+    newUser.phone = phone;
+    newUser.name = name;
     newUser.email = email;
 
     const salat = await genSalt(10);

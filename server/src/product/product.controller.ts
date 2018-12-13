@@ -41,6 +41,7 @@ import { RolesGuard } from 'shared/guards/roles.guard';
 import { Types } from 'mongoose';
 import { ToInt } from 'shared/pipes/to-int.pipe';
 import { ToBooleanPipe } from 'shared/pipes/to-boolean.pipe';
+import { UserRole } from 'user/models/user-role.enum';
 
 @Controller('products')
 @ApiUseTags(Product.modelName)
@@ -146,6 +147,8 @@ export class ProductController {
   }
 
   @Post()
+  @Roles(UserRole.Admin)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   async post(@Body() productParams: ProductParams) {
     try {
       const product = await this._prodcutService.onCreateProduct(productParams);
@@ -159,6 +162,8 @@ export class ProductController {
 
   @Put(':id')
   @ApiOperation(GetOperationId(Product.modelName, 'Put'))
+  @Roles(UserRole.Admin)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   async put(
     @Param('id') id,
     @Body() productParams: ProductParamsPut,
@@ -184,6 +189,8 @@ export class ProductController {
   @Put(':id/thumbnail')
   @ApiOperation(GetOperationId(Product.modelName, 'CreateThumbnail'))
   @UseInterceptors(FileInterceptor('banner'))
+  @Roles(UserRole.Admin)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   async postThumbnail(@Param('id') id, @UploadedFile() banner) {
     console.log(id);
     if (!banner || !banner.path) {
@@ -209,6 +216,8 @@ export class ProductController {
   @Put(':id/gallery')
   @ApiOperation(GetOperationId(Product.modelName, 'Create Gallery'))
   @UseInterceptors(FilesInterceptor('gallery[]'))
+  @Roles(UserRole.Admin)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   async postGallery(@Param('id') id, @UploadedFiles() gallery) {
     console.log(id);
     console.log('Gallery:', gallery);
@@ -237,6 +246,8 @@ export class ProductController {
 
   @Delete(':id')
   @ApiOperation(GetOperationId(Product.modelName, 'Delete'))
+  @Roles(UserRole.Admin)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   async delete(@Param('id') id): Promise<ProductVm> {
     const product = await this._prodcutService.findById(id);
 
@@ -255,6 +266,8 @@ export class ProductController {
 
   @Delete(':id/gallery/:index')
   @ApiOperation(GetOperationId(Product.modelName, 'DeleteGalleryp'))
+  @Roles(UserRole.Admin)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   async deleteFromGallery(
     @Param('id') id,
     @Param('index') index,

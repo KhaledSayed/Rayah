@@ -51,8 +51,8 @@ export class CouponController {
     type: Number,
   })
   @ApiImplicitQuery({ name: 'perPage', required: true, type: Number })
-  // @Roles(UserRole.Admin)
-  // @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.Admin)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   async get(
     @Query('page', new ToInt()) page: number,
     @Query('perPage', new ToInt()) perPage: number,
@@ -71,6 +71,8 @@ export class CouponController {
 
   @Post()
   @ApiOperation(GetOperationId(Coupon.modelName, 'Post'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.Admin, UserRole.User)
   async post(@Body() couponParams: CouponParams): Promise<CouponVm> {
     try {
       const coupon = this._couponService.onCreateCoupon(couponParams);
@@ -83,6 +85,8 @@ export class CouponController {
 
   @Put(':id')
   @ApiOperation(GetOperationId(Coupon.modelName, 'Put'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.Admin)
   async put(
     @Body() couponParams: CouponPutParams,
     @Param('id') id,
@@ -106,6 +110,8 @@ export class CouponController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.Admin)
   @ApiOperation(GetOperationId(Coupon.modelName, 'Delete'))
   async delete(@Param('id') id) {
     const existCoupon = await this._couponService.findById(id);

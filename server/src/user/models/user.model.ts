@@ -21,16 +21,12 @@ export class User extends BaseModel<User> {
   role?: UserRole;
 
   @prop()
-  firstName?: string;
+  name?: string;
   @prop()
-  lastName?: string;
+  phone?: string;
 
   @prop({ required: false })
   address: string;
-  @prop()
-  get fullname() {
-    return `${this.firstName} ${this.lastName}`;
-  }
 
   static get model(): ModelType<User> {
     return new User().getModelForClass(User, { schemaOptions });
