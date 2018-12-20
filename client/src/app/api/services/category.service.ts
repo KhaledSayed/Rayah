@@ -209,7 +209,7 @@ namespace CategoryService {
   export interface CategoryGetParams {
     perPage: number;
     page: number;
-    parent: string;
+    parent?: string;
   }
 }
 

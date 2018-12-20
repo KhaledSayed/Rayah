@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="10dp"
+        app:cardMaxElevation="5dp"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:id="@+id/cartImage"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:id="@+id/fragranceName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dip"
+                android:layout_toRightOf="@+id/cartImage"
+                android:layout_weight="1"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textColor="@color/whitebluecolo"
+                android:textSize="20sp"
+                tools:text="@string/fragrance_name" />
+
+            <TextView
+                android:id="@+id/quantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/fragranceName"
+                android:layout_marginTop="@dimen/item_space"
+                android:layout_toEndOf="@+id/cartImage"
+                android:layout_toRightOf="@+id/cartImage"
+                android:layout_weight="1"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textColor="@color/whitebluecolo"
+                android:textSize="16sp"
+                tools:text="@string/quantity" />
+
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/quantity"
+                android:layout_marginTop="@dimen/item_space"
+                android:layout_toEndOf="@+id/cartImage"
+                android:layout_toRightOf="@+id/cartImage"
+                android:layout_weight="1"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textColor="@color/whitebluecolo"
+                android:textSize="16sp"
+                tools:text="@string/price" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+</RelativeLayout>

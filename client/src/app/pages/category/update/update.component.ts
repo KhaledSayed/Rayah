@@ -63,6 +63,7 @@ export class UpdateComponent implements OnInit {
     });
 
     this.courseObservable.subscribe(results => {
+      console.log("Categories", results);
       this.loadCategory(this.idParam, results);
     });
   }
@@ -70,14 +71,14 @@ export class UpdateComponent implements OnInit {
   loadCategory(id, categories = []) {
     this.categoryService.findOne(id).subscribe(
       results => {
-        console.log(results.parent);
+        console.log(results);
         this.currentCategory = results;
         this.myForm.controls["name"].setValue(results.name);
         this.myForm.controls["parent"].setValue(results.parent.id);
         this.myForm.controls["description"].setValue(results.description);
         this.selectedItem = results.parent;
         this.selectedImage = `http://localhost:8080/${results.thumbnail}`;
-        console.log(this.selectedItem);
+        console.log(this.selectedImage);
         this.categoryAr = [];
         this.categoryAr.push({
           id: null,
@@ -86,15 +87,12 @@ export class UpdateComponent implements OnInit {
           thumbnail: ""
         });
 
-        console.log("Subcategories Length", this.categoryAr.length);
-
         categories.forEach(item => {
           if (results.id !== item.id) {
             this.categoryAr.push(item);
           }
+          console.log("###");
         });
-
-        console.log("Subcategories Length", this.categoryAr.length);
       },
       err => {
         console.log(err);

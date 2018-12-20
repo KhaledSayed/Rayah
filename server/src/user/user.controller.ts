@@ -66,7 +66,7 @@ export class UserController {
     const { email, password } = registerVM;
 
     console.log(registerVM);
-
+  
     if (!email) {
       throw new HttpException('email is required', HttpStatus.BAD_REQUEST);
     }

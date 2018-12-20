@@ -1,0 +1,68 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    tools:context="com.delaroystudios.fragrancecart.Fragments.SearchFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:gravity="center"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/search_toolbar"
+            android:layout_alignTop="@+id/search_toolbar"
+            android:layout_marginStart="19dp"
+            android:layout_marginTop="13dp"
+            android:src="@drawable/search_if" />
+
+        <EditText
+            android:id="@+id/search_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="@string/Whatyouwant"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:background="@drawable/backwithborder"
+            android:layout_margin="15dp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/search_toolbar"
+            >
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/search_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <ProgressBar
+                    android:id="@+id/searchactivity_progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+</FrameLayout>

@@ -4,6 +4,7 @@ import { prop, ModelType, Typegoose } from 'typegoose';
 import { isEmail } from 'shared/utilities/validators';
 
 export class User extends BaseModel<User> {
+
   @prop({
     required: [true, 'E-mail is Required'],
     unique: true,

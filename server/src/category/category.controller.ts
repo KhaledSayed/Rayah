@@ -46,7 +46,7 @@ export class CategoryController {
   @Get(':id')
   @ApiResponse({ status: HttpStatus.OK, type: CategoryVm, isArray: false })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ApiException })
-  @ApiOperation(GetOperationId(Category.modelName, 'Get'))
+  @ApiOperation(GetOperationId(Category.modelName, 'GetOne'))
   @ApiImplicitParam({
     name: 'id',
     required: true,

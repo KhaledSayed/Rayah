@@ -67,6 +67,7 @@ export class ProductController {
   @ApiImplicitQuery({ name: 'minPrice', isArray: false, required: false })
   @ApiImplicitQuery({ name: 'maxPrice', isArray: false, required: false })
   @ApiImplicitQuery({ name: 'featured', isArray: false, required: false })
+  @ApiImplicitQuery({ name: 'searchQuery', isArray: false, required: false })
   async get(
     @Query('category') categories: string,
     @Query('page', new ToInt()) page: number,
@@ -74,6 +75,7 @@ export class ProductController {
     @Query('minPrice', new ToInt()) minPrice: number,
     @Query('maxPrice', new ToInt()) maxPrice: number,
     @Query('featured', new ToBooleanPipe()) featured: boolean,
+    @Query('searchQuery') search: string,
   ): Promise<ProductVm> {
     console.log(categories);
 
@@ -81,6 +83,12 @@ export class ProductController {
     let featuredQuery = [];
     let categoriesQuery = [];
     let categoriesArray = null;
+    let searchQuery = {};
+
+    console.log('Search query', search);
+    if (search !== undefined) {
+      searchQuery = { firstName: { $regex: `^${search}.*`, $options: 'i' } };
+    }
 
     if (categories !== undefined) {
       categoriesArray = categories.split(',');
@@ -94,9 +102,6 @@ export class ProductController {
     }
 
     if (minPrice) {
-      priceQuery.push({
-        price: { $lte: minPrice },
-      });
     }
 
     if (maxPrice) {
@@ -113,7 +118,12 @@ export class ProductController {
 
     if (categoriesQuery.length != 0) {
       productQuery = {
-        $and: [{ $or: [...categoriesQuery] }, ...priceQuery, ...featuredQuery],
+        $and: [
+          { $or: [...categoriesQuery] },
+          ...priceQuery,
+          ...featuredQuery,
+          searchQuery,
+        ],
       };
     }
 

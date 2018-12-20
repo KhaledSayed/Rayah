@@ -17,4 +17,10 @@ export class ProductVm extends BaseModelVm {
 
   @ApiModelProperty({ example: true })
   featured: boolean;
+
+  @ApiModelProperty()
+  thumbnail: string;
+
+  @ApiModelProperty()
+  gallery: string[];
 }
