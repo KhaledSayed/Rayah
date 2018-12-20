@@ -3,15 +3,15 @@ import { Inject } from 'typedi';
 import { InjectModel } from '@nestjs/mongoose';
 import { Order } from './models/order.model';
 import { ModelType } from 'typegoose';
-import { MapperService } from 'shared/mapper/mapper.service';
-import { BaseService } from 'shared/base.service';
+import { MapperService } from '../shared/mapper/mapper.service';
+import { BaseService } from '../shared/base.service';
 import { OrderParam } from './models/view-models/order-params.model';
 import { OrderVm } from './models/view-models/order-vm.model';
 import { ObjectID } from 'bson';
 import { Types } from 'mongoose';
 import { ProductItem } from './models/product-item.model';
 import { NoviceHelper } from './helpers/novice-calculator.helper';
-import { Coupon } from 'coupon/models/coupon.model';
+import { Coupon } from '../coupon/models/coupon.model';
 import { OrderPutParams } from './models/view-models/order-put-params.model';
 
 @Injectable()

@@ -1,11 +1,11 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { BaseService } from 'shared/base.service';
-import { Todo } from 'todo/models/todo.model';
+import { BaseService } from './shared/base.service';
+import { Todo } from './todo/models/todo.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { ModelType } from 'typegoose';
-import { MapperService } from 'shared/mapper/mapper.service';
-import { TodoParams } from 'todo/models/view-models/todo-params.model';
-import { TodoVm } from 'todo/models/view-models/todo-vm.model';
+import { MapperService } from './shared/mapper/mapper.service';
+import { TodoParams } from './todo/models/view-models/todo-params.model';
+import { TodoVm } from './todo/models/view-models/todo-vm.model';
 
 @Injectable()
 export class TodoService extends BaseService<Todo> {

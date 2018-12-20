@@ -1,14 +1,14 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { BaseService } from 'shared/base.service';
+import { BaseService } from '../shared/base.service';
 import { Product } from './models/product.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { ModelType } from 'typegoose';
-import { MapperService } from 'shared/mapper/mapper.service';
+import { MapperService } from '../shared/mapper/mapper.service';
 import { ProductParams } from './models/view-models/product-params.model';
 import { ProductVm } from './models/view-models/product-vm.model';
 import { Types } from 'mongoose';
 import { ProductParamsPut } from './models/view-models/product-params-put.model';
-import { Category } from 'category/models/category.model';
+import { Category } from '../category/models/category.model';
 
 @Injectable()
 export class ProductService extends BaseService<Product> {

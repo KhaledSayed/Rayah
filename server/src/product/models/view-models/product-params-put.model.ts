@@ -1,5 +1,5 @@
 import { ApiModelProperty, ApiModelPropertyOptional } from '@nestjs/swagger';
-import { Category } from 'category/models/category.model';
+import { Category } from '../../../category/models/category.model';
 import {
   IsString,
   IsDefined,
@@ -10,9 +10,9 @@ import {
 import {
   IsProductUnique,
   isUniqueProductCode,
-} from 'shared/validators/product/unique-code';
-import { IsCategoryExists } from 'shared/validators/category/category-exists.validator';
-import { BaseModelVm } from 'shared/base.model';
+} from '../../../shared/validators/product/unique-code';
+import { IsCategoryExists } from '../../../shared/validators/category/category-exists.validator';
+import { BaseModelVm } from '../../../shared/base.model';
 
 export class ProductParamsPut {
   @ApiModelProperty({ example: 'Chipsey' })

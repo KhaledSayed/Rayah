@@ -18,17 +18,17 @@ import {
   ApiImplicitQuery,
 } from '@nestjs/swagger';
 import { User } from './models/user.model';
-import { ApiException } from 'shared/api-exception.model';
-import { GetOperationId } from 'shared/utilities/get-operation-id';
+import { ApiException } from '../shared/api-exception.model';
+import { GetOperationId } from '../shared/utilities/get-operation-id';
 import { UserService } from './user.service';
 import { LoginVM } from './models/view-models/login-vm.model';
 import { LoginResponseVM } from './models/view-models/login-response-vm.model';
-import { ToInt } from 'shared/pipes/to-int.pipe';
+import { ToInt } from '../shared/pipes/to-int.pipe';
 import { map } from 'lodash';
-import { Roles } from 'shared/decorators/roles.decorator';
+import { Roles } from '../shared/decorators/roles.decorator';
 import { UserRole } from './models/user-role.enum';
 import { AuthGuard } from '@nestjs/passport';
-import { RolesGuard } from 'shared/guards/roles.guard';
+import { RolesGuard } from '../shared/guards/roles.guard';
 @Controller('users')
 @ApiUseTags(User.modelName)
 export class UserController {
@@ -66,7 +66,7 @@ export class UserController {
     const { email, password } = registerVM;
 
     console.log(registerVM);
-  
+
     if (!email) {
       throw new HttpException('email is required', HttpStatus.BAD_REQUEST);
     }

@@ -5,13 +5,13 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { CouponLevel } from 'coupon/models/coupon-level.enum';
+import { CouponLevel } from '../../../coupon/models/coupon-level.enum';
 import { Typegoose, ModelType, InstanceType } from 'typegoose';
 import { throws } from 'assert';
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { ProductService } from 'product/product.service';
-import { CouponService } from 'coupon/coupon.service';
+import { ProductService } from '../../../product/product.service';
+import { CouponService } from '../../../coupon/coupon.service';
 
 @ValidatorConstraint({ async: true })
 @Injectable()

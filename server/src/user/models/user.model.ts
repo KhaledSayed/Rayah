@@ -1,10 +1,9 @@
-import { BaseModel, schemaOptions } from 'shared/base.model';
+import { BaseModel, schemaOptions } from '../../shared/base.model';
 import { UserRole } from './user-role.enum';
 import { prop, ModelType, Typegoose } from 'typegoose';
-import { isEmail } from 'shared/utilities/validators';
+import { isEmail } from '../../shared/utilities/validators';
 
 export class User extends BaseModel<User> {
-
   @prop({
     required: [true, 'E-mail is Required'],
     unique: true,

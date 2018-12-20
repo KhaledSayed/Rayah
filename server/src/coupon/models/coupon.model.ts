@@ -1,4 +1,4 @@
-import { BaseModel, schemaOptions } from 'shared/base.model';
+import { BaseModel, schemaOptions } from '../../shared/base.model';
 import { prop, ModelType } from 'typegoose';
 import { CouponLevel } from './coupon-level.enum';
 import * as moment from 'moment';
@@ -44,7 +44,8 @@ export class Coupon extends BaseModel<Coupon> {
     console.log(this.usedBy, this.numberOfPeople);
     return (
       moment(new Date().toISOString()).isSameOrBefore(moment(this.endDate)) &&
-      this.usedBy + 1 <= this.numberOfPeople && this.active
+      this.usedBy + 1 <= this.numberOfPeople &&
+      this.active
     );
   }
 

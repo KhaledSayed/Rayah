@@ -1,6 +1,6 @@
-import { BaseModel, schemaOptions } from 'shared/base.model';
+import { BaseModel, schemaOptions } from '../../shared/base.model';
 import { prop, ModelType, Ref } from 'typegoose';
-import { BaseItemModel } from 'shared/base-item.model';
+import { BaseItemModel } from '../../shared/base-item.model';
 
 export class Category extends BaseItemModel<Category> {
   @prop({ required: true })

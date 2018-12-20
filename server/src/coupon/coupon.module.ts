@@ -6,8 +6,8 @@ import { Coupon } from './models/coupon.model';
 import {
   IsCouponUnique,
   IsUniqueCouponCode,
-} from 'shared/validators/coupons/unique-coupon.validator';
-import { CheckCouponValidity } from 'shared/validators/orders/valid-coupon.validator';
+} from '../shared/validators/coupons/unique-coupon.validator';
+import { CheckCouponValidity } from '../shared/validators/orders/valid-coupon.validator';
 
 @Module({
   exports: [CouponService],

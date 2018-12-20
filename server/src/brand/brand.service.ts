@@ -2,8 +2,8 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Brand } from './models/brand.model';
 import { ModelType } from 'typegoose';
-import { MapperService } from 'shared/mapper/mapper.service';
-import { BaseService } from 'shared/base.service';
+import { MapperService } from '../shared/mapper/mapper.service';
+import { BaseService } from '../shared/base.service';
 import { BrandVm } from './models/view-models/brand-vm.model';
 import { BrandParam } from './models/view-models/brand-param.model';
 

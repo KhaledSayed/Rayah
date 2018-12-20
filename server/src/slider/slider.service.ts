@@ -1,13 +1,13 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { BaseService } from 'shared/base.service';
+import { BaseService } from '../shared/base.service';
 import { Slider } from './models/slider.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { ModelType } from 'typegoose';
-import { MapperService } from 'shared/mapper/mapper.service';
+import { MapperService } from '../shared/mapper/mapper.service';
 import { SliderParams } from './models/view-models/slider-param.model';
 import { Types } from 'mongoose';
 import { SliderVm } from './models/view-models/slider-vm.model';
-import { BrandVm } from 'brand/models/view-models/brand-vm.model';
+import { BrandVm } from '../brand/models/view-models/brand-vm.model';
 
 @Injectable()
 export class SliderService extends BaseService<Slider> {

@@ -5,12 +5,12 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { Category } from './models/category.model';
-import { BrandService } from 'brand/brand.service';
-import { IsCategoryExist } from 'shared/validators/category/category-exists.validator';
-import { CheckItemValidity } from 'shared/validators/slider/is-item.validator';
-import { ProductService } from 'product/product.service';
-import { ProductModule } from 'product/product.module';
-import { Product } from 'product/models/product.model';
+import { BrandService } from '../brand/brand.service';
+import { IsCategoryExist } from '../shared/validators/category/category-exists.validator';
+import { CheckItemValidity } from '../shared/validators/slider/is-item.validator';
+import { ProductService } from '../product/product.service';
+import { ProductModule } from '../product/product.module';
+import { Product } from '../product/models/product.model';
 
 @Module({
   controllers: [CategoryController],

@@ -12,10 +12,10 @@ import {
   IsDateString,
   IsDefined,
 } from 'class-validator';
-import { IsBefore } from 'shared/validators/coupons/time-validators';
-import { IsPercentage } from 'shared/validators/coupons/percentage.validators';
-import { IsUniqueCouponCode } from 'shared/validators/coupons/unique-coupon.validator';
-import { BetweenMinAndMaximum } from 'shared/validators/coupons/min-max.validator';
+import { IsBefore } from '../../../shared/validators/coupons/time-validators';
+import { IsPercentage } from '../../../shared/validators/coupons/percentage.validators';
+import { IsUniqueCouponCode } from '../../../shared/validators/coupons/unique-coupon.validator';
+import { BetweenMinAndMaximum } from '../../../shared/validators/coupons/min-max.validator';
 
 export class CouponParams {
   @ApiModelProperty({ example: CouponLevel.Fixed })

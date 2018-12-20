@@ -25,15 +25,15 @@ import { map } from 'lodash';
 import { CouponParams } from './models/view-models/coupon-params.model';
 import { CouponLevel } from './models/coupon-level.enum';
 import * as moment from 'moment';
-import { IsUniqueCouponCode } from 'shared/validators/coupons/unique-coupon.validator';
+import { IsUniqueCouponCode } from '../shared/validators/coupons/unique-coupon.validator';
 import { CouponPutParams } from './models/view-models/coupon-put-params.model.';
-import { ToInt } from 'shared/pipes/to-int.pipe';
-import { ApiException } from 'shared/api-exception.model';
-import { GetOperationId } from 'shared/utilities/get-operation-id';
-import { Roles } from 'shared/decorators/roles.decorator';
-import { UserRole } from 'user/models/user-role.enum';
+import { ToInt } from '../shared/pipes/to-int.pipe';
+import { ApiException } from '../shared/api-exception.model';
+import { GetOperationId } from '../shared/utilities/get-operation-id';
+import { Roles } from '../shared/decorators/roles.decorator';
+import { UserRole } from '../user/models/user-role.enum';
 import { AuthGuard } from '@nestjs/passport';
-import { RolesGuard } from 'shared/guards/roles.guard';
+import { RolesGuard } from '../shared/guards/roles.guard';
 
 @Controller('coupons')
 @ApiUseTags(Coupon.name)

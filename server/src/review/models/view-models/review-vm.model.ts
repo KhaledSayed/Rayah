@@ -1,7 +1,7 @@
-import { BaseModelVm } from 'shared/base.model';
+import { BaseModelVm } from '../../../shared/base.model';
 import { ApiModelProperty, ApiModelPropertyOptional } from '@nestjs/swagger';
-import { User } from 'user/models/user.model';
-import { Product } from 'product/models/product.model';
+import { User } from '../../../user/models/user.model';
+import { Product } from '../../../product/models/product.model';
 
 export class ReviewVm extends BaseModelVm {
   @ApiModelProperty()

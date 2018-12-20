@@ -32,16 +32,16 @@ import {
   ApiUseTags,
   ApiBearerAuth,
 } from '@nestjs/swagger';
-import { ApiException } from 'shared/api-exception.model';
-import { GetOperationId } from 'shared/utilities/get-operation-id';
+import { ApiException } from '../shared/api-exception.model';
+import { GetOperationId } from '../shared/utilities/get-operation-id';
 import { Product } from './models/product.model';
-import { Roles } from 'shared/decorators/roles.decorator';
+import { Roles } from '../shared/decorators/roles.decorator';
 import { AuthGuard } from '@nestjs/passport';
-import { RolesGuard } from 'shared/guards/roles.guard';
+import { RolesGuard } from '../shared/guards/roles.guard';
 import { Types } from 'mongoose';
-import { ToInt } from 'shared/pipes/to-int.pipe';
-import { ToBooleanPipe } from 'shared/pipes/to-boolean.pipe';
-import { UserRole } from 'user/models/user-role.enum';
+import { ToInt } from '../shared/pipes/to-int.pipe';
+import { ToBooleanPipe } from '../shared/pipes/to-boolean.pipe';
+import { UserRole } from '../user/models/user-role.enum';
 
 @Controller('products')
 @ApiUseTags(Product.modelName)

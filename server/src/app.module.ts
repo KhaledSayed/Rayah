@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SharedModule } from './shared/shared.module';
-import { ConfigurationService } from 'shared/configuration/configuration.service';
-import { Configuration } from 'shared/configuration/configuration.enum';
+import { ConfigurationService } from './shared/configuration/configuration.service';
+import { Configuration } from './shared/configuration/configuration.enum';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { TodoModule } from './todo/todo.module';
@@ -16,13 +16,13 @@ import { SliderModule } from './slider/slider.module';
 import { CouponModule } from './coupon/coupon.module';
 import { OrderModule } from './order/order.module';
 import { ReviewModule } from './review/review.module';
-import { BrandService } from 'brand/brand.service';
-import { CouponService } from 'coupon/coupon.service';
-import { IsUniqueCouponCode } from 'shared/validators/coupons/unique-coupon.validator';
-import { ProductService } from 'product/product.service';
-import { OrderService } from 'order/order.service';
-import { SliderService } from 'slider/slider.service';
-import { CheckItemValidity } from 'shared/validators/slider/is-item.validator';
+import { BrandService } from './brand/brand.service';
+import { CouponService } from './coupon/coupon.service';
+import { IsUniqueCouponCode } from './shared/validators/coupons/unique-coupon.validator';
+import { ProductService } from './product/product.service';
+import { OrderService } from './order/order.service';
+import { SliderService } from './slider/slider.service';
+import { CheckItemValidity } from './shared/validators/slider/is-item.validator';
 @Module({
   imports: [
     SharedModule,

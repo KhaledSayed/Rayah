@@ -1,7 +1,7 @@
 import { TodoLevel } from '../todo-level.enum';
 import { ApiModelPropertyOptional, ApiModelProperty } from '@nestjs/swagger';
-import { EnumToArray } from 'shared/utilities/enum-to-array';
-import { BaseModelVm } from 'shared/base.model';
+import { EnumToArray } from './../../../shared/utilities/enum-to-array';
+import { BaseModelVm } from './../../../shared/base.model';
 
 export class TodoParams extends BaseModelVm {
   @ApiModelProperty()

@@ -1,6 +1,6 @@
-import { ProductItem } from 'order/models/product-item.model';
-import { Coupon } from 'coupon/models/coupon.model';
-import { CouponLevel } from 'coupon/models/coupon-level.enum';
+import { ProductItem } from '../../order/models/product-item.model';
+import { Coupon } from '../../coupon/models/coupon.model';
+import { CouponLevel } from '../../coupon/models/coupon-level.enum';
 
 export class NoviceHelper {
   static calculateTotal(productItems: ProductItem[]): number {

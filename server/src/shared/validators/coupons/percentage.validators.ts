@@ -3,7 +3,7 @@ import {
   ValidationOptions,
   ValidationArguments,
 } from 'class-validator';
-import { CouponLevel } from 'coupon/models/coupon-level.enum';
+import { CouponLevel } from '../../../coupon/models/coupon-level.enum';
 
 export function IsPercentage(
   property: string,

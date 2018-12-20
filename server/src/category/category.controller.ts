@@ -28,13 +28,13 @@ import { Category } from './models/category.model';
 import { CategoryVm } from './models/view-models/category-vm.model';
 import { map } from 'lodash';
 import { CategoryParams } from './models/view-models/category-params.model';
-import { ApiException } from 'shared/api-exception.model';
-import { GetOperationId } from 'shared/utilities/get-operation-id';
-import { UserRole } from 'user/models/user-role.enum';
-import { Roles } from 'shared/decorators/roles.decorator';
+import { ApiException } from '../shared/api-exception.model';
+import { GetOperationId } from '../shared/utilities/get-operation-id';
+import { UserRole } from '../user/models/user-role.enum';
+import { Roles } from '../shared/decorators/roles.decorator';
 import { AuthGuard } from '@nestjs/passport';
-import { RolesGuard } from 'shared/guards/roles.guard';
-import { ToInt } from 'shared/pipes/to-int.pipe';
+import { RolesGuard } from '../shared/guards/roles.guard';
+import { ToInt } from '../shared/pipes/to-int.pipe';
 import { Types } from 'mongoose';
 
 @Controller('categories')

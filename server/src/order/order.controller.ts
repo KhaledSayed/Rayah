@@ -17,13 +17,13 @@ import {
 import { OrderParam } from './models/view-models/order-params.model';
 import { OrderVm } from './models/view-models/order-vm.model';
 import { OrderService } from './order.service';
-import { ProductService } from 'product/product.service';
-import { CouponService } from 'coupon/coupon.service';
-import { User } from 'user/models/user.model';
-import { Roles } from 'shared/decorators/roles.decorator';
-import { UserRole } from 'user/models/user-role.enum';
+import { ProductService } from '../product/product.service';
+import { CouponService } from '../coupon/coupon.service';
+import { User } from '../user/models/user.model';
+import { Roles } from '../shared/decorators/roles.decorator';
+import { UserRole } from '../user/models/user-role.enum';
 import { AuthGuard } from '@nestjs/passport';
-import { RolesGuard } from 'shared/guards/roles.guard';
+import { RolesGuard } from '../shared/guards/roles.guard';
 import { async } from 'rxjs/internal/scheduler/async';
 import { ProductItem } from './models/product-item.model';
 import { Types } from 'mongoose';
@@ -38,13 +38,13 @@ import {
   ApiImplicitParam,
 } from '@nestjs/swagger';
 import { Order } from './models/order.model';
-import { ApiException } from 'shared/api-exception.model';
-import { GetOperationId } from 'shared/utilities/get-operation-id';
-import { ToInt } from 'shared/pipes/to-int.pipe';
+import { ApiException } from '../shared/api-exception.model';
+import { GetOperationId } from '../shared/utilities/get-operation-id';
+import { ToInt } from '../shared/pipes/to-int.pipe';
 import { OrderLevel } from './models/order-level.enum';
-import { EnumToArray } from 'shared/utilities/enum-to-array';
+import { EnumToArray } from '../shared/utilities/enum-to-array';
 import { stat } from 'fs';
-import { UserService } from 'user/user.service';
+import { UserService } from '../user/user.service';
 
 @Controller('orders')
 @ApiUseTags(Order.modelName)

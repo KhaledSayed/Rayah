@@ -1,8 +1,8 @@
-import { BaseModel, schemaOptions } from 'shared/base.model';
+import { BaseModel, schemaOptions } from '../../shared/base.model';
 import { prop, Ref, ModelType } from 'typegoose';
 import { SliderLevel } from './slider-level.enum';
-import { Product } from 'product/models/product.model';
-import { Category } from 'category/models/category.model';
+import { Product } from '../../product/models/product.model';
+import { Category } from '../../category/models/category.model';
 
 export class Slider extends BaseModel<Slider> {
   @prop({ required: true })

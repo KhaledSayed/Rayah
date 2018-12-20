@@ -25,14 +25,14 @@ import {
   ApiImplicitQuery,
   ApiUseTags,
 } from '@nestjs/swagger';
-import { ApiException } from 'shared/api-exception.model';
+import { ApiException } from '../shared/api-exception.model';
 import { Slider } from './models/slider.model';
-import { GetOperationId } from 'shared/utilities/get-operation-id';
-import { ToInt } from 'shared/pipes/to-int.pipe';
-import { Roles } from 'shared/decorators/roles.decorator';
-import { UserRole } from 'user/models/user-role.enum';
+import { GetOperationId } from '../shared/utilities/get-operation-id';
+import { ToInt } from '../shared/pipes/to-int.pipe';
+import { Roles } from '../shared/decorators/roles.decorator';
+import { UserRole } from '../user/models/user-role.enum';
 import { AuthGuard } from '@nestjs/passport';
-import { RolesGuard } from 'shared/guards/roles.guard';
+import { RolesGuard } from '../shared/guards/roles.guard';
 
 @Controller('sliders')
 @ApiUseTags(Slider.modelName)

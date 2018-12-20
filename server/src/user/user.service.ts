@@ -5,16 +5,16 @@ import {
   Inject,
   forwardRef,
 } from '@nestjs/common';
-import { BaseService } from 'shared/base.service';
+import { BaseService } from '../shared/base.service';
 import { User } from './models/user.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { ModelType } from 'typegoose';
-import { MapperService } from 'shared/mapper/mapper.service';
+import { MapperService } from '../shared/mapper/mapper.service';
 import { RegisterParams } from './models/view-models/register-vm.model';
 import { genSalt, hash, compare } from 'bcryptjs';
 import { LoginVM } from './models/view-models/login-vm.model';
-import { AuthService } from 'shared/auth/auth.service';
-import { JWTPayload } from 'shared/auth/jwt-payload';
+import { AuthService } from '../shared/auth/auth.service';
+import { JWTPayload } from '../shared/auth/jwt-payload';
 import { UserVM } from './models/view-models/user-vm.model';
 import { LoginResponseVM } from './models/view-models/login-response-vm.model';
 

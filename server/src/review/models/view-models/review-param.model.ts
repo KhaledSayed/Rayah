@@ -1,5 +1,5 @@
 import { ApiModelProperty, ApiModelPropertyOptional } from '@nestjs/swagger';
-import { Product } from 'product/models/product.model';
+import { Product } from '../../../product/models/product.model';
 
 export class ReviewParam {
   @ApiModelProperty()

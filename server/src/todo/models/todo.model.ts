@@ -1,4 +1,4 @@
-import { BaseModel, schemaOptions } from 'shared/base.model';
+import { BaseModel, schemaOptions } from './../../shared/base.model';
 import { TodoLevel } from './todo-level.enum';
 import { prop, ModelType } from 'typegoose';
 

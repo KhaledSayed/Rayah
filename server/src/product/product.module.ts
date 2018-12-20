@@ -8,14 +8,14 @@ import { extname } from 'path';
 import {
   IsProductUnique,
   isUniqueProductCode,
-} from 'shared/validators/product/unique-code';
-import { CheckOrderValidation } from 'shared/validators/orders/valid-order.validator';
+} from '../shared/validators/product/unique-code';
+import { CheckOrderValidation } from '../shared/validators/orders/valid-order.validator';
 import {
   IsProductValid,
   CheckProductValidity,
-} from 'shared/validators/product/valid-product.validator';
-import { CheckProductQuantity } from 'shared/validators/product/is-applicable.validator';
-import { CheckItemValidity } from 'shared/validators/slider/is-item.validator';
+} from '../shared/validators/product/valid-product.validator';
+import { CheckProductQuantity } from '../shared/validators/product/is-applicable.validator';
+import { CheckItemValidity } from '../shared/validators/slider/is-item.validator';
 
 @Module({
   controllers: [ProductController],

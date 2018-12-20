@@ -12,7 +12,7 @@ import { throws } from 'assert';
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { CouponService } from 'coupon/coupon.service';
 import { Model } from 'mongoose';
-import { CategoryService } from 'category/category.service';
+import { CategoryService } from '../../../category/category.service';
 
 @ValidatorConstraint({ async: true })
 @Injectable()

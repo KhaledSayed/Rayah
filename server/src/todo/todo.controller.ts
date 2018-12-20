@@ -20,19 +20,19 @@ import {
   ApiImplicitParam,
 } from '@nestjs/swagger';
 import { Todo } from './models/todo.model';
-import { TodoService } from 'todo.service';
+import { TodoService } from '../todo.service';
 import { TodoVm } from './models/view-models/todo-vm.model';
-import { ApiException } from 'shared/api-exception.model';
-import { GetOperationId } from 'shared/utilities/get-operation-id';
+import { ApiException } from '../shared/api-exception.model';
+import { GetOperationId } from '../shared/utilities/get-operation-id';
 import { TodoParams } from './models/view-models/todo-params.model';
 
 import { map, isArray } from 'lodash';
 import { TodoLevel } from './models/todo-level.enum';
-import { ToBooleanPipe } from 'shared/pipes/to-boolean.pipe';
-import { Roles } from 'shared/decorators/roles.decorator';
-import { UserRole } from 'user/models/user-role.enum';
+import { ToBooleanPipe } from '../shared/pipes/to-boolean.pipe';
+import { Roles } from '../shared/decorators/roles.decorator';
+import { UserRole } from '../user/models/user-role.enum';
 import { AuthGuard } from '@nestjs/passport';
-import { RolesGuard } from 'shared/guards/roles.guard';
+import { RolesGuard } from '../shared/guards/roles.guard';
 
 @Controller('todos')
 // @ApiUseTags(Todo.modelName)

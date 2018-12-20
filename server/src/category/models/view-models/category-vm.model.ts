@@ -1,6 +1,6 @@
-import { BaseModelVm } from 'shared/base.model';
+import { BaseModelVm } from '../../../shared/base.model';
 import { ApiModelPropertyOptional, ApiModelProperty } from '@nestjs/swagger';
-import { EnumToArray } from 'shared/utilities/enum-to-array';
+import { EnumToArray } from '../../../shared/utilities/enum-to-array';
 
 export class CategoryVm extends BaseModelVm {
   @ApiModelProperty()

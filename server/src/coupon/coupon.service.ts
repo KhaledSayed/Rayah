@@ -1,9 +1,9 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { BaseService } from 'shared/base.service';
+import { BaseService } from '../shared/base.service';
 import { Coupon } from './models/coupon.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { ModelType } from 'typegoose';
-import { MapperService } from 'shared/mapper/mapper.service';
+import { MapperService } from '../shared/mapper/mapper.service';
 import { CouponParams } from './models/view-models/coupon-params.model';
 import { CouponVm } from './models/view-models/coupon-vm.model';
 import { CouponPutParams } from './models/view-models/coupon-put-params.model.';

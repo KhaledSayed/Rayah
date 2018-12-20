@@ -1,7 +1,7 @@
 import { BaseModel } from 'shared/base.model';
 import { prop, Ref } from 'typegoose';
-import { User } from 'user/models/user.model';
-import { Product } from 'product/models/product.model';
+import { User } from '../../user/models/user.model';
+import { Product } from '../../product/models/product.model';
 
 class Review extends BaseModel<Review> {
   @prop({ required: true, ref: User })

@@ -30,11 +30,11 @@ import {
 } from '@nestjs/swagger';
 import { Brand } from './models/brand.model';
 import { BrandVm } from './models/view-models/brand-vm.model';
-import { ApiException } from 'shared/api-exception.model';
-import { GetOperationId } from 'shared/utilities/get-operation-id';
-import { UserRole } from 'user/models/user-role.enum';
-import { Roles } from 'shared/decorators/roles.decorator';
-import { RolesGuard } from 'shared/guards/roles.guard';
+import { ApiException } from '../shared/api-exception.model';
+import { GetOperationId } from '../shared/utilities/get-operation-id';
+import { UserRole } from '../user/models/user-role.enum';
+import { Roles } from '../shared/decorators/roles.decorator';
+import { RolesGuard } from '../shared/guards/roles.guard';
 import { AuthGuard } from '@nestjs/passport';
 import { BrandService } from './brand.service';
 import { BrandParam } from './models/view-models/brand-param.model';

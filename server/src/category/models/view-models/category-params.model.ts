@@ -1,6 +1,5 @@
-import { BaseModelVm } from 'shared/base.model';
+import { BaseModelVm } from '../../../shared/base.model';
 import { ApiModelProperty, ApiModelPropertyOptional } from '@nestjs/swagger';
-import { Category } from '../category.model';
 
 export class CategoryParams extends BaseModelVm {
   @ApiModelProperty()

@@ -1,5 +1,5 @@
 import { ApiModelProperty } from '@nestjs/swagger';
-import { BaseModelVm } from 'shared/base.model';
+import { BaseModelVm } from '../../../shared/base.model';
 
 export class BrandParam extends BaseModelVm {
   @ApiModelProperty({ example: 'Juhayna', type: String, in: 'FormData' })

@@ -1,5 +1,5 @@
-import { BaseModel, schemaOptions } from 'shared/base.model';
-import { User } from 'user/models/user.model';
+import { BaseModel, schemaOptions } from '../../shared/base.model';
+import { User } from '../../user/models/user.model';
 import {
   Ref,
   prop,
@@ -9,9 +9,9 @@ import {
   post,
   pre,
 } from 'typegoose';
-import { Product } from 'product/models/product.model';
+import { Product } from '../../product/models/product.model';
 import { OrderLevel } from './order-level.enum';
-import { Coupon } from 'coupon/models/coupon.model';
+import { Coupon } from '../../coupon/models/coupon.model';
 import { ObjectId } from 'bson';
 import invNum from 'invoice-number';
 
