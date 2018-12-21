@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/categories"
+        android:icon="@drawable/baseline_format_list_bulleted_white_24dp"
+        android:title="categories" />
+    <item
+        android:id="@+id/shopCart"
+        android:icon="@drawable/ic_shopping_cart_black_24dp"
+        android:title="Shop Cart" />
+    <item
+        android:id="@+id/myAccount"
+        android:icon="@drawable/baseline_account_box_white_18dp"
+        android:title="My Account" />
+    <item
+        android:id="@+id/contactUs"
+        android:icon="@drawable/baseline_question_answer_white_18dp"
+        android:title="Contact Us" />
+    <item
+        android:id="@+id/about"
+        android:icon="@drawable/baseline_description_white_18dp"
+        android:title="About" />
+    <item
+        android:id="@+id/login"
+        android:icon="@drawable/door_open"
+        android:title="Login" />
+
+</menu>
