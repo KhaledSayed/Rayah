@@ -51,20 +51,8 @@
           <div class="form-group row">
             <label class="col-sm-2 col-form-label">القسم الفرعي من </label>
             <div class="col-sm-10">
-              <!--
-                <div *ngIf="!(loaded$ | async)"><h2>loading ...</h2></div>
-              -->
-
-              <!--
-                <div *ngIf="(courseObservable | async); else: loading">
-                  <p>Condition is true ...</p>
-                </div>
-                <ng-template #loading>
-                  <p>Condition is false ...</p>
-                </ng-template>
-              -->
-
-              <div *ngIf="(courseObservable | async); else: loading">
+              
+              <div *ngIf="(courseObservable | async)">
                 <div class="form-group">
                   <select
                     formControlName="parent"

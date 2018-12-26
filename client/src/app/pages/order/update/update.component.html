@@ -10,7 +10,7 @@
         <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
           <div
             formArrayName="items"
-            *ngFor="let item of myForm.get('items').controls; let i = index"
+            *ngFor="let item of myForm.get('items')['controls']; let i = index"
           >
             <div class="form-group row" [formGroupName]="i">
               <label class="col-sm-2 col-form-label">
