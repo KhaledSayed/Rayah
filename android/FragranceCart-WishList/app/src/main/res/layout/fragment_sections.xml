@@ -1,0 +1,69 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.delaroystudios.fragrancecart.Fragments.SectionsFragment">
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:orientation="vertical"
+       android:layout_margin="10dp"
+       >
+
+       <TextView
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="@string/choocesection"
+           android:textSize="30dp"
+           android:layout_marginTop="20dp"
+           android:textColor="@color/orangecolor"
+           android:gravity="center"
+           />
+
+       <Button
+           android:id="@+id/cleaner_section_btn"
+           android:layout_width="match_parent"
+           android:layout_height="65dp"
+           android:text="@string/Cleaner"
+           android:textSize="20dp"
+           android:layout_marginTop="20dp"
+           android:textColor="@color/whitebluecolo"
+           android:background="@drawable/backwithborder"
+           />
+
+       <Button
+           android:id="@+id/dairy_section_btn"
+           android:layout_width="match_parent"
+           android:layout_height="65dp"
+           android:text="@string/dairy"
+           android:textSize="20dp"
+           android:layout_marginTop="20dp"
+           android:textColor="@color/whitebluecolo"
+           android:background="@drawable/backwithborder"
+           />
+
+       <Button
+           android:id="@+id/meat_section_btn"
+           android:layout_width="match_parent"
+           android:layout_height="65dp"
+           android:text="@string/meat"
+           android:textSize="20dp"
+           android:layout_marginTop="20dp"
+           android:textColor="@color/whitebluecolo"
+           android:background="@drawable/backwithborder"
+           />
+
+       <Button
+           android:id="@+id/canned_section_btn"
+           android:layout_width="match_parent"
+           android:layout_height="65dp"
+           android:text="@string/canned"
+           android:textSize="20dp"
+           android:layout_marginTop="20dp"
+           android:textColor="@color/whitebluecolo"
+           android:background="@drawable/backwithborder"
+           />
+
+   </LinearLayout>
+</FrameLayout>
