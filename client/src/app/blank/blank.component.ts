@@ -8,7 +8,7 @@ import { CategoryVm } from "../api/models";
   styleUrls: ["./blank.component.scss"]
 })
 export class BlankComponent implements OnInit {
-  private categories: CategoryVm[];
+   categories: CategoryVm[];
   constructor(private readonly cateogryService: CategoryService) {}
 
   async ngOnInit() {
