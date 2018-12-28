@@ -179,11 +179,15 @@ export class AdminComponent implements OnInit, OnDestroy {
     }
   };
 
+  username = "";
+  type = "";
   constructor(
     public menuItems: MenuItems,
     private readonly authService: AuthService,
     private readonly router: Router
   ) {
+    this.username = authService.getName();
+
     this.animateSidebar = "";
     this.navType = "st2";
     this.themeLayout = "vertical";

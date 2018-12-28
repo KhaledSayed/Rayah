@@ -21,33 +21,28 @@ import { map } from "rxjs/operators";
 import { Router, ActivatedRoute } from "@angular/router";
 import { HttpHeaders, HttpResponse } from "@angular/common/http";
 import { IOption } from "ng-select";
-import { AuthService } from "src/app/auth.service";
-import * as jsPDF from "jspdf";
 
 const URL = "";
 @Component({
-  selector: "app-update",
-  templateUrl: "./update.component.html",
-  styleUrls: ["./update.component.scss"],
+  selector: "app-cashier",
+  templateUrl: "./cashier.component.html",
+  styleUrls: ["./cashier.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UpdateComponent implements OnInit {
+export class CashierComponent implements OnInit {
   idParam: string;
-  currentUser: UserVM;
   simpleOption: IOption[];
   selectedOption = "1";
   productLoading: boolean = false;
   orderOptions: IOption[] = [
-    { value: "New", label: "جديد" },
-    { value: "Collecting", label: "جمع المنتجات" },
     { value: "Cashier", label: "أمام أمين الصندوق" },
     { value: "OnTheRun", label: "في طريقه للعميل" },
     { value: "RefundRequest", label: "طلب الاسترداد" },
     { value: "Refunded", label: "تم ردها" },
-    { value: "Complete", label: "سلمت بنجاح" },
-    { value: "Cancelled", label: "تم الإلغاء" }
+    { value: "Complete", label: "سلمت بنجاح" }
   ];
   currentProducts: { product: ProductVm; quantity: number }[] = [];
+
   simpleOption2: Array<IOption> = [
     {
       value: "1",
@@ -55,6 +50,7 @@ export class UpdateComponent implements OnInit {
     },
     { value: "2", label: "admin@tbiss.com" }
   ];
+
   selectedOption2 = "1";
   currentOrder: OrderVm;
   myForm: FormGroup;
@@ -80,9 +76,9 @@ export class UpdateComponent implements OnInit {
     private readonly _orderService: OrderService,
     private readonly router: Router,
     private readonly formBuilder: FormBuilder,
-    private readonly activatedRouter: ActivatedRoute,
-    private readonly authService: AuthService
+    private readonly activatedRouter: ActivatedRoute
   ) {
+    const name = new FormControl("");
     const description = new FormControl("");
     const parent = new FormControl("");
     const code = new FormControl("");
@@ -91,10 +87,6 @@ export class UpdateComponent implements OnInit {
     const total = new FormControl("");
     const user = new FormControl("");
     const status = new FormControl("");
-    const name = new FormControl("");
-    const email = new FormControl("");
-    const phone = new FormControl("");
-    // const brand = new FormControl("", Validators.required);
     // const rpassword = new FormControl("", [
     //   Validators.required,
     //   CustomValidators.equalTo(password)
@@ -106,11 +98,7 @@ export class UpdateComponent implements OnInit {
       total: total,
       address: address,
       user: user,
-      status: status,
-      name: name,
-      email: email,
-      phone: phone
-      // brand: brand
+      status: status
     });
 
     this.myForm.controls["total"].setValue("20");
@@ -128,19 +116,21 @@ export class UpdateComponent implements OnInit {
         product: product,
         quantity: 1
       });
-      // console.log(this.calculateTotal());
-      // console.log(this.currentProducts);
+      console.log(this.calculateTotal());
+      console.log(this.currentProducts);
 
       return this.formBuilder.group({
         product: product.id,
         quantity: 1
       });
     } else if (status === "exist") {
-      // console.log("Exist", product.id);
+      console.log(product.id);
       this.currentProducts.push({
         product: product,
         quantity: quantity
       });
+      console.log(this.calculateTotal());
+      console.log(this.currentProducts);
 
       return this.formBuilder.group({
         product: product.id,
@@ -151,23 +141,7 @@ export class UpdateComponent implements OnInit {
 
   addItem(product = this.products[0], quantity = 1, status = "init"): void {
     this.items = this.myForm.get("items") as FormArray;
-
     this.items.push(this.createItem(product, quantity, status));
-    console.log("Form items Length", this.items.length);
-    console.log("=============================");
-  }
-
-  updateOrder(basket) {
-    const controlArray = <FormArray>this.myForm.get("items");
-    let sum = 0;
-
-    for (let i = 0; i < basket.length; i++) {
-      controlArray.controls[i].get("product").setValue(basket[i].product.id);
-      controlArray.controls[i].get("quantity").setValue(basket[i].quantity);
-      sum += basket[i].price * basket[i].quantity;
-    }
-    console.log("UpdateOrder() =" + sum);
-    this.calculateTotal();
   }
 
   removeItem(i): void {
@@ -189,9 +163,15 @@ export class UpdateComponent implements OnInit {
 
     this.productObservable.subscribe(results => {
       this.products = [...results];
-      this.loadOrder(this.idParam);
+      console.log(this.products[0]);
 
-      // console.log(this.products[0]);
+      const controlArray = <FormArray>this.myForm.get("items");
+
+      for (let i = 0; i < controlArray.length; i++) {
+        controlArray.controls[i].get("product").setValue(this.products[0].id);
+        controlArray.controls[i].get("quantity").setValue(1);
+        this.myForm.controls["total"].setValue(this.products[0].price * 1);
+      }
     });
   }
 
@@ -209,18 +189,15 @@ export class UpdateComponent implements OnInit {
     const note = this.myForm.value.note;
     const address = this.myForm.value.address;
     const status = this.myForm.controls.status.value;
-    // const brand = this.myForm.controls.brand.value;
-
     console.log("Status", status);
     this._orderService
       .OrderUpdate(this.currentOrder.id, {
         basket: productParams,
-        user: this.currentOrder.user,
+        user: this.currentOrder.user.id,
         note: note,
         address: address,
         coupon: this.currentOrder.coupon,
         status: status
-        // brand: brand == null ? "5c016fccd49efb55811b82b4" : brand
       })
       .subscribe(
         results => {
@@ -253,13 +230,14 @@ export class UpdateComponent implements OnInit {
 
   ngOnInit() {
     console.log("ngOnInit");
-    this.loadUsers();
     this.loadProducts();
-
+    this.loadUsers();
     this.activatedRouter.params.subscribe(params => {
       const id = params.id;
 
       this.idParam = id;
+
+      this.loadOrder(this.idParam);
     });
   }
 
@@ -271,22 +249,20 @@ export class UpdateComponent implements OnInit {
       this.currentOrder = results;
       console.log("=================");
       results.basket.forEach((item, index) => {
-        console.log("Basket #" + index, item);
+        this.currentProducts[index] = {
+          product: item.product,
+          quantity: item.quantity
+        };
 
         this.addItem(item.product, item.quantity, "exist");
-      });
 
-      this.myForm.controls.address.setValue(results.address);
-      this.myForm.controls.note.setValue(results.note);
-      this.myForm.controls.status.setValue(results.status);
-      this.myForm.controls.name.setValue(results.user.name);
-      this.myForm.controls.email.setValue(results.user.email);
-      this.myForm.controls.phone.setValue(results.user.phone);
-      this.currentUser = results.user;
-      this.updateOrder(results.basket);
-      this.calculateTotal();
-      // this.currentUser = results.user;
-      console.log("Current Products", this.currentProducts);
+        this.myForm.controls.address.setValue(results.address);
+        this.myForm.controls.note.setValue(results.note);
+        this.myForm.controls.status.setValue(results.status);
+
+        this.calculateTotal();
+        console.log(this.currentProducts);
+      });
     });
   }
 
@@ -315,7 +291,8 @@ export class UpdateComponent implements OnInit {
       quantity: item.quantity
     };
 
-    this.calculateTotal();
+    console.log(this.currentProducts);
+    console.log(this.calculateTotal());
   }
 
   calculateTotal() {
@@ -348,27 +325,10 @@ export class UpdateComponent implements OnInit {
     this.currentProducts[position].quantity =
       test.controls[position].value.quantity;
 
-    this.calculateTotal();
     console.log(this.calculateTotal());
   }
 
-  createInv() {
-    var doc = new jsPDF();
-    doc.text(20, 20, "LRA7TK PDF");
-    // doc.text(20, 30, "This is client-side Javascript, pumping out a PDF.");
-    // doc.addPage();
-    // doc.text(20, 20, "Do you like that?");
-
-    this.currentOrder.basket.forEach((item, index) => {
-      const ratio = index + 3;
-      doc.text(
-        20,
-        ratio * 10,
-        `${item.product.name}\t\t x${item.quantity}\t\t ${item.price} L.E`
-      );
-    });
-
-    // Save the PDF
-    doc.save("Test.pdf");
+  printInvoice() {
+    console.log("Print Invoice");
   }
 }

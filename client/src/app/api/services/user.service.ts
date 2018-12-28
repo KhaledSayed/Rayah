@@ -119,8 +119,12 @@ class UserService extends BaseService {
       __params = __params.set("perPage", params.perPage.toString());
     if (params.page != null)
       __params = __params.set("page", params.page.toString());
+
+    if (params.type) {
+      __params = __params.set("type", params.type.toString());
+    }
     let req = new HttpRequest<any>("GET", this.rootUrl + `/users`, __body, {
-      headers: __headers,
+      headers: this.__headers,
       params: __params,
       responseType: "json"
     });
@@ -150,6 +154,7 @@ namespace UserService {
   export interface UserGetParams {
     perPage: number;
     page: number;
+    type?: string;
   }
 }
 

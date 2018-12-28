@@ -23,6 +23,9 @@ import { OrderComponent } from "./order.component";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { NotifierModule } from "angular-notifier";
 import { SimpleNotificationsModule } from "angular2-notifications";
+import { CollectorComponent } from "./collector/collector.component";
+import { CashierComponent } from "./cashier/cashier.component";
+import { UiSwitchModule } from "ng2-ui-switch";
 
 @NgModule({
   imports: [
@@ -38,13 +41,16 @@ import { SimpleNotificationsModule } from "angular2-notifications";
     ToastyModule.forRoot(),
     ButtonModule,
     NgSelectModule,
-    SimpleNotificationsModule.forRoot()
+    SimpleNotificationsModule.forRoot(),
+    UiSwitchModule
   ],
   declarations: [
     OrderComponent,
     CreateComponent,
     UpdateComponent,
-    BrowseComponent
+    BrowseComponent,
+    CollectorComponent,
+    CashierComponent
   ],
   providers: [
     CategoryService,

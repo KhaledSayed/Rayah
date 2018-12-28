@@ -21,7 +21,7 @@ import {
 import { ProductService } from './product.service';
 import { ProductParams } from './models/view-models/product-params.model';
 import { ProductVm } from './models/view-models/product-vm.model';
-import { arrayProp } from 'typegoose';
+import { arrayProp, index } from 'typegoose';
 import { identity } from 'rxjs';
 import { map } from 'lodash';
 import { ProductParamsPut } from './models/view-models/product-params-put.model';
@@ -42,12 +42,16 @@ import { Types } from 'mongoose';
 import { ToInt } from '../shared/pipes/to-int.pipe';
 import { ToBooleanPipe } from '../shared/pipes/to-boolean.pipe';
 import { UserRole } from '../user/models/user-role.enum';
+import { ReviewService } from 'review/review.service';
 
 @Controller('products')
 @ApiUseTags(Product.modelName)
 @ApiBearerAuth()
 export class ProductController {
-  constructor(private readonly _prodcutService: ProductService) {}
+  constructor(
+    private readonly _prodcutService: ProductService,
+    private readonly _reviewService: ReviewService,
+  ) {}
 
   @Get()
   @ApiResponse({ status: HttpStatus.OK, type: ProductVm, isArray: true })
@@ -76,7 +80,7 @@ export class ProductController {
     @Query('maxPrice', new ToInt()) maxPrice: number,
     @Query('featured', new ToBooleanPipe()) featured: boolean,
     @Query('searchQuery') search: string,
-  ): Promise<ProductVm> {
+  ): Promise<ProductVm[]> {
     console.log(categories);
 
     let priceQuery = [];
@@ -133,21 +137,46 @@ export class ProductController {
 
     const products = await this._prodcutService.findAll(
       productQuery,
-      ['coupon', 'category'],
+      ['coupon', 'category', 'brand'],
       page,
       perPage,
     );
 
-    return this._prodcutService.map<ProductVm>(
+    let productsVm = this._prodcutService.map<ProductVm[]>(
       map(products, product => product.toJSON()),
       true,
     );
+
+    let productsArray: ProductVm[] = [];
+    let final = [];
+    await productsVm.then(items => {
+      productsArray = items;
+    });
+
+    const arrayOfPromises = [];
+    for (let product of productsArray) {
+      const avg = this._reviewService.productRatingAverage(product.id);
+
+      arrayOfPromises.push(avg);
+    }
+
+    return Promise.all(arrayOfPromises).then(values => {
+      values.forEach((item, index) => {
+        productsArray[index].rating = item;
+      });
+
+      return productsVm;
+    });
   }
 
   @Get(':id')
   @ApiOperation(GetOperationId(Product.modelName, 'GetOne'))
   async findOne(@Param('id') id): Promise<ProductVm> {
-    const product = await this._prodcutService.findById(id, ['category']);
+    const product = await this._prodcutService.findById(id, [
+      'category',
+      'brand',
+      'coupon',
+    ]);
 
     if (!product) {
       throw new HttpException('Resource Not Found', HttpStatus.NOT_FOUND);
@@ -161,6 +190,8 @@ export class ProductController {
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   async post(@Body() productParams: ProductParams) {
     try {
+      const { code, category, brand } = productParams;
+      console.log(code, category, brand);
       const product = await this._prodcutService.onCreateProduct(productParams);
 
       return product;

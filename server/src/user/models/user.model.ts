@@ -1,9 +1,12 @@
 import { BaseModel, schemaOptions } from '../../shared/base.model';
 import { UserRole } from './user-role.enum';
-import { prop, ModelType, Typegoose } from 'typegoose';
+import { prop, ModelType, Typegoose, arrayProp } from 'typegoose';
 import { isEmail } from '../../shared/utilities/validators';
 
 export class User extends BaseModel<User> {
+  @arrayProp({ items: String, default: [] })
+  tokens: string[];
+
   @prop({
     required: [true, 'E-mail is Required'],
     unique: true,

@@ -2,8 +2,12 @@ import { Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { CustomValidators } from "ng2-validation";
 import { FileUploader } from "ng2-file-upload";
-import { CategoryService, ProductService } from "src/app/api/services";
-import { CategoryVm } from "src/app/api/models";
+import {
+  CategoryService,
+  ProductService,
+  BrandService
+} from "src/app/api/services";
+import { CategoryVm, BrandVm } from "src/app/api/models";
 import { Observable } from "rxjs";
 import { Router } from "@angular/router";
 import { HttpHeaders, HttpResponse } from "@angular/common/http";
@@ -21,8 +25,13 @@ export class CreateComponent implements OnInit {
   selectedFile: File;
   selectedValue: string = "test";
   categoryAr: CategoryVm[];
+  brandAr: BrandVm[];
+
   loaded: boolean = false;
   courseObservable: Observable<CategoryVm[]>;
+  brandObservable: Observable<BrandVm[]>;
+
+  selectedBrand: BrandVm = null;
   selectedItem: CategoryVm = null;
   uploader: FileUploader = new FileUploader({
     isHTML5: true,
@@ -32,18 +41,20 @@ export class CreateComponent implements OnInit {
 
   constructor(
     private readonly categoryService: CategoryService,
+    private readonly brandService: BrandService,
     private readonly router: Router,
     private readonly productService: ProductService
   ) {
     const name = new FormControl("", Validators.required);
     const description = new FormControl("");
     const code = new FormControl("");
-    const quantity = new FormControl("");
-    const price = new FormControl("");
+    const quantity = new FormControl("", Validators.required);
+    const price = new FormControl("", Validators.required);
 
-    const parent = new FormControl("");
+    const parent = new FormControl("", Validators.required);
+    const brand = new FormControl("", Validators.required);
     const thumbnail = new FormControl("", Validators.required);
-    const gallery = new FormControl("", Validators.required);
+    const gallery = new FormControl("");
     // const rpassword = new FormControl("", [
     //   Validators.required,
     //   CustomValidators.equalTo(password)
@@ -56,11 +67,30 @@ export class CreateComponent implements OnInit {
       price: price,
       description: description,
       thumbnail: thumbnail,
-      gallery: gallery
+      gallery: gallery,
+      brand: brand
     });
 
     this.loadCategories();
+    this.loadBrands();
     /*Basic validation end*/
+  }
+
+  loadBrands() {
+    this.brandAr = [];
+    this.brandObservable = this.brandService.findAll();
+
+    this.brandObservable.subscribe(
+      results => {
+        this.selectedBrand = results[0];
+        console.log(this.selectedBrand);
+        this.brandAr = [...results];
+        console.log(this.brandAr.length);
+      },
+      error => {
+        console.log("error", error);
+      }
+    );
   }
 
   loadCategories() {
@@ -88,6 +118,8 @@ export class CreateComponent implements OnInit {
     const price = this.myForm.controls["price"].value;
     const code = this.myForm.controls["code"].value;
     const category = this.myForm.controls["parent"].value;
+    const brand = this.myForm.controls["brand"].value;
+
     let id = "";
     this.productService
       .postProducts({
@@ -95,7 +127,9 @@ export class CreateComponent implements OnInit {
         quantity: parseInt(quantity),
         price: parseInt(price),
         code: code,
-        category: category
+        category: category,
+        brand: brand,
+        description: description
       })
       .subscribe(results => {
         id = results.id;

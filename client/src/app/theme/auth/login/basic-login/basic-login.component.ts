@@ -45,6 +45,8 @@ export class BasicLoginComponent implements OnInit {
             this.loginError = "";
             this.loading = false;
             localStorage.setItem("token", results.token);
+            localStorage.setItem("type", results.user.role);
+            localStorage.setItem("name", results.user.name);
             console.log(localStorage.getItem("token"));
 
             this.router.navigate(["dashboard", "default"]);
@@ -55,6 +57,6 @@ export class BasicLoginComponent implements OnInit {
             this.loading = false;
           }
         );
-    }, 5000);
+    }, 0);
   }
 }

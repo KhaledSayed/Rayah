@@ -10,7 +10,7 @@ const routes: Routes = [
     path: "",
     component: BrandComponent,
     data: {
-      title: "Category",
+      title: "العلامات التجارية",
       icon: "icon-layout-sidebar-left",
       caption:
         "lorem ipsum dolor sit amet, consectetur adipisicing elit - sample page",
@@ -19,14 +19,14 @@ const routes: Routes = [
     children: [
       {
         path: "",
-        redirectTo: "/simple-page/browse",
+        redirectTo: "/brands/browse",
         pathMatch: "full"
       },
       {
         path: "browse",
         component: BrowseComponent,
         data: {
-          title: "Browse",
+          title: "تصفح",
           icon: "icon-layout-sidebar-left",
           caption:
             "lorem ipsum dolor sit amet, consectetur adipisicing elit - sample page",
@@ -37,7 +37,7 @@ const routes: Routes = [
         path: "create",
         component: CreateComponent,
         data: {
-          title: "Create",
+          title: "إنشاء",
           icon: "icon-layout-sidebar-left",
           caption:
             "lorem ipsum dolor sit amet, consectetur adipisicing elit - sample page",
@@ -48,7 +48,7 @@ const routes: Routes = [
         path: "update/:id",
         component: UpdateComponent,
         data: {
-          title: "Update Category",
+          title: "تحديث",
           icon: "icon-layout-sidebar-left",
           caption:
             "lorem ipsum dolor sit amet, consectetur adipisicing elit - sample page",

@@ -10,7 +10,7 @@ const routes: Routes = [
     path: "",
     component: UserComponent,
     data: {
-      title: "Category",
+      title: "الموظفين",
       icon: "icon-layout-sidebar-left",
       caption:
         "lorem ipsum dolor sit amet, consectetur adipisicing elit - sample page",
@@ -19,14 +19,14 @@ const routes: Routes = [
     children: [
       {
         path: "",
-        redirectTo: "/simple-page/browse",
+        redirectTo: "/users/browse",
         pathMatch: "full"
       },
       {
         path: "browse",
         component: BrowseComponent,
         data: {
-          title: "Browse",
+          title: "تصفح",
           icon: "icon-layout-sidebar-left",
           caption:
             "lorem ipsum dolor sit amet, consectetur adipisicing elit - sample page",
@@ -37,24 +37,24 @@ const routes: Routes = [
         path: "create",
         component: CreateComponent,
         data: {
-          title: "Create",
-          icon: "icon-layout-sidebar-left",
-          caption:
-            "lorem ipsum dolor sit amet, consectetur adipisicing elit - sample page",
-          status: true
-        }
-      },
-      {
-        path: "update/:id",
-        component: UpdateComponent,
-        data: {
-          title: "Update Category",
+          title: "إنشاء",
           icon: "icon-layout-sidebar-left",
           caption:
             "lorem ipsum dolor sit amet, consectetur adipisicing elit - sample page",
           status: true
         }
       }
+      // {
+      //   path: "update/:id",
+      //   component: UpdateComponent,
+      //   data: {
+      //     title: "Update Category",
+      //     icon: "icon-layout-sidebar-left",
+      //     caption:
+      //       "lorem ipsum dolor sit amet, consectetur adipisicing elit - sample page",
+      //     status: true
+      //   }
+      // }
     ]
   }
 ];

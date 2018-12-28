@@ -89,8 +89,8 @@ export class OrderController {
     enum: EnumToArray(OrderLevel),
     isArray: true,
   })
-  // @Roles(UserRole.Admin, UserRole.User)
-  // @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.Admin, UserRole.User, UserRole.Collecter, UserRole.Cashier)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   async get(
     @Query('page', new ToInt()) page: number,
     @Query('perPage', new ToInt()) perPage: number,
@@ -104,7 +104,7 @@ export class OrderController {
       statusQuery.push({ status: item });
     });
 
-    if (currentTest !== 'Admin') {
+    if (currentTest === 'User') {
       const orders = await this._orderService.findAll(
         {
           $and: [{ user: Types.ObjectId(req.user._id) }],
@@ -202,6 +202,8 @@ export class OrderController {
 
   @Put(':id')
   @ApiOperation(GetOperationId(Order.modelName, 'Update'))
+  @Roles(UserRole.Admin, UserRole.Collecter, UserRole.Cashier)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   async put(
     @Body() orderParams: OrderPutParams,
     @Param('id') id,
@@ -222,7 +224,7 @@ export class OrderController {
 
       const product = await this._productService.findById(item.id);
 
-      if (orderParams.status === OrderLevel.Shipped) {
+      if (orderParams.status === OrderLevel.Complete) {
         product.quantity = product.quantity - item.quantity;
         let updatedProduct;
 

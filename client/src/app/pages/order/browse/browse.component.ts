@@ -12,6 +12,7 @@ import { ToastyService, ToastOptions, ToastData } from "ng2-toasty";
 import swal from "sweetalert2";
 import { NotifierService } from "angular-notifier";
 import { NotificationsService } from "angular2-notifications";
+import { AuthService } from "src/app/auth.service";
 
 @Component({
   selector: "app-browse",
@@ -30,6 +31,8 @@ import { NotificationsService } from "angular2-notifications";
   encapsulation: ViewEncapsulation.None
 })
 export class BrowseComponent implements OnInit, AfterViewInit {
+  public orderStatus: string[];
+
   public data: any;
   public rowsOnPage = 10;
   public filterQuery = "";
@@ -43,7 +46,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   //Notifications Optiona
   position = "top-right";
   showClose = true;
-  theme = "default";
+  theme = "material";
   type = "success";
   closeOther = true;
 
@@ -54,8 +57,30 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     private readonly toastyService: ToastyService,
     private readonly router: Router,
     private readonly _orderService: OrderService,
-    private _service: NotificationsService
-  ) {}
+    private _service: NotificationsService,
+    private readonly authService: AuthService
+  ) {
+    switch (authService.getType()) {
+      case "Admin":
+        this.orderStatus = [
+          "New",
+          "Collecting",
+          "Cashier",
+          "OnTheRun",
+          "Refunded",
+          "Complete",
+          "Cancelled",
+          "RefundRequest"
+        ];
+        break;
+      case "Cashier":
+        this.orderStatus = ["Cashier", "OnTheRun"];
+        break;
+      case "Collector":
+        this.orderStatus = ["New"];
+        break;
+    }
+  }
 
   ngAfterViewInit() {
     this.route.queryParams.subscribe((params: Params) => {
@@ -65,18 +90,26 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
       if (params.post === "true") {
         console.log("Fire Notification Post");
-        this.showNotification(
-          "Order Status",
-          "Order Created Successfully",
-          "success"
-        );
+        this.fireNotification({
+          title: "إشعار",
+          msg: "تم إنشاء الطلب بنجاح",
+          type: "success",
+          showClose: this.showClose,
+          theme: this.theme,
+          position: this.position,
+          timeout: 5000
+        });
       } else if (params.update === "true") {
         console.log("Fire Notification Update");
-        this.showNotification(
-          "Order Update",
-          "Order Updated Successfully",
-          "success"
-        );
+        this.fireNotification({
+          title: "إشعار",
+          msg: "تم تحديث الطلب بنجاح",
+          type: "warning",
+          showClose: this.showClose,
+          theme: this.theme,
+          position: this.position,
+          timeout: 5000
+        });
       }
     });
     this.getOrders();
@@ -134,7 +167,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       .OrderGet({
         perPage: 100,
         page: this.currentPage,
-        status: ["Created", "Processing", "Shipped", "Canceled", "Refunded"]
+        status: this.orderStatus
       })
       .subscribe(results => {
         console.log(results);
@@ -180,9 +213,16 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     });
   }
 
-  goToUpdate(category) {
-    console.log(category);
-    this.router.navigate(["orders", "update", category.id]);
+  goToUpdate(order) {
+    console.log(order);
+
+    this.router.navigate(["orders", "update", order.id]);
+  }
+
+  goToCollect(order) {
+    console.log(order);
+
+    this.router.navigate(["orders", "collector", order.id]);
   }
 
   showNotification(title, description, type = "success") {

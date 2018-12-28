@@ -162,7 +162,7 @@ export class CategoryController {
   ): Promise<CategoryVm> {
     console.log(thumbnail);
 
-    const { id, parent } = categoryParams;
+    const { id, parent, description } = categoryParams;
 
     if (!id) {
       throw new HttpException(
@@ -180,7 +180,8 @@ export class CategoryController {
       );
     }
 
-    if (parent) {
+    if (parent && parent !== 'null') {
+      console.log('Parent ', parent);
       const parentCategory = await this._categoryService.findById(parent);
 
       if (!parentCategory) {
@@ -190,6 +191,8 @@ export class CategoryController {
         );
       }
       currentCategory.parent = Types.ObjectId(parent);
+    } else {
+      currentCategory.parent = null;
     }
 
     if (thumbnail && thumbnail.path) {
@@ -200,9 +203,7 @@ export class CategoryController {
     currentCategory.name = categoryParams.name
       ? categoryParams.name
       : currentCategory.name;
-    currentCategory.description = categoryParams.description
-      ? categoryParams.description
-      : currentCategory.description;
+    currentCategory.description = description;
 
     try {
       const updatedCategory = await this._categoryService.update(

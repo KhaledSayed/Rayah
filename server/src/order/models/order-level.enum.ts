@@ -1,7 +1,10 @@
 export enum OrderLevel {
-  Created = 'Created',
-  Processing = 'Processing',
-  Shipped = 'Shipped',
-  Canceled = 'Canceled',
+  New = 'New',
+  Collecting = 'Collecting',
+  Cashier = 'Cashier',
+  OnTheRun = 'OnTheRun',
+  RefundRequest = 'RefundRequest',
   Refunded = 'Refunded',
+  Complete = 'Complete',
+  Cancelled = 'Cancelled',
 }

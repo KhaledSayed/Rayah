@@ -31,10 +31,19 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       console.log(this.myParam);
 
       if (params.post === "true") {
-        console.log("Fire Notification Post");
         this.fireNotification({
-          title: "Category Alert",
-          msg: "Category Created Successfully",
+          title: "إشعار",
+          msg: "تم إنشاء القسم بنجاح",
+          type: "success",
+          showClose: this.showClose,
+          theme: this.theme,
+          position: this.position,
+          timeout: 5000
+        });
+      } else if (params.update === "true") {
+        this.fireNotification({
+          title: "إشعار",
+          msg: "تم تحديث القسم بنجاح",
           type: "success",
           showClose: this.showClose,
           theme: this.theme,
@@ -174,17 +183,17 @@ export class BrowseComponent implements OnInit, AfterViewInit {
             .CategoryDelete(category.id)
             .subscribe(result => {
               this.getCategories();
-            });
 
-          this.fireNotification({
-            title: "تنبيه",
-            msg: `تم حذف القسم ${category.name} بنجاح`,
-            type: "success",
-            showClose: this.showClose,
-            theme: this.theme,
-            position: this.position,
-            timeout: 3000
-          });
+              this.fireNotification({
+                title: "إشعار",
+                msg: "تم حذف القسم بنجاح",
+                type: "warning",
+                showClose: this.showClose,
+                theme: this.theme,
+                position: this.position,
+                timeout: 5000
+              });
+            });
         });
       } else if (result.dismiss) {
         swal("ألغيت", "لن يتم إجراء عملية الحذف :)", "error");

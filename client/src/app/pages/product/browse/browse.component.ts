@@ -1,4 +1,9 @@
-import { Component, OnInit, ViewEncapsulation } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ViewEncapsulation,
+  AfterViewInit
+} from "@angular/core";
 import { CategoryVm, ProductVm } from "src/app/api/models";
 import { CategoryService, ProductService } from "src/app/api/services";
 import { ActivatedRoute, Params, Router } from "@angular/router";
@@ -18,7 +23,38 @@ import swal from "sweetalert2";
   ],
   encapsulation: ViewEncapsulation.None
 })
-export class BrowseComponent implements OnInit {
+export class BrowseComponent implements OnInit, AfterViewInit {
+  ngAfterViewInit(): void {
+    this.route.queryParams.subscribe((params: Params) => {
+      this.myParam = params.post;
+      console.log(typeof params.post);
+      console.log(this.myParam);
+
+      if (params.post === "true") {
+        console.log("Fire Notification Post");
+        this.fireNotification({
+          title: "اشعار",
+          msg: "تم إنشاء المنتج بنجاح",
+          type: "success",
+          showClose: this.showClose,
+          theme: this.theme,
+          position: this.position,
+          timeout: 5000
+        });
+      } else if (params.update === "true") {
+        this.fireNotification({
+          title: "اشعار",
+          msg: "تم تحديث المنتج بنجاح",
+          type: "success",
+          showClose: this.showClose,
+          theme: this.theme,
+          position: this.position,
+          timeout: 5000
+        });
+      }
+    });
+  }
+
   public data: any;
   public rowsOnPage = 10;
   public filterQuery = "";
@@ -32,7 +68,7 @@ export class BrowseComponent implements OnInit {
   //Notifications Optiona
   position = "top-right";
   showClose = true;
-  theme = "default";
+  theme = "material";
   type = "success";
   closeOther = true;
 
@@ -91,24 +127,6 @@ export class BrowseComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.queryParams.subscribe((params: Params) => {
-      this.myParam = params.post;
-      console.log(typeof params.post);
-      console.log(this.myParam);
-
-      if (params.post === "true") {
-        console.log("Fire Notification Post");
-        this.fireNotification({
-          title: "Category Alert",
-          msg: "Category Created Successfully",
-          type: "success",
-          showClose: this.showClose,
-          theme: this.theme,
-          position: this.position,
-          timeout: 5000
-        });
-      }
-    });
     this.getProducts();
   }
 

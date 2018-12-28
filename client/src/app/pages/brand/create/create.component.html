@@ -2,16 +2,12 @@
   <div class="row">
     <div class="col-sm-12">
       <!-- Basic Inputs Validation start -->
-      <app-card
-        [title]="'Basic Inputs Validation'"
-        [headerContent]="
-          'Lorem ipsum dolor sit amet, consectetur adipisicing elit'
-        "
-        [cardOptionBlock]="true"
-      >
+      <app-card [title]="'إنشاء'" [cardOptionBlock]="true">
         <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
           <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Simple Input</label>
+            <label class="col-sm-2 col-form-label"
+              >الاسم <span style="color:red">*</span>
+            </label>
             <div class="col-sm-10">
               <input
                 type="text"
@@ -24,13 +20,15 @@
                 class="messages text-danger"
                 *ngIf="myForm.controls.name.errors?.required"
               >
-                Name can't be blank
+                لا يمكن ترك حقل اسم القسم فارغًا
               </div>
             </div>
           </div>
 
           <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Parent</label>
+            <label class="col-sm-2 col-form-label"
+              >الشعار <span style="color:red">*</span>
+            </label>
             <div class="col-sm-10">
               <label class="custom-file">
                 <input
@@ -42,6 +40,12 @@
                   accept="image/png,image/jpg,image/gif"
                 />
                 <span class="custom-file-control"></span>
+                <div
+                  class="messages text-danger"
+                  *ngIf="myForm.controls.banner.errors?.required"
+                >
+                  لا يمكن ترك حقل الشعار فارغًا
+                </div>
               </label>
             </div>
 
@@ -182,7 +186,7 @@
                 class="btn btn-primary m-b-0 ripple light"
                 [disabled]="!myForm.valid"
               >
-                Submit
+                تحديث
               </button>
             </div>
           </div>

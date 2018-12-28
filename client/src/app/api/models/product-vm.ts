@@ -1,4 +1,5 @@
 import { CategoryVm } from "./category-vm";
+import { BrandVm } from "./brand-vm";
 
 /* tslint:disable */
 export interface ProductVm {
@@ -11,6 +12,8 @@ export interface ProductVm {
   price: number;
   featured: boolean;
   category: CategoryVm;
+  brand: BrandVm;
+  description: string;
   thumbnail: string;
   gallery: string[];
 }

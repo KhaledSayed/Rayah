@@ -17,15 +17,26 @@
                 المنتج رقم # {{ i + 1 }} <span style="color:red">*</span>
               </label>
 
-              <ng-select
-                formControlName="product"
-                [items]="this.products"
-                bindLabel="name"
-                bindValue="id"
-                class="col-sm-4"
-                (change)="changeProduct(i)"
-                [clearable]="false"
-              ></ng-select>
+              <ui-switch
+                class="js-single"
+                color="#4680ff"
+                switchColor="#fff"
+                size="medium"
+                checked
+                formControlName="switch"
+              ></ui-switch>
+
+              <label class="col-sm-1 col-form-label">اسم المنتج </label>
+              <div class="col-sm-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="product"
+                  placeholder="اسم المنتج"
+                  formControlName="product"
+                  disabled
+                />
+              </div>
 
               <label class="col-sm-2 col-form-label">الكمية</label>
               <div class="col-sm-2">
@@ -38,21 +49,23 @@
                   number
                   min="1"
                   (change)="onQuantityChange(i)"
+                  disabled
                 />
               </div>
 
-              <a class="btn btn-success  light" (click)="addItem()">+</a>
+              <a hidden class="btn btn-success  light" (click)="addItem()">+</a>
 
               <a
                 *ngIf="myForm.controls.items.controls.length > 1"
                 class="btn btn-danger light"
                 (click)="removeItem(i)"
+                hidden
                 >-</a
               >
             </div>
           </div>
 
-          <div class="form-group row">
+          <div class="form-group row" hidden>
             <label class="col-sm-2 col-form-label">السعر الكلي</label>
             <div class="col-sm-10">
               <input
@@ -65,25 +78,29 @@
             </div>
           </div>
 
-          <div class="form-group row" *ngIf="this.currentUser != null">
+          <div class="form-group row" hidden>
             <label class="col-sm-2 col-form-label">معلومات المستخدم</label>
 
             <div class="label-main ">
-              <label class="label label-lg label-primary">{{
-                this.currentUser.name
-              }}</label>
+              <label class="label label-lg label-primary">Khaled Sayed</label>
             </div>
 
             <div class="label-main ">
-              <label class="label label-lg label-primary">{{
-                this.currentUser.phone
-              }}</label>
+              <label class="label label-lg label-primary">0111111111</label>
             </div>
 
             <div class="label-main">
-              <label class="label label-lg label-success">{{
-                this.currentUser.email
-              }}</label>
+              <label class="label label-lg label-success"
+                >contact@khaledsayed.com</label
+              >
+            </div>
+
+            <div class="label-main ">
+              <label class="label label-lg label-info">12/12/2018 - 6PM</label>
+            </div>
+
+            <div class="label-main ">
+              <label class="label label-lg label-warning">Dispatched</label>
             </div>
           </div>
 
@@ -102,7 +119,7 @@
             </div>
           -->
 
-          <div class="form-group row">
+          <div class="form-group row" hidden>
             <label class="col-sm-2 col-form-label">
               عنوان التسليم <span style="color:red">*</span>
             </label>
@@ -133,11 +150,12 @@
                 id="note"
                 placeholder="إذا كان المستخدم لديه أي ملاحظة؟"
                 formControlName="note"
+                disabled
               ></textarea>
             </div>
           </div>
 
-          <div class="form-group row">
+          <div class="form-group row " hidden>
             <label class="col-sm-2 col-form-label">الحالة</label>
 
             <ng-select
@@ -147,18 +165,20 @@
               bindValue="value"
               class="col-sm-4"
               [clearable]="false"
-              style="width: 40% !important"
             ></ng-select>
           </div>
 
-          <a (click)="createInv()">Test Pdf</a>
           <div class="form-group row">
             <label class="col-sm-2"></label>
             <div class="col-sm-10">
+              <div class="messages text-danger" *ngIf="!isFormClickable()">
+                يرجى التأكد من أن جميع المنتجات قد تم جمعها
+              </div>
+
               <button
                 type="submit"
                 class="btn btn-primary m-b-0 ripple light"
-                [disabled]="!myForm.valid"
+                [disabled]="!isFormClickable()"
               >
                 تحديث الطلب
               </button>

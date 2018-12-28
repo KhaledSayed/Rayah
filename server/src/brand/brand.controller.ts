@@ -87,8 +87,8 @@ export class BrandController {
   @ApiResponse({ status: HttpStatus.OK, type: BrandVm, isArray: true })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ApiException })
   @ApiOperation(GetOperationId(Brand.modelName, 'Get'))
-  @Roles(UserRole.Admin, UserRole.User)
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  // @Roles(UserRole.Admin, UserRole.User)
+  // @UseGuards(AuthGuard('jwt'), RolesGuard)
   async getOne(@Param('id') id): Promise<BrandVm> {
     try {
       const brand = await this._brandService.findById(id);
@@ -106,8 +106,8 @@ export class BrandController {
   @ApiResponse({ status: HttpStatus.OK, type: BrandVm, isArray: true })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ApiException })
   @ApiOperation(GetOperationId(Brand.modelName, 'Get'))
-  @Roles(UserRole.Admin, UserRole.User)
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  // @Roles(UserRole.Admin, UserRole.User)
+  // @UseGuards(AuthGuard('jwt'), RolesGuard)
   async get(): Promise<BrandVm[]> {
     try {
       const brands = await this._brandService.findAll();

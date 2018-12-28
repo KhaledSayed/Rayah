@@ -1,4 +1,9 @@
-import { Component, OnInit, ViewEncapsulation } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ViewEncapsulation,
+  AfterViewInit
+} from "@angular/core";
 import { CategoryVm, CouponVm, BrandVm } from "src/app/api/models";
 import {
   CategoryService,
@@ -22,7 +27,7 @@ import swal from "sweetalert2";
   ],
   encapsulation: ViewEncapsulation.None
 })
-export class BrowseComponent implements OnInit {
+export class BrowseComponent implements OnInit, AfterViewInit {
   public data: any;
   public rowsOnPage = 10;
   public filterQuery = "";
@@ -36,7 +41,7 @@ export class BrowseComponent implements OnInit {
   //Notifications Optiona
   position = "top-right";
   showClose = true;
-  theme = "default";
+  theme = "material";
   type = "success";
   closeOther = true;
 
@@ -94,7 +99,7 @@ export class BrowseComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this.route.queryParams.subscribe((params: Params) => {
       this.myParam = params.post;
       console.log(typeof params.post);
@@ -104,7 +109,17 @@ export class BrowseComponent implements OnInit {
         console.log("Fire Notification Post");
         this.fireNotification({
           title: "Category Alert",
-          msg: "Category Created Successfully",
+          msg: "تم إنشاء العلامة التجارية بنجاح ",
+          type: "success",
+          showClose: this.showClose,
+          theme: this.theme,
+          position: this.position,
+          timeout: 5000
+        });
+      } else if (params.update === "true") {
+        this.fireNotification({
+          title: "إشعار",
+          msg: "تم تحديث العلامة التجارية بنجاح ",
           type: "success",
           showClose: this.showClose,
           theme: this.theme,
@@ -113,10 +128,13 @@ export class BrowseComponent implements OnInit {
         });
       }
     });
-    this.getCoupons();
   }
 
-  getCoupons() {
+  ngOnInit() {
+    this.getBrands();
+  }
+
+  getBrands() {
     this.data = [];
     this._brandService.BrandGet().subscribe(results => {
       console.log(results);
@@ -143,7 +161,7 @@ export class BrowseComponent implements OnInit {
           result => {
             this._brandService.BrandDelete(category.id).subscribe(result => {
               console.log(result);
-              this.getCoupons();
+              this.getBrands();
             });
 
             this.fireNotification({

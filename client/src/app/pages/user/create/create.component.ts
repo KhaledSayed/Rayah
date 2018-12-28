@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { CustomValidators } from "ng2-validation";
 import { FileUploader } from "ng2-file-upload";
-import { CategoryService } from "src/app/api/services";
+import { CategoryService, UserService } from "src/app/api/services";
 import { CategoryVm } from "src/app/api/models";
 import { Observable } from "rxjs";
 import { Router } from "@angular/router";
@@ -22,7 +22,12 @@ export class CreateComponent implements OnInit {
   selectedValue: string = "test";
   categoryAr: CategoryVm[];
   loaded: boolean = false;
-  courseObservable: Observable<CategoryVm[]>;
+  // courseObservable: Observable<CategoryVm[]>;
+  roles: { label; value }[] = [
+    { label: " أمين الصندوق", value: "Cashier" },
+    { label: "المجمع", value: "Collecter" }
+  ];
+
   selectedItem: CategoryVm = null;
   uploader: FileUploader = new FileUploader({
     isHTML5: true,
@@ -32,41 +37,47 @@ export class CreateComponent implements OnInit {
 
   constructor(
     private readonly categoryService: CategoryService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly userService: UserService
   ) {
     const name = new FormControl("", Validators.required);
-    const description = new FormControl("");
-    const parent = new FormControl("");
-    const thumbnail = new FormControl("", Validators.required);
+    const email = new FormControl("", [Validators.required, Validators.email]);
+    const password = new FormControl("", [
+      Validators.required,
+      Validators.minLength(6)
+    ]);
+    const role = new FormControl("", Validators.required);
     // const rpassword = new FormControl("", [
     //   Validators.required,
     //   CustomValidators.equalTo(password)
     // ]);
     this.myForm = new FormGroup({
       name: name,
-      parent: parent,
-      description: description,
-      thumbnail: thumbnail
+      email: email,
+      password: password,
+      role: role
     });
 
-    this.loadCategories();
+    this.myForm.controls.role.setValue(this.roles[this.roles.length - 1].value);
+
+    // this.loadCategories();
     /*Basic validation end*/
   }
 
   loadCategories() {
     this.categoryAr = [];
 
-    this.courseObservable = this.categoryService.CategoryGet({
-      perPage: 100,
-      page: 0,
-      parent: null
-    });
+    // this.courseObservable = this.categoryService.CategoryGet({
+    //   perPage: 100,
+    //   page: 0,
+    //   parent: null
+    // });
 
-    this.courseObservable.subscribe(results => {
-      this.selectedItem = results[0];
-      console.log(this.selectedItem);
-      this.categoryAr = [...results];
-    });
+    // this.courseObservable.subscribe(results => {
+    //   this.selectedItem = results[0];
+    //   console.log(this.selectedItem);
+    //   this.categoryAr = [...results];
+    // });
   }
 
   onSubmit() {
@@ -74,30 +85,21 @@ export class CreateComponent implements OnInit {
     // this.categoryService.CategoryCreate();
     console.log(this.myForm);
 
-    console.log(this.myForm.controls.description.value);
-    console.log(this.myForm.controls.name.value);
+    // console.log(this.myForm.controls.description.value);
+    // console.log(this.myForm.controls.name.value);
 
-    const uploadData = new FormData();
-    uploadData.append("thumbnail", this.selectedFile, this.selectedFile.name);
-    uploadData.append("parent", this.myForm.controls.parent.value);
-    uploadData.append("name", this.myForm.controls.name.value);
-    uploadData.append("description", this.myForm.controls.description.value);
-
-    this.categoryService
-      .onTestMultipart(uploadData)
-      .subscribe((res: HttpResponse<any>) => {
-        console.log("===========");
-        console.log(res);
-        console.log("===========");
-
-        if (res.status && res.status === 201) {
-          console.log("Redirect to Next Page");
-          const post = true;
-          this.router.navigate(["simple-page", "browse"], {
+    this.userService
+      .UserRegister({
+        name: this.myForm.controls.name.value,
+        email: this.myForm.controls.email.value,
+        password: this.myForm.controls.password.value,
+        role: this.myForm.controls.role.value
+      })
+      .subscribe(results => {
+        if (results.id) {
+          this.router.navigate(["user", "browse"], {
             queryParams: { post: "true" }
           });
-
-          this.loadCategories();
         }
       });
   }
@@ -119,5 +121,9 @@ export class CreateComponent implements OnInit {
 
   ngOnInit() {
     console.log("ngOnInit");
+  }
+
+  logForm() {
+    console.log(this.myForm);
   }
 }

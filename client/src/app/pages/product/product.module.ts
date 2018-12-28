@@ -1,7 +1,11 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { SharedModule } from "../../shared/shared.module";
-import { CategoryService, ProductService } from "../../api/services";
+import {
+  CategoryService,
+  ProductService,
+  BrandService
+} from "../../api/services";
 import { DataTableModule } from "angular2-datatable";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
@@ -35,6 +39,6 @@ import { ProductComponent } from "./product.component";
     UpdateComponent,
     BrowseComponent
   ],
-  providers: [CategoryService, ProductService]
+  providers: [CategoryService, ProductService, BrandService]
 })
 export class ProductModule {}

@@ -35,14 +35,7 @@ import { BaseService } from "./api/base-service";
     JwtModule.forRoot({})
   ],
   schemas: [],
-  providers: [
-    MenuItems,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AdminInterceptor,
-      multi: true
-    }
-  ],
+  providers: [MenuItems],
   exports: [HttpClientModule],
   bootstrap: [AppComponent]
 })

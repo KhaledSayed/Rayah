@@ -6,4 +6,6 @@ export interface ProductParamsPut {
   price: number;
   featured?: boolean;
   category: string;
+  brand: string;
+  description: string;
 }

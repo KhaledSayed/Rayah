@@ -4,8 +4,8 @@ export interface UserVM {
   updatedAt?: string;
   id?: string;
   email: string;
-  firstname?: string;
-  lastname?: string;
+  name?: string;
+  phone?: string;
   fullname?: string;
-  role?: 'Admin' | 'User';
+  role?: "Admin" | "User";
 }

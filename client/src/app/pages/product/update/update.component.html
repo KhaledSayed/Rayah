@@ -2,16 +2,10 @@
   <div class="row">
     <div class="col-sm-12">
       <!-- Basic Inputs Validation start -->
-      <app-card
-        [title]="'Basic Inputs Validation'"
-        [headerContent]="
-          'Lorem ipsum dolor sit amet, consectetur adipisicing elit'
-        "
-        [cardOptionBlock]="true"
-      >
+      <app-card [title]="'تعديل المنتج'" [cardOptionBlock]="true">
         <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
           <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Name</label>
+            <label class="col-sm-2 col-form-label">الاسم</label>
             <div class="col-sm-10">
               <input
                 type="text"
@@ -22,9 +16,12 @@
               />
               <div
                 class="messages text-danger"
-                *ngIf="myForm.controls.name.errors?.required"
+                *ngIf="
+                  myForm.controls.name.errors?.required &&
+                  myForm.controls.name.touched
+                "
               >
-                Name can't be blank
+                لا يمكنك ترك اسم المنتج فارغًا
               </div>
             </div>
           </div>
@@ -43,7 +40,7 @@
           </div>
 
           <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Description</label>
+            <label class="col-sm-2 col-form-label">الوصف</label>
             <div class="col-sm-10">
               <textarea
                 rows="5"
@@ -56,7 +53,7 @@
           </div>
 
           <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Quantity</label>
+            <label class="col-sm-2 col-form-label">الكمية</label>
             <div class="col-sm-10">
               <input
                 type="text"
@@ -65,11 +62,21 @@
                 placeholder="Quantity"
                 formControlName="quantity"
               />
+
+              <div
+                class="messages text-danger"
+                *ngIf="
+                  myForm.controls.quantity.errors?.required &&
+                  myForm.controls.quantity.touched
+                "
+              >
+                لا يمكنك ترك الكمية فارغة
+              </div>
             </div>
           </div>
 
           <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Price</label>
+            <label class="col-sm-2 col-form-label">السعر</label>
             <div class="col-sm-10">
               <input
                 type="text"
@@ -79,26 +86,33 @@
                 formControlName="price"
                 number
               />
+
+              <div
+                class="messages text-danger"
+                *ngIf="
+                  myForm.controls.price.errors?.required &&
+                  myForm.controls.price.touched
+                "
+              >
+                السعر مطلوب ولا يمكن أن يكون فارغًا
+              </div>
+
+              <div
+                class="messages text-danger"
+                *ngIf="
+                  myForm.controls.price.errors?.min &&
+                  myForm.controls.price.touched
+                "
+              >
+                يجب أن يكون السعر أكثر من 0
+              </div>
             </div>
           </div>
 
           <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Category</label>
+            <label class="col-sm-2 col-form-label">الفئة</label>
             <div class="col-sm-10">
-              <!--
-                <div *ngIf="!(loaded$ | async)"><h2>loading ...</h2></div>
-              -->
-
-              <!--
-                <div *ngIf="(courseObservable | async); else: loading">
-                  <p>Condition is true ...</p>
-                </div>
-                <ng-template #loading>
-                  <p>Condition is false ...</p>
-                </ng-template>
-              -->
-
-              <div *ngIf="(courseObservable | async); else: loading">
+              <div *ngIf="(productObservable | async)">
                 <div class="form-group">
                   <select
                     formControlName="parent"
@@ -108,18 +122,57 @@
                     <option
                       *ngFor="let category of categoryAr"
                       [ngValue]="category.id"
-                      [attr.selected]="selectedItem"
-                      [selected]="category"
                       >{{ category.name }}</option
                     >
                   </select>
+
+                  <div
+                    class="messages text-danger"
+                    *ngIf="
+                      myForm.controls.parent.errors?.required &&
+                      myForm.controls.parent.touched
+                    "
+                  >
+                    يجب ألا تكون الفئة فارغة
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
           <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Thumbnail</label>
+            <label class="col-sm-2 col-form-label">العلامة التجارية </label>
+            <div class="col-sm-10">
+              <div *ngIf="(productObservable | async)">
+                <div class="form-group">
+                  <select
+                    formControlName="brand"
+                    class="form-control"
+                    id="sel1"
+                  >
+                    <option
+                      *ngFor="let brand of brandAr"
+                      [ngValue]="brand.id"
+                      >{{ brand.name }}</option
+                    >
+                  </select>
+
+                  <div
+                    class="messages text-danger"
+                    *ngIf="
+                      myForm.controls.brand.errors?.required &&
+                      myForm.controls.brand.touched
+                    "
+                  >
+                    العلامة التجارية مطلوبة ولا يمكن أن تكون فارغة
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">الشعار</label>
             <div class="col-sm-10">
               <label class="custom-file">
                 <input
@@ -131,6 +184,15 @@
                   accept="image/png,image/jpg,image/gif"
                 />
                 <span class="custom-file-control"></span>
+                <div
+                  class="messages text-danger"
+                  *ngIf="
+                    myForm.controls.thumbnail.errors?.required &&
+                    myForm.controls.thumbnail.touched
+                  "
+                >
+                  لا يمكنك ترك اسم المنتج فارغًا
+                </div>
               </label>
             </div>
 
@@ -145,7 +207,7 @@
           </div>
 
           <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Gallery</label>
+            <label class="col-sm-2 col-form-label">معرض صور المنتج </label>
             <div class="col-sm-10">
               <label class="custom-file">
                 <input
@@ -172,7 +234,7 @@
                 >
                   X
                 </a>
-                
+
                 <img
                   style="margin:8px"
                   [src]="gallery.src"
@@ -304,6 +366,7 @@
             <!-- End Uploading Area -->
           </div>
 
+          <a (click)="debugForm()">Test</a>
           <div class="form-group row">
             <label class="col-sm-2"></label>
             <div class="col-sm-10">

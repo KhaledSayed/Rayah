@@ -21,4 +21,16 @@ export class AuthService {
   public getToken(): string {
     return localStorage.getItem("token");
   }
+
+  public setType(type) {
+    localStorage.setItem("type", type);
+  }
+
+  public getType(): string {
+    return localStorage.getItem("type").toString();
+  }
+
+  public getName(): string {
+    return localStorage.getItem("name").toString();
+  }
 }

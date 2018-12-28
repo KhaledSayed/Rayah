@@ -144,6 +144,10 @@ const routes: Routes = [
       {
         path: "orders",
         loadChildren: "./pages/order/order.module#OrderModule"
+      },
+      {
+        path: "user",
+        loadChildren: "./pages/user/user.module#UserModule"
       }
     ]
   }

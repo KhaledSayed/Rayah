@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
-import { CategoryVm } from "src/app/api/models";
-import { CategoryService } from "src/app/api/services";
+import { CategoryVm, UserVM } from "src/app/api/models";
+import { CategoryService, UserService } from "src/app/api/services";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { ToastyService, ToastOptions, ToastData } from "ng2-toasty";
 import swal from "sweetalert2";
@@ -27,7 +27,7 @@ export class BrowseComponent implements OnInit {
   public currentPage = 0;
   public numberOfPages = 10;
   public myParam: any = "";
-  private categories: CategoryVm[];
+  private users: UserVM[];
 
   //Notifications Optiona
   position = "top-right";
@@ -41,7 +41,8 @@ export class BrowseComponent implements OnInit {
     private readonly _categoryService: CategoryService,
     private readonly route: ActivatedRoute,
     private readonly toastyService: ToastyService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly userService: UserService
   ) {}
 
   fireNotification(options) {
@@ -108,19 +109,28 @@ export class BrowseComponent implements OnInit {
         });
       }
     });
-    this.getCategories();
+    this.getUsers();
   }
 
-  getCategories() {
-    this._categoryService
-      .CategoryGet({
-        parent: null,
-        perPage: 100,
-        page: this.currentPage
-      })
+  getUsers() {
+    // this._categoryService
+    //   .CategoryGet({
+    //     parent: null,
+    //     perPage: 100,
+    //     page: this.currentPage
+    //   })
+    //   .subscribe(results => {
+    //     console.log(results);
+    //     this.categories = [...results];
+    //     this.data = [...results];
+    //   });
+
+    this.userService
+      .UserGet({ perPage: 1000, page: 0, type: "Cashier,Collecter" })
       .subscribe(results => {
         console.log(results);
-        this.categories = [...results];
+        //     console.log(results);
+        this.users = [...results];
         this.data = [...results];
       });
   }
@@ -144,7 +154,7 @@ export class BrowseComponent implements OnInit {
             this._categoryService
               .CategoryDelete(category.id)
               .subscribe(result => {
-                this.getCategories();
+                this.getUsers();
               });
 
             this.fireNotification({

@@ -1,7 +1,7 @@
 <div class="page-body">
   <div class="row">
     <div class="col-sm-12">
-      <app-card [title]="'Angular Datatable'">
+      <app-card [title]="'المنتجات      '">
         <div class="dt-responsive">
           <div class="row">
             <div class="col-xs-12 col-sm-12 col-sm-12 col-md-6">
@@ -27,19 +27,19 @@
                   id="create-btn"
                   class="btn btn-primary ripple light btn-round"
                 >
-                  Create
+                  إنشاء
                 </a>
               </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-6">
               <div style="text-align: right;">
                 <label
-                  >Search:
+                  >بحث:
                   <input
                     type="search"
                     [(ngModel)]="filterQuery"
                     class="form-control input-sm full-data-search"
-                    placeholder="Search name"
+                    placeholder="اسم البحث                    "
                   />
                 </label>
               </div>
@@ -57,10 +57,10 @@
             >
               <thead>
                 <tr>
-                  <th><mfDefaultSorter by="name">Name</mfDefaultSorter></th>
-                  <th>Thumbnail</th>
+                  <th><mfDefaultSorter by="name">الاسم</mfDefaultSorter></th>
+                  <th>الشعار</th>
                   <th>
-                    <mfDefaultSorter by="position">Actions</mfDefaultSorter>
+                    <mfDefaultSorter by="position">إدارة</mfDefaultSorter>
                   </th>
                 </tr>
                 <tr></tr>
@@ -71,9 +71,7 @@
                   <td>
                     <img
                       height="75"
-                      src="http://localhost:8080/{{
-                      item.thumbnail
-                    }}"
+                      src="http://localhost:8080/{{ item.thumbnail }}"
                     />
                   </td>
                   <td>
@@ -82,14 +80,14 @@
                       class="btn btn-success ripple light"
                       (click)="goToUpdate(item)"
                     >
-                      Edit
+                      تعديل
                     </button>
                     <button
                       type="button"
                       class="btn btn-danger ripple light"
                       (click)="delete(item)"
                     >
-                      Delete
+                      حذف
                     </button>
                   </td>
                 </tr>

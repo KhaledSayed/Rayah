@@ -29,7 +29,8 @@ class BrandService extends BaseService {
 
   onPutTestMultipart(formData: FormData): Observable<Object> {
     return this.http.put(this.rootUrl + "/brand", formData, {
-      observe: "response"
+      observe: "response",
+      headers: this.__headers
     });
   }
 
@@ -37,9 +38,14 @@ class BrandService extends BaseService {
     return this.http.get<BrandVm>(`${this.rootUrl}/brand/${id}`);
   }
 
+  findAll(): Observable<BrandVm[]> | Observable<BrandVm[]> {
+    return this.http.get<BrandVm[]>(`${this.rootUrl}/brand`);
+  }
+
   onTestMultipart(formData: FormData): Observable<Object> {
     return this.http.post(this.rootUrl + "/brand", formData, {
-      observe: "response"
+      observe: "response",
+      headers: this.__headers
     });
   }
 
@@ -95,15 +101,9 @@ class BrandService extends BaseService {
   BrandGetResponse(): Observable<StrictHttpResponse<Array<BrandVm>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
-    __headers = __headers.append(
-      "Authorization",
-      `Bearer ${localStorage.getItem("token")}`
-    );
 
     let __body: any = null;
     let req = new HttpRequest<any>("GET", this.rootUrl + `/brand`, __body, {
-      headers: this.__headers,
-      params: __params,
       responseType: "json"
     });
 

@@ -1,7 +1,7 @@
 <div class="page-body">
   <div class="row">
     <div class="col-sm-12">
-      <app-card [title]="'Angular Datatable'">
+      <app-card [title]="'العلامات التجارية'">
         <div class="dt-responsive">
           <div class="row">
             <div class="col-xs-12 col-sm-12 col-sm-12 col-md-6">
@@ -27,14 +27,14 @@
                   id="create-btn"
                   class="btn btn-primary ripple light btn-round"
                 >
-                  Create
+                  إنشاء
                 </a>
               </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-6">
               <div style="text-align: right;">
                 <label
-                  >Search:
+                  >بحث:
                   <input
                     type="search"
                     [(ngModel)]="filterQuery"
@@ -57,10 +57,10 @@
             >
               <thead>
                 <tr>
-                  <th><mfDefaultSorter by="name">Logo</mfDefaultSorter></th>
-                  <th>Name</th>
+                  <th><mfDefaultSorter by="name">الاسم</mfDefaultSorter></th>
+                  <th>شعار</th>
                   <th>
-                    <mfDefaultSorter by="position">Actions</mfDefaultSorter>
+                    <mfDefaultSorter by="position">إدارة</mfDefaultSorter>
                   </th>
                 </tr>
                 <tr></tr>
@@ -71,7 +71,7 @@
                   <td>
                     <img
                       height="75"
-                      src="http://localhost:8080/{{item.logo}}"
+                      src="http://localhost:8080/{{ item.logo }}"
                     />
                   </td>
                   <td>
@@ -80,19 +80,19 @@
                       class="btn btn-success ripple light"
                       (click)="goToUpdate(item)"
                     >
-                      Edit
+                      تعديل
                     </button>
                     <button
                       type="button"
                       class="btn btn-danger ripple light"
                       (click)="delete(item)"
                     >
-                      Delete
+                      حذف
                     </button>
 
-                    <button type="button" class="btn btn-inverse ripple light">
+                    <!-- <button type="button" class="btn btn-inverse ripple light">
                       View Products
-                    </button>
+                    </button> -->
                   </td>
                 </tr>
               </tbody>

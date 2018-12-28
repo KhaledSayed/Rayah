@@ -16,6 +16,8 @@ import {
 } from '../shared/validators/product/valid-product.validator';
 import { CheckProductQuantity } from '../shared/validators/product/is-applicable.validator';
 import { CheckItemValidity } from '../shared/validators/slider/is-item.validator';
+import { Review } from 'review/models/review.model';
+import { ReviewService } from 'review/review.service';
 
 @Module({
   controllers: [ProductController],
@@ -26,6 +28,7 @@ import { CheckItemValidity } from '../shared/validators/slider/is-item.validator
     CheckOrderValidation,
     CheckProductValidity,
     CheckProductQuantity,
+    ReviewService,
   ],
   imports: [
     MulterModule.register({
@@ -46,6 +49,10 @@ import { CheckItemValidity } from '../shared/validators/slider/is-item.validator
       {
         name: Product.modelName,
         schema: Product.model.schema,
+      },
+      {
+        name: Review.modelName,
+        schema: Review.model.schema,
       },
     ]),
   ],

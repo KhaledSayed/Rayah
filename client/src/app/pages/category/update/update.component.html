@@ -2,13 +2,7 @@
   <div class="row">
     <div class="col-sm-12">
       <!-- Basic Inputs Validation start -->
-      <app-card
-        [title]="'تحديث القسم المخصص'"
-        [headerContent]="
-          'Lorem ipsum dolor sit amet, consectetur adipisicing elit'
-        "
-        [cardOptionBlock]="true"
-      >
+      <app-card [title]="'تحديث القسم المخصص'" [cardOptionBlock]="true">
         <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
           <div class="form-group row">
             <label class="col-sm-2 col-form-label"
@@ -38,7 +32,6 @@
                 rows="5"
                 class="form-control"
                 id="description"
-                placeholder="Text Input Validation"
                 formControlName="description"
               ></textarea>
             </div>
@@ -60,7 +53,7 @@
                 </ng-template>
               -->
 
-              <div *ngIf="(courseObservable | async); else: loading">
+              <div *ngIf="(courseObservable | async); else loading">
                 <div class="form-group">
                   <select
                     formControlName="parent"
@@ -240,7 +233,7 @@
                 class="btn btn-primary m-b-0 ripple light"
                 [disabled]="!myForm.valid"
               >
-                Submit
+                تحديث
               </button>
             </div>
           </div>

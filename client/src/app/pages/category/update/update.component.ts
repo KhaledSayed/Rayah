@@ -40,10 +40,7 @@ export class UpdateComponent implements OnInit {
     const description = new FormControl("");
     const parent = new FormControl("");
     const thumbnail = new FormControl("");
-    // const rpassword = new FormControl("", [
-    //   Validators.required,
-    //   CustomValidators.equalTo(password)
-    // ]);
+
     this.myForm = new FormGroup({
       name: name,
       parent: parent,
@@ -52,7 +49,6 @@ export class UpdateComponent implements OnInit {
     });
 
     /*Basic validation end*/
-    this.loadCategories();
   }
 
   loadCategories() {
@@ -74,8 +70,11 @@ export class UpdateComponent implements OnInit {
         console.log(results);
         this.currentCategory = results;
         this.myForm.controls["name"].setValue(results.name);
-        this.myForm.controls["parent"].setValue(results.parent.id);
+        if (results.parent != null) {
+          this.myForm.controls["parent"].setValue(results.parent.id);
+        }
         this.myForm.controls["description"].setValue(results.description);
+        console.log("Description", this.myForm.controls.description.value);
         this.selectedItem = results.parent;
         this.selectedImage = `http://localhost:8080/${results.thumbnail}`;
         console.log(this.selectedImage);
@@ -162,6 +161,8 @@ export class UpdateComponent implements OnInit {
       const id = params.id;
 
       this.idParam = id;
+
+      this.loadCategories();
     });
   }
 }

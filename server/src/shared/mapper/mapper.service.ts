@@ -79,5 +79,13 @@ export class MapperService {
     config
       .createMap('Slider', 'SliderVm')
       .forSourceMember('_id', opts => opts.ignored());
+
+    config
+      .createMap('Review', 'ReviewVm')
+      .forSourceMember('_id', opts => opts.ignored());
+
+    config
+      .createMap('Review[]', 'ReviewVm[]')
+      .forSourceMember('_id', opts => opts.ignored());
   }
 }

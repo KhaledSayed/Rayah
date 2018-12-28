@@ -17,6 +17,8 @@ import { AuthService } from '../shared/auth/auth.service';
 import { JWTPayload } from '../shared/auth/jwt-payload';
 import { UserVM } from './models/view-models/user-vm.model';
 import { LoginResponseVM } from './models/view-models/login-response-vm.model';
+import { FcmParam } from './models/view-models/Fcm-param.model';
+import { UserRole } from './models/user-role.enum';
 
 @Injectable()
 export class UserService extends BaseService<User> {
@@ -36,6 +38,7 @@ export class UserService extends BaseService<User> {
     newUser.phone = phone;
     newUser.name = name;
     newUser.email = email;
+    newUser.role = UserRole[registerVm.role];
 
     const salat = await genSalt(10);
     newUser.password = await hash(password, salat);
@@ -75,5 +78,45 @@ export class UserService extends BaseService<User> {
       token,
       user: userVM,
     };
+  }
+
+  async postToken(user: User, fcm: FcmParam) {
+    const currentUser = await this.findById(user.id);
+
+    currentUser.tokens.push(fcm.token);
+
+    try {
+      let updatedUser = await this.update(user.id, currentUser);
+
+      console.log('Updated User Tokens', updatedUser.tokens);
+      return null;
+    } catch (e) {
+      throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  async deleteToken(user: any, fcm: FcmParam) {
+    const currentUser = await this.findById(user.id);
+    const tokenIndex = currentUser.tokens.indexOf(fcm.token);
+
+    if (tokenIndex == -1) {
+      throw new HttpException('Token not found', HttpStatus.NOT_FOUND);
+    }
+
+    console.log(
+      'Curren tokens Length Before Delete',
+      currentUser.tokens.length,
+    );
+    currentUser.tokens.slice(tokenIndex);
+    console.log('Curren tokens Length After Delete', currentUser.tokens.length);
+
+    try {
+      let updatedUser = await this.update(user.id, currentUser);
+
+      console.log('Deleted User Tokens', updatedUser.tokens);
+      return null;
+    } catch (e) {
+      throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }

@@ -8,6 +8,8 @@ import {
   Get,
   Query,
   UseGuards,
+  Res,
+  Req,
 } from '@nestjs/common';
 import { RegisterParams } from './models/view-models/register-vm.model';
 import { UserVM } from './models/view-models/user-vm.model';
@@ -16,6 +18,8 @@ import {
   ApiResponse,
   ApiOperation,
   ApiImplicitQuery,
+  ApiImplicitParam,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 import { User } from './models/user.model';
 import { ApiException } from '../shared/api-exception.model';
@@ -29,8 +33,11 @@ import { Roles } from '../shared/decorators/roles.decorator';
 import { UserRole } from './models/user-role.enum';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from '../shared/guards/roles.guard';
+import { FcmParam } from './models/view-models/Fcm-param.model';
+import { types } from 'util';
 @Controller('users')
 @ApiUseTags(User.modelName)
+@ApiBearerAuth()
 export class UserController {
   constructor(private readonly _userService: UserService) {}
 
@@ -44,13 +51,41 @@ export class UserController {
     type: Number,
   })
   @ApiImplicitQuery({ name: 'perPage', required: true, type: Number })
+  @ApiImplicitQuery({
+    name: 'type',
+    required: false,
+    type: String,
+    isArray: true,
+  })
   @Roles(UserRole.Admin)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   async getUsers(
     @Query('page', new ToInt()) page: number,
     @Query('perPage', new ToInt()) perPage: number,
+    @Query('type') type: string,
   ): Promise<UserVM[]> {
-    const users = await this._userService.findAll({}, [], page, perPage);
+    let users = null;
+    let roles: string[] = [];
+    let rolesQuery = [];
+    console.log(type);
+    if (type !== undefined) {
+      roles = type.split(',');
+      console.log(roles);
+
+      roles.forEach(item => {
+        rolesQuery.push({ role: item });
+      });
+
+      console.log(rolesQuery);
+      users = await this._userService.findAll(
+        { $or: rolesQuery },
+        [],
+        page,
+        perPage,
+      );
+    } else {
+      users = await this._userService.findAll({}, [], page, perPage);
+    }
 
     return this._userService.map<UserVM[]>(
       map(users, user => user.toJSON()),
@@ -63,9 +98,9 @@ export class UserController {
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ApiException })
   @ApiOperation(GetOperationId(User.modelName, 'Register'))
   async register(@Body() registerVM: RegisterParams): Promise<UserVM> {
-    const { email, password } = registerVM;
+    const { email, password, role } = registerVM;
 
-    console.log(registerVM);
+    console.log(role, UserRole[role]);
 
     if (!email) {
       throw new HttpException('email is required', HttpStatus.BAD_REQUEST);
@@ -113,5 +148,25 @@ export class UserController {
     });
 
     return this._userService.login(loginVm);
+  }
+
+  @Post('token')
+  @ApiResponse({ status: HttpStatus.OK })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ApiException })
+  @ApiOperation(GetOperationId(User.modelName, 'Add Token'))
+  @Roles(UserRole.User)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  async postToken(@Body() fcm: FcmParam, @Res() res, @Req() req) {
+    return await this._userService.postToken(req.user, fcm);
+  }
+
+  @Post('logout')
+  @ApiResponse({ status: HttpStatus.OK })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ApiException })
+  @ApiOperation(GetOperationId(User.modelName, 'Add Token'))
+  @Roles(UserRole.User)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  async deleteToken(@Body() fcm: FcmParam, @Res() res, @Req() req) {
+    return await this._userService.deleteToken(req.user, fcm);
   }
 }

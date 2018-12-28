@@ -2,10 +2,14 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { HttpResponse } from "@angular/common/http";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { CategoryVm, ProductVm } from "src/app/api/models";
+import { CategoryVm, ProductVm, BrandVm } from "src/app/api/models";
 import { Observable } from "rxjs";
 import { FileUploader } from "ng2-file-upload";
-import { CategoryService, ProductService } from "src/app/api/services";
+import {
+  CategoryService,
+  ProductService,
+  BrandService
+} from "src/app/api/services";
 
 const URL = "";
 @Component({
@@ -20,9 +24,15 @@ export class UpdateComponent implements OnInit {
   selectedFile: File;
   selectedValue: string = "test";
   categoryAr: CategoryVm[];
+  brandAr: BrandVm[];
+
   loaded: boolean = false;
   courseObservable: Observable<CategoryVm[]>;
+  brandObservable: Observable<BrandVm[]>;
+  productObservable: Observable<ProductVm>;
+
   selectedItem: CategoryVm = null;
+  selectedBrand: BrandVm = null;
   uploader: FileUploader = new FileUploader({
     isHTML5: true,
     url: URL
@@ -36,17 +46,19 @@ export class UpdateComponent implements OnInit {
     private readonly categoryService: CategoryService,
     private readonly productService: ProductService,
     private readonly router: Router,
-    private readonly activatedRouter: ActivatedRoute
+    private readonly activatedRouter: ActivatedRoute,
+    private readonly brandService: BrandService
   ) {
     const name = new FormControl("", Validators.required);
     const description = new FormControl("");
     const code = new FormControl("");
-    const quantity = new FormControl("");
-    const price = new FormControl("");
+    const quantity = new FormControl("", [Validators.required]);
+    const price = new FormControl("", [Validators.required, Validators.min(1)]);
 
-    const parent = new FormControl("");
+    const parent = new FormControl("", Validators.required);
     const thumbnail = new FormControl("");
     const gallery = new FormControl("");
+    const brand = new FormControl("", Validators.required);
     // const rpassword = new FormControl("", [
     //   Validators.required,
     //   CustomValidators.equalTo(password)
@@ -59,10 +71,9 @@ export class UpdateComponent implements OnInit {
       price: price,
       description: description,
       thumbnail: thumbnail,
-      gallery: gallery
+      gallery: gallery,
+      brand: brand
     });
-
-    this.loadCategories();
 
     /*Basic validation end*/
   }
@@ -101,11 +112,25 @@ export class UpdateComponent implements OnInit {
 
     this.courseObservable.subscribe(results => {
       this.categoryAr = [...results];
+      this.loadBrands();
+    });
+  }
+
+  loadBrands() {
+    this.brandAr = [];
+
+    this.brandObservable = this.brandService.findAll();
+
+    this.brandObservable.subscribe(results => {
+      this.brandAr = [...results];
+      this.loadProduct(this.idParam);
     });
   }
 
   loadProduct(id) {
-    this.productService.findOne(id).subscribe(
+    this.productObservable = this.productService.findOne(id);
+
+    this.productObservable.subscribe(
       results => {
         this.currentProduct = results;
         this.myForm.controls["name"].setValue(results.name);
@@ -113,8 +138,13 @@ export class UpdateComponent implements OnInit {
         this.myForm.controls["price"].setValue(results.price);
         this.myForm.controls["quantity"].setValue(results.quantity);
         this.myForm.controls["parent"].setValue(results.category.id);
+        this.myForm.controls["brand"].setValue(results.brand.id);
+        this.myForm.controls["description"].setValue(results.description);
+
         // this.myForm.controls["description"].setValue(results.description);
         this.selectedItem = results.category;
+        this.selectedBrand = results.brand;
+
         this.selectedImage = `http://localhost:8080/${results.thumbnail}`;
         this.selectedGallery = [];
         results.gallery.forEach(img => {
@@ -125,6 +155,7 @@ export class UpdateComponent implements OnInit {
         });
 
         console.log(this.selectedItem);
+        console.log(this.selectedBrand);
       },
       err => {
         console.log(err);
@@ -153,6 +184,8 @@ export class UpdateComponent implements OnInit {
     const price = this.myForm.controls["price"].value;
     const code = this.myForm.controls["code"].value;
     const category = this.myForm.controls["parent"].value;
+    const brand = this.myForm.controls["brand"].value;
+
     let id = "";
 
     productObs = this.productService.ProductPut(
@@ -161,7 +194,9 @@ export class UpdateComponent implements OnInit {
         quantity: parseInt(quantity),
         price: parseInt(price),
         code: code,
-        category: category
+        category: category,
+        brand: brand,
+        description: description
       },
       this.idParam
     );
@@ -241,8 +276,7 @@ export class UpdateComponent implements OnInit {
       const id = params.id;
 
       this.idParam = id;
-
-      this.loadProduct(this.idParam);
+      this.loadCategories();
     });
   }
 
@@ -255,5 +289,9 @@ export class UpdateComponent implements OnInit {
       .subscribe(result => {
         console.log(result);
       });
+  }
+
+  debugForm() {
+    console.log(this.myForm);
   }
 }

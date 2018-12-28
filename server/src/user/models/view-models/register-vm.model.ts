@@ -12,4 +12,6 @@ export class RegisterParams extends LoginVM {
   email: string;
   @ApiModelProperty({ example: '123456' })
   password: string;
+
+  role: string;
 }

@@ -30,6 +30,8 @@ export class ProductService extends BaseService<Product> {
     newProduct.code = productParams.code;
     newProduct.featured = productParams.featured;
     newProduct.category = Types.ObjectId(productParams.category);
+    newProduct.brand = Types.ObjectId(productParams.brand);
+    newProduct.description = productParams.description;
 
     try {
       const result = await this.create(newProduct);
@@ -51,6 +53,8 @@ export class ProductService extends BaseService<Product> {
     product.code = productParams.code;
     product.featured = productParams.featured;
     product.category = Types.ObjectId(productParams.category);
+    product.brand = Types.ObjectId(productParams.brand);
+    product.description = productParams.description;
 
     try {
       const updatedProduct = await this.update(product.id, product);

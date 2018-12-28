@@ -6,6 +6,7 @@ import {
   IsNumber,
   IsPositive,
   IsOptional,
+  IsMongoId,
 } from 'class-validator';
 import {
   IsProductUnique,
@@ -18,6 +19,10 @@ export class ProductParams {
   @IsString()
   @IsDefined()
   name: string;
+
+  @ApiModelPropertyOptional()
+  @IsString()
+  description: string;
 
   @ApiModelProperty({ example: '#F03CLAN' })
   @IsDefined()
@@ -45,4 +50,8 @@ export class ProductParams {
   @IsDefined()
   @IsCategoryExists()
   category: string;
+
+  @IsDefined()
+  @IsMongoId()
+  brand: string;
 }

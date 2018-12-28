@@ -1,7 +1,7 @@
 <div class="page-body">
   <div class="row">
     <div class="col-sm-12">
-      <app-card [title]="'Angular Datatable'">
+      <app-card [title]="'الموظفين'">
         <div class="dt-responsive">
           <div class="row">
             <div class="col-xs-12 col-sm-12 col-sm-12 col-md-6">
@@ -23,7 +23,7 @@
                 </label>
 
                 <a
-                  routerLink="/simple-page/create"
+                  routerLink="/user/create"
                   id="create-btn"
                   class="btn btn-primary ripple light btn-round"
                 >
@@ -57,10 +57,12 @@
             >
               <thead>
                 <tr>
-                  <th><mfDefaultSorter by="name">Name</mfDefaultSorter></th>
-                  <th>
+                  <th><mfDefaultSorter by="name">الاسم</mfDefaultSorter></th>
+                  <th><mfDefaultSorter by="name">الوظيفة</mfDefaultSorter></th>
+
+                  <!-- <th>
                     <mfDefaultSorter by="position">Actions</mfDefaultSorter>
-                  </th>
+                  </th> -->
                 </tr>
                 <tr></tr>
               </thead>
@@ -68,29 +70,36 @@
                 <tr *ngFor="let item of mf.data">
                   <td>{{ item.name }}</td>
                   <td>
-                    <button
+                    <div *ngIf="item.role === 'Cashier'" class="label-main">
+                      <label class="label label-success">{{
+                        " أمين الصندوق"
+                      }}</label>
+                    </div>
+
+                    <div *ngIf="item.role === 'Collecter'" class="label-main">
+                      <label class="label label-warning">{{
+                        "المجمع
+                            "
+                      }}</label>
+                    </div>
+                  </td>
+
+                  <!-- <td>
+                     <button
                       type="button"
                       class="btn btn-success ripple light"
                       (click)="goToUpdate(item)"
                     >
-                      Edit
+                      تعديل
                     </button>
                     <button
                       type="button"
                       class="btn btn-danger ripple light"
                       (click)="delete(item)"
                     >
-                      Delete
+                      حذف
                     </button>
-
-                    <button type="button" class="btn btn-info ripple light">
-                      View Subcategories
-                    </button>
-
-                    <button type="button" class="btn btn-inverse ripple light">
-                      View Products
-                    </button>
-                  </td>
+                  </td> -->
                 </tr>
               </tbody>
               <tfoot>

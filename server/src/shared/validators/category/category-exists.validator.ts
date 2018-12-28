@@ -24,9 +24,11 @@ export class IsCategoryExist implements ValidatorConstraintInterface {
     // console.log(_couponService);
   }
   async validate(value: any, args: ValidationArguments) {
-    console.log('Validate Coupon Code');
+    console.log('Validate Category Code', value);
 
     const category = await this._categoryService.findById(value);
+
+    console.log('Category Id');
     // prints { _id: 59218f686409d670a97e53e0, name: 'JohnDoe', __v: 0 }
     return category ? true : false;
   }

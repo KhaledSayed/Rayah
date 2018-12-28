@@ -6,4 +6,6 @@ export interface ProductParams {
   price: number;
   featured?: boolean;
   category: string;
+  brand: string;
+  description: string;
 }
