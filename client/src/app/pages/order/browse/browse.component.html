@@ -162,6 +162,19 @@
                         class="feather icon-trash-2 f-w-600 f-16 text-c-red"
                       ></i
                     ></a>
+
+                    <a
+                      style="margin-right:8px;margin-left:8px;"
+                      (click)="print(item)"
+                      *ngIf="
+                        this.authService.getType() == 'Admin' ||
+                        this.authService.getType() == 'Cashier'
+                      "
+                    >
+                      <i
+                        class="feather icon-printer f-w-600 f-16 text-c-red"
+                      ></i
+                    ></a>
                   </td>
                 </tr>
               </tbody>

@@ -13,6 +13,7 @@ import swal from "sweetalert2";
 import { NotifierService } from "angular-notifier";
 import { NotificationsService } from "angular2-notifications";
 import { AuthService } from "src/app/auth.service";
+import * as jsPDF from "jspdf";
 
 @Component({
   selector: "app-browse",
@@ -250,5 +251,35 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         position: ["top", "right"]
       });
     }
+  }
+
+  print(item) {
+    var doc = new jsPDF();
+    doc.text(20, 20, "LRA7TK PDF");
+    // doc.text(20, 30, "This is client-side Javascript, pumping out a PDF.");
+    // doc.addPage();
+    // doc.text(20, 20, "Do you like that?");
+    let lastLine = 0;
+
+    item.basket.forEach((item, index) => {
+      const ratio = index + 3;
+      doc.text(
+        20,
+        ratio * 10,
+        `${item.product.name}\t\t x${item.quantity}\t\t ${item.price} L.E`
+      );
+      lastLine = ratio;
+    });
+    lastLine++;
+    doc.text(
+      20,
+      lastLine * 10,
+      `Address: ${item.address}\n\n total: ${item.total} L.E\n Name: ${
+        item.user.name
+      }\nPhone: ${item.phone}`
+    );
+
+    // Save the PDF
+    doc.save("Test.pdf");
   }
 }
