@@ -74,7 +74,8 @@ export class UpdateComponent implements OnInit {
       results => {
         this.currentBrand = results;
         this.myForm.controls["name"].setValue(results.name);
-        this.selectedImage = `http://localhost:8080/${results.logo}`;
+        this.selectedImage = `http://142.93.207.35:8080/${results.logo}`;
+
         console.log(this.selectedItem);
       },
       err => {

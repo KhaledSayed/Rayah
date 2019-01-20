@@ -18,7 +18,8 @@ export class OrderVm extends BaseModelVm {
   @ApiModelProperty()
   user: ObjectId;
 
-  @ApiModelProperty({ example: OrderLevel.Created })
+  @ApiModelProperty({ example: OrderLevel.New
+  })
   status: OrderLevel;
 
   @ApiModelProperty()

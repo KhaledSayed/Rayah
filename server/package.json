@@ -5,7 +5,7 @@
   "author": "Khaled Sayed",
   "license": "MIT",
   "scripts": {
-    "start": "./node_modules/.bin/ts-node ./src/main.ts",
+    "start": "nodemon ./node_modules/.bin/ts-node ./src/main.ts",
     "start:watch": "nodemon",
     "prestart:prod": "tsc",
     "start:prod": "tsc && node dist/main.js"

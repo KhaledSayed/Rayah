@@ -138,7 +138,7 @@
                   <td>
                     <a
                       (click)="goToUpdate(item)"
-                      *ngIf="this.authService.getType() != 'Collector'"
+                      *ngIf="this.authService.getType() != 'Collecter'"
                     >
                       <i
                         class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green"
@@ -147,7 +147,7 @@
 
                     <a
                       (click)="goToCollect(item)"
-                      *ngIf="this.authService.getType() == 'Collector'"
+                      *ngIf="this.authService.getType() == 'Collecter'"
                     >
                       <i
                         class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green"

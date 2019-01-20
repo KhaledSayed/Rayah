@@ -153,7 +153,9 @@ export class OrderController {
 
     //
     for (let i = 0; i < items.length; i++) {
-      const item = items[i];
+    const item = items[i];
+          console.log(item);
+
       const product = await this._productService.findById(item.id);
 
       //Don't Update the Quantity
@@ -177,7 +179,9 @@ export class OrderController {
 
     try {
       let order = null;
-      if (req.user && req.user.type === UserRole.Admin) {
+      if (req.user && req.user.type !== UserRole.Admin) {
+
+      console.log(req.user);
         order = await this._orderService.onCreateOrder(
           updatedProducts,
           coupon,

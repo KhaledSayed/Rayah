@@ -77,8 +77,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       case "Cashier":
         this.orderStatus = ["Cashier", "OnTheRun"];
         break;
-      case "Collector":
-        this.orderStatus = ["New"];
+      case "Collecter":
+        this.orderStatus = ["New","New"];
         break;
     }
   }

@@ -76,7 +76,7 @@ export class UpdateComponent implements OnInit {
         this.myForm.controls["description"].setValue(results.description);
         console.log("Description", this.myForm.controls.description.value);
         this.selectedItem = results.parent;
-        this.selectedImage = `http://localhost:8080/${results.thumbnail}`;
+        this.selectedImage = `http://142.93.207.35:8080/${results.thumbnail}`;
         console.log(this.selectedImage);
         this.categoryAr = [];
         this.categoryAr.push({
@@ -107,10 +107,10 @@ export class UpdateComponent implements OnInit {
     const uploadData = new FormData();
 
     console.log("Selected Image", this.selectedImage);
-    console.log("http://localhost:8080/" + this.currentCategory.thumbnail);
+    console.log("http://142.93.207.35:8080/" + this.currentCategory.thumbnail);
     if (
       this.selectedImage !==
-      `http://localhost:8080/${this.currentCategory.thumbnail}`
+      `http://142.93.207.35:8080/${this.currentCategory.thumbnail}`
     ) {
       console.log("Selected Image True");
 

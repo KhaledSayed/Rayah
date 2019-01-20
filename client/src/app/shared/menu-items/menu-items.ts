@@ -244,7 +244,7 @@ export class MenuItems {
       case "Cashier":
         this.MENU = CASHIER_MENUITEMS;
         break;
-      case "Collector":
+      case "Collecter":
         this.MENU = COLLECTER_MENUITEMS;
         break;
     }

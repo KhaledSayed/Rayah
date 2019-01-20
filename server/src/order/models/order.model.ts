@@ -47,7 +47,7 @@ export class Order extends BaseModel<Order> {
   @prop({ required: true })
   address: string;
 
-  @prop({ enum: OrderLevel, default: OrderLevel.Created })
+  @prop({ enum: OrderLevel, default: OrderLevel.New })
   status: OrderLevel;
 
   @prop({ required: true })

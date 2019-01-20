@@ -13,6 +13,7 @@ import { ProductItem } from './models/product-item.model';
 import { NoviceHelper } from './helpers/novice-calculator.helper';
 import { Coupon } from '../coupon/models/coupon.model';
 import { OrderPutParams } from './models/view-models/order-put-params.model';
+import { OrderLevel } from './models/order-level.enum';
 
 @Injectable()
 export class OrderService extends BaseService<Order> {
@@ -38,7 +39,8 @@ export class OrderService extends BaseService<Order> {
 
     order.total = total;
     order.note = orderParams.note;
-
+    order.status = OrderLevel.New ;
+console.log(order);
     products.forEach(item => {
       order.basket.push({
         quantity: item.quantity,

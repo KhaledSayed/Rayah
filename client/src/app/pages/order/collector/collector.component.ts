@@ -165,14 +165,8 @@ export class CollectorComponent implements OnInit {
     this.productObservable.subscribe(results => {
       this.products = [...results];
       console.log(this.products[0]);
-
-      const controlArray = <FormArray>this.myForm.get("items");
-
-      for (let i = 0; i < controlArray.length; i++) {
-        controlArray.controls[i].get("product").setValue(this.products[0].name);
-        controlArray.controls[i].get("quantity").setValue(1);
-        this.myForm.controls["total"].setValue(this.products[0].price * 1);
-      }
+      this.loadOrder(this.idParam);
+      
     });
   }
 
@@ -232,14 +226,14 @@ export class CollectorComponent implements OnInit {
 
   ngOnInit() {
     console.log("ngOnInit");
-    this.loadProducts();
+    
     this.loadUsers();
     this.activatedRouter.params.subscribe(params => {
       const id = params.id;
 
       this.idParam = id;
-
-      this.loadOrder(this.idParam);
+    this.loadProducts();
+      
     });
   }
 
@@ -258,7 +252,12 @@ export class CollectorComponent implements OnInit {
         };
         this.myForm.controls.address.setValue(results.address);
         this.myForm.controls.note.setValue(results.note);
-        this.myForm.controls.status.setValue(results.status);
+	this.myForm.controls.status.setValue(results.status);
+
+	      const controlArray = <FormArray>this.myForm.get("items");
+		      
+        controlArray.controls[index].get("product").setValue(item.product.name);
+        controlArray.controls[index].get("quantity").setValue(item.quantity);
 
         this.calculateTotal();
         console.log(this.currentProducts);

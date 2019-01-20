@@ -145,11 +145,11 @@ export class UpdateComponent implements OnInit {
         this.selectedItem = results.category;
         this.selectedBrand = results.brand;
 
-        this.selectedImage = `http://localhost:8080/${results.thumbnail}`;
+        this.selectedImage = `http://142.93.207.35:8080/${results.thumbnail}`;
         this.selectedGallery = [];
         results.gallery.forEach(img => {
           this.selectedGallery.push({
-            src: `http://localhost:8080/${img}`,
+            src: `http://142.93.207.35:8080/${img}`,
             type: "remote"
           });
         });
@@ -201,11 +201,11 @@ export class UpdateComponent implements OnInit {
       this.idParam
     );
 
-    // console.log(`http://localhost:8080/${this.currentProduct.thumbnail}`);
+    // console.log(`http://142.93.207.35:8080/${this.currentProduct.thumbnail}`);
     // console.log(this.selectedImage);
     if (
       this.selectedImage !==
-      `http://localhost:8080/${this.currentProduct.thumbnail}`
+      `http://142.93.207.35:8080/${this.currentProduct.thumbnail}`
     ) {
       console.log("Selected Image True");
       updateThumbnail = true;

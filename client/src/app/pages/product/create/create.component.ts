@@ -126,7 +126,7 @@ export class CreateComponent implements OnInit {
         name: name,
         quantity: parseInt(quantity),
         price: parseInt(price),
-        code: code,
+        code:new Date().toISOString(),
         category: category,
         brand: brand,
         description: description
