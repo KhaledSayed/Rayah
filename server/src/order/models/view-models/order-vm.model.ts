@@ -1,11 +1,12 @@
 import { BaseModelVm } from '../../../shared/base.model';
 import { User } from '../../../user/models/user.model';
-import { ApiModelProperty } from '@nestjs/swagger';
+import { ApiModelProperty, ApiModelPropertyOptional } from '@nestjs/swagger';
 import { OrderLevel } from '../order-level.enum';
 import { Product } from '../../../product/models/product.model';
 import { Coupon } from '../../../coupon/models/coupon.model';
 import { ObjectId } from 'bson';
 import { ProductVm } from '../../../product/models/view-models/product-vm.model';
+import { GiftVm } from './gift-params.vm';
 
 // class ProductItem {
 //   product: ProductVm;
@@ -18,7 +19,8 @@ export class OrderVm extends BaseModelVm {
   @ApiModelProperty()
   user: ObjectId;
 
-  @ApiModelProperty({ example: OrderLevel.New
+  @ApiModelProperty({
+    example: OrderLevel.New,
   })
   status: OrderLevel;
 
@@ -30,4 +32,7 @@ export class OrderVm extends BaseModelVm {
 
   @ApiModelProperty()
   address: string;
+
+  @ApiModelPropertyOptional()
+  gift: GiftVm;
 }
