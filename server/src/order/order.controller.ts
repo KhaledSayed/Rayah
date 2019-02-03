@@ -13,6 +13,9 @@ import {
   UseGuards,
   Body,
   Query,
+  UseInterceptors,
+  FileInterceptor,
+  UploadedFile,
 } from '@nestjs/common';
 import { OrderParam } from './models/view-models/order-params.model';
 import { OrderVm } from './models/view-models/order-vm.model';
@@ -45,6 +48,7 @@ import { OrderLevel } from './models/order-level.enum';
 import { EnumToArray } from '../shared/utilities/enum-to-array';
 import { stat } from 'fs';
 import { UserService } from '../user/user.service';
+import { GiftVm } from './models/view-models/gift-params.vm';
 
 @Controller('orders')
 @ApiUseTags(Order.modelName)
@@ -153,8 +157,8 @@ export class OrderController {
 
     //
     for (let i = 0; i < items.length; i++) {
-    const item = items[i];
-          console.log(item);
+      const item = items[i];
+      console.log(item);
 
       const product = await this._productService.findById(item.id);
 
@@ -180,8 +184,7 @@ export class OrderController {
     try {
       let order = null;
       if (req.user && req.user.type !== UserRole.Admin) {
-
-      console.log(req.user);
+        console.log(req.user);
         order = await this._orderService.onCreateOrder(
           updatedProducts,
           coupon,
@@ -275,6 +278,31 @@ export class OrderController {
       const deletedOrder = await this._orderService.delete(id);
 
       return await this._orderService.map<OrderVm>(deletedOrder.toJSON());
+    } catch (e) {
+      throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @Roles(UserRole.Admin, UserRole.Collecter, UserRole.Cashier)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Post(':id/gift')
+  @UseInterceptors(FileInterceptor('avatar'))
+  async addGift(@Param('id') id, @Body() gift: GiftVm, @UploadedFile() avatar) {
+    if (!avatar || !avatar.path) {
+      throw new HttpException('Avatar is Required', HttpStatus.BAD_REQUEST);
+    }
+
+    const order = await this._orderService.findById(id);
+
+    if (!order) {
+      throw new HttpException('Resource Not Found', HttpStatus.NOT_FOUND);
+    }
+
+    try {
+      gift.avatar = avatar.path;
+      const orderVm = await this._orderService.addGift(order, gift);
+
+      return orderVm;
     } catch (e) {
       throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }

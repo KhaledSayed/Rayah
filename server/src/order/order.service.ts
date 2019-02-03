@@ -14,6 +14,7 @@ import { NoviceHelper } from './helpers/novice-calculator.helper';
 import { Coupon } from '../coupon/models/coupon.model';
 import { OrderPutParams } from './models/view-models/order-put-params.model';
 import { OrderLevel } from './models/order-level.enum';
+import { GiftVm } from './models/view-models/gift-params.vm';
 
 @Injectable()
 export class OrderService extends BaseService<Order> {
@@ -39,8 +40,8 @@ export class OrderService extends BaseService<Order> {
 
     order.total = total;
     order.note = orderParams.note;
-    order.status = OrderLevel.New ;
-console.log(order);
+    order.status = OrderLevel.New;
+    console.log(order);
     products.forEach(item => {
       order.basket.push({
         quantity: item.quantity,
@@ -100,6 +101,19 @@ console.log(order);
     order.status = orderParams.status;
     console.log('@onUpdateOrder #3', order);
 
+    try {
+      const updatedOrder = await this.update(order.id, order);
+      console.log('@onUpdateOrder #4', updatedOrder);
+
+      return await this.map<OrderVm>(updatedOrder.toJSON());
+    } catch (e) {
+      console.log(e);
+      throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  async addGift(order, gift: GiftVm): Promise<OrderVm> {
+    order.gift = gift;
     try {
       const updatedOrder = await this.update(order.id, order);
       console.log('@onUpdateOrder #4', updatedOrder);

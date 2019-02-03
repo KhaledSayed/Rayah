@@ -31,6 +31,24 @@ class ProductItem {
   }
 }
 
+
+class Gift {
+
+
+  @prop({required:true})
+  avatar:string; 
+
+
+  @prop({required:true})
+  name:string;
+
+  @prop({required:true})
+  class:string ;
+
+  @prop({required:true})
+  school:string;
+}
+
 export class Order extends BaseModel<Order> {
   // @prop({ required: false })
   // referenceNumber: string;
@@ -41,13 +59,17 @@ export class Order extends BaseModel<Order> {
   @arrayProp({ items: ProductItem })
   basket: ProductItem[];
 
+
+  @prop({required:false})
+  gift:Gift;
+
   @prop({ ref: Coupon, required: false })
   coupon: Ref<Coupon>;
 
   @prop({ required: true })
   address: string;
 
-  @prop({ enum: OrderLevel, default: OrderLevel.New })
+  @prop({ enum: OrderLevel, default: OrderLevel.New , required:false })
   status: OrderLevel;
 
   @prop({ required: true })
