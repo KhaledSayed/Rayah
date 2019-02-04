@@ -19,4 +19,5 @@ export interface OrderVm {
   coupon: ObjectID;
   address: string;
   note: string;
+  gift: { name: string; school: string; class: string; avatar: string };
 }

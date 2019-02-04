@@ -34,6 +34,7 @@ const URL = "";
 export class UpdateComponent implements OnInit {
   idParam: string;
   currentUser: UserVM;
+  currentGift: { name: string; school: string; class: string; avatar: string };
   simpleOption: IOption[];
   selectedOption = "1";
   productLoading: boolean = false;
@@ -283,6 +284,7 @@ export class UpdateComponent implements OnInit {
       this.myForm.controls.email.setValue(results.user.email);
       this.myForm.controls.phone.setValue(results.user.phone);
       this.currentUser = results.user;
+      this.currentGift = results.gift;
       this.updateOrder(results.basket);
       this.calculateTotal();
       // this.currentUser = results.user;

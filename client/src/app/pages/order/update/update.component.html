@@ -151,6 +151,36 @@
             ></ng-select>
           </div>
 
+          <div class="form-group row" *ngIf="this.currentGift">
+            <label class="col-sm-2 col-form-label">الهديه</label>
+
+            <div class="label-main ">
+              <label class="label label-lg label-primary">{{
+                this.currentGift.name
+              }}</label>
+            </div>
+
+            <div class="label-main ">
+              <label class="label label-lg label-primary">{{
+                this.currentGift.school
+              }}</label>
+            </div>
+
+            <div class="label-main">
+              <label class="label label-lg label-success">{{
+                this.currentGift.class
+              }}</label>
+            </div>
+
+            <div class="col-sm-2">
+              <img
+                style="margin:8px"
+                src="http://142.93.207.35:8080/{{ this.currentGift.avatar }}"
+                height="70"
+              />
+            </div>
+          </div>
+
           <!-- <a (click)="createInv()">Test Pdf</a> -->
           <div class="form-group row">
             <label class="col-sm-2"></label>
