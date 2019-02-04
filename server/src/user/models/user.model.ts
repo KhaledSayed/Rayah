@@ -7,6 +7,9 @@ export class User extends BaseModel<User> {
   @arrayProp({ items: String, default: [] })
   tokens: string[];
 
+  @arrayProp({ items: String, default: [] })
+  addresses: string[];
+
   @prop({
     required: [true, 'E-mail is Required'],
     unique: true,

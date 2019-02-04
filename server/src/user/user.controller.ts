@@ -10,6 +10,7 @@ import {
   UseGuards,
   Res,
   Req,
+  Delete,
 } from '@nestjs/common';
 import { RegisterParams } from './models/view-models/register-vm.model';
 import { UserVM } from './models/view-models/user-vm.model';
@@ -168,5 +169,33 @@ export class UserController {
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   async deleteToken(@Body() fcm: FcmParam, @Res() res, @Req() req) {
     return await this._userService.deleteToken(req.user, fcm);
+  }
+
+  @Post('address')
+  @ApiResponse({ status: HttpStatus.OK })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ApiException })
+  @ApiOperation(GetOperationId(User.modelName, 'Add Address'))
+  @Roles(UserRole.User)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  async postAddress(
+    @Body() object: { address: string },
+    @Res() res,
+    @Req() req,
+  ) {
+    return await this._userService.postAddress(req.user, object.address);
+  }
+
+  @Delete('address')
+  @ApiResponse({ status: HttpStatus.OK })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ApiException })
+  @ApiOperation(GetOperationId(User.modelName, 'Delete Address'))
+  @Roles(UserRole.User)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  async deleteAddress(
+    @Body() object: { address: string },
+    @Res() res,
+    @Req() req,
+  ) {
+    return await this._userService.deleteAddress(req.user, object.address);
   }
 }

@@ -119,4 +119,44 @@ export class UserService extends BaseService<User> {
       throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
+
+  async postAddress(user: User, address: string) {
+    const currentUser = await this.findById(user.id);
+
+    currentUser.addresses.push(address);
+
+    try {
+      let updatedUser = await this.update(user.id, currentUser);
+
+      console.log('Updated User Tokens', updatedUser.tokens);
+      return null;
+    } catch (e) {
+      throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  async deleteAddress(user: any, address: string) {
+    const currentUser = await this.findById(user.id);
+    const tokenIndex = currentUser.addresses.indexOf(address);
+
+    if (tokenIndex == -1) {
+      throw new HttpException('address not found', HttpStatus.NOT_FOUND);
+    }
+
+    console.log(
+      'Curren tokens Length Before Delete',
+      currentUser.tokens.length,
+    );
+    currentUser.tokens.slice(tokenIndex);
+    console.log('Curren tokens Length After Delete', currentUser.tokens.length);
+
+    try {
+      let updatedUser = await this.update(user.id, currentUser);
+
+      console.log('Deleted User Tokens', updatedUser.tokens);
+      return null;
+    } catch (e) {
+      throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
 }
