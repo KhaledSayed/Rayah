@@ -179,7 +179,7 @@ export class UserController {
   @Roles(UserRole.User)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   async postAddress(@Body() object: AddressVm, @Res() res, @Req() req) {
-    return await this._userService.postAddress(req.user, object.address);
+    return this._userService.postAddress(req.user, object.address);
   }
 
   @Delete('address')
@@ -189,6 +189,6 @@ export class UserController {
   @Roles(UserRole.User)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   async deleteAddress(@Body() object: AddressVm, @Res() res, @Req() req) {
-    return await this._userService.deleteAddress(req.user, object.address);
+    return this._userService.deleteAddress(req.user, object.address);
   }
 }
