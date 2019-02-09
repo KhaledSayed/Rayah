@@ -129,7 +129,7 @@ export class UserService extends BaseService<User> {
       let updatedUser = await this.update(user.id, currentUser);
 
       console.log('Updated User Tokens', updatedUser.tokens);
-      return null;
+      return await this.map<UserVM>(updatedUser.toJSON());
     } catch (e) {
       throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -154,7 +154,7 @@ export class UserService extends BaseService<User> {
       let updatedUser = await this.update(user.id, currentUser);
 
       console.log('Deleted User Tokens', updatedUser.tokens);
-      return null;
+      return await this.map<UserVM>(updatedUser.toJSON());
     } catch (e) {
       throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
