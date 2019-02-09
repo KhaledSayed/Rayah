@@ -1,6 +1,6 @@
 import { ApiModelProperty } from '@nestjs/swagger';
 
-class AddressVm {
+export class AddressVm {
   @ApiModelProperty()
   address: string;
 }
