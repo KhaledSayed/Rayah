@@ -16,6 +16,7 @@ import {
   UseInterceptors,
   FileInterceptor,
   UploadedFile,
+  Req,
 } from '@nestjs/common';
 import { OrderParam } from './models/view-models/order-params.model';
 import { OrderVm } from './models/view-models/order-vm.model';
@@ -63,6 +64,35 @@ export class OrderController {
     private readonly _userService: UserService,
   ) {}
 
+  @Get('user')
+  @Roles(UserRole.User)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @ApiImplicitQuery({
+    name: 'page',
+    required: true,
+    type: Number,
+  })
+  @ApiImplicitQuery({ name: 'perPage', required: true, type: Number })
+  async getUserOrders(
+    @Req() req,
+    @Query('page', new ToInt()) page: number,
+    @Query('perPage', new ToInt()) perPage: number,
+  ) {
+    const orders = await this._orderService.findAll(
+      {
+        $and: [{ user: Types.ObjectId(req.user._id) }],
+      },
+      ['basket.product', 'user'],
+      page,
+      perPage,
+    );
+
+    return await this._orderService.map<OrderVm>(
+      map(orders, order => order.toJSON()),
+      true,
+    );
+  }
+
   @Get(':id')
   @ApiImplicitParam({ name: 'id', type: String })
   async getOne(@Param('id') id): Promise<OrderVm> {
@@ -101,14 +131,14 @@ export class OrderController {
     @Query('status') status: OrderLevel[],
     @Request() req,
   ) {
-    let currentTest = 'Admin';
+    let currentTest = req.user.type;
     let statusQuery = [];
 
     status.forEach(item => {
       statusQuery.push({ status: item });
     });
 
-    if (currentTest === 'User') {
+    if (currentTest === UserRole.User) {
       const orders = await this._orderService.findAll(
         {
           $and: [{ user: Types.ObjectId(req.user._id) }],
