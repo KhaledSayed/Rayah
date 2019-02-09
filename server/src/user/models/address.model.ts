@@ -1,2 +1,6 @@
-import { BaseModel } from '../../shared/base.model';
-import { prop } from 'typegoose';
+import { ApiModelProperty } from '@nestjs/swagger';
+
+class AddressVm {
+  @ApiModelProperty()
+  address: string;
+}

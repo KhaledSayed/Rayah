@@ -36,6 +36,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from '../shared/guards/roles.guard';
 import { FcmParam } from './models/view-models/Fcm-param.model';
 import { types } from 'util';
+import { AddressVm } from './models/address.model';
 @Controller('users')
 @ApiUseTags(User.modelName)
 @ApiBearerAuth()
@@ -177,11 +178,7 @@ export class UserController {
   @ApiOperation(GetOperationId(User.modelName, 'Add Address'))
   @Roles(UserRole.User)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  async postAddress(
-    @Body() object: { address: string },
-    @Res() res,
-    @Req() req,
-  ) {
+  async postAddress(@Body() object: AddressVm, @Res() res, @Req() req) {
     return await this._userService.postAddress(req.user, object.address);
   }
 
@@ -191,11 +188,7 @@ export class UserController {
   @ApiOperation(GetOperationId(User.modelName, 'Delete Address'))
   @Roles(UserRole.User)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  async deleteAddress(
-    @Body() object: { address: string },
-    @Res() res,
-    @Req() req,
-  ) {
+  async deleteAddress(@Body() object: AddressVm, @Res() res, @Req() req) {
     return await this._userService.deleteAddress(req.user, object.address);
   }
 }
